@@ -24,7 +24,7 @@ eureka:
         prefer-ip-address: true
     client:
         service-url:
-            defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
+            defaultZone: http://admin:${jhipster.registry.password}@10.24.209.11:8761/eureka/
 
 spring:
     profiles:
@@ -39,9 +39,9 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:oracle:thin:@localhost:1521:xe
-        username: system
-        password: oracle
+        url: jdbc:oracle:thin:@10.24.10.56:1521/orcl
+        username: C##biobank_t_20180118
+        password: root123
     jpa:
         database-platform: org.hibernate.dialect.Oracle12cDialect
         database: ORACLE
