@@ -4,7 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <!--<include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>-->
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180202062511_added_entity_Question.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180211012148_added_entity_QuestionItem.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180211013133_added_entity_QuestionItemDetails.xml" relativeToChangelogFile="false"/>
+
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180202062511_added_entity_constraints_Question.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180211012148_added_entity_constraints_QuestionItem.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180211013133_added_entity_constraints_QuestionItemDetails.xml" relativeToChangelogFile="false"/>
+
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180211102001_added_view_Question.xml" relativeToChangelogFile="false"/>
+
 </databaseChangeLog>

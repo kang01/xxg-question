@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the view for entity QuestionForDataTableEntity.
+    -->
+    <changeSet id="20180211102001-1" author="jhipster">
+        <createView viewName="view_question">
+            SELECT
+                t.ID, t.question_code, t.project_code, t.related_agency,t.author,
+                TO_CHAR(t.occur_date,'yyyy-MM-dd') as occur_date,t.question_summary,
+                TO_CHAR(t.reply_date,'yyyy-MM-dd') as reply_date,t.status
+            FROM  QUESTION t
+        </createView>
+    </changeSet>
+
+</databaseChangeLog>

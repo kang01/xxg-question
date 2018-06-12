@@ -20,6 +20,11 @@
                 <updatePolicy>always</updatePolicy>
             </releases>
         </repository>
+        <!-- 代码库 -->
+        <repository>
+            <id>nexus</id>
+            <url>http://10.24.10.56:8081/nexus/content/groups/public/</url>
+        </repository>
     </repositories>
 
     <properties>
@@ -58,7 +63,7 @@
         <liquibase.version>3.5.3</liquibase.version>
         <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
         <validation-api.version>1.1.0.Final</validation-api.version>
-        <mapstruct.version>1.2.0.Final</mapstruct.version>
+        <!--<mapstruct.version>1.2.0.Final</mapstruct.version>-->
 
         <!-- Plugin versions -->
         <maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
@@ -185,10 +190,10 @@
             <scope>test</scope>
             <!-- parent POM declares this dependency in default (compile) scope -->
         </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>io.springfox</groupId>-->
+            <!--<artifactId>springfox-swagger2</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-bean-validators</artifactId>
@@ -248,15 +253,16 @@
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-jdk8</artifactId>
-            <version>${mapstruct.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-        </dependency>
+        <!--由于冲突，注掉此方法-->
+        <!--<dependency>-->
+            <!--<groupId>org.mapstruct</groupId>-->
+            <!--<artifactId>mapstruct-jdk8</artifactId>-->
+            <!--<version>${mapstruct.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-context-support</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-actuator</artifactId>
@@ -379,11 +385,12 @@
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${mapstruct.version}</version>
-                        </path>
+                        <!--由于冲突，注掉此方法-->
+                        <!--<path>-->
+                            <!--<groupId>org.mapstruct</groupId>-->
+                            <!--<artifactId>mapstruct-processor</artifactId>-->
+                            <!--<version>${mapstruct.version}</version>-->
+                        <!--</path>-->
                         <!-- For JPA static metamodel generation -->
                         <path>
                             <groupId>org.hibernate</groupId>
@@ -911,21 +918,22 @@
                 </dependency>
             </dependencies>
         </profile>
-        <profile>
-            <!--
-                Profile for applying IDE-specific configuration.
-                At the moment it only configures MapStruct, which you need when working
-                with DTOs.
-            -->
-            <id>IDE</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.mapstruct</groupId>
-                    <artifactId>mapstruct-processor</artifactId>
-                    <version>${mapstruct.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
+        <!--由于冲突，注掉此方法-->
+        <!--<profile>-->
+            <!--&lt;!&ndash;-->
+                <!--Profile for applying IDE-specific configuration.-->
+                <!--At the moment it only configures MapStruct, which you need when working-->
+                <!--with DTOs.-->
+            <!--&ndash;&gt;-->
+            <!--<id>IDE</id>-->
+            <!--<dependencies>-->
+                <!--<dependency>-->
+                    <!--<groupId>org.mapstruct</groupId>-->
+                    <!--<artifactId>mapstruct-processor</artifactId>-->
+                    <!--<version>${mapstruct.version}</version>-->
+                <!--</dependency>-->
+            <!--</dependencies>-->
+        <!--</profile>-->
         <!-- jhipster-needle-maven-add-profile -->
     </profiles>
 </project>
