@@ -1,5 +1,6 @@
 package org.fwoxford.domain;
 
+import org.fwoxford.core.domain.FrozenTube;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

@@ -111,6 +111,13 @@
     </dependencyManagement>
 
     <dependencies>
+<!--  引入外部导入jar  公共的实体对象 以及 mapper -->
+        <dependency>
+            <groupId>com.fwoxford.core</groupId>
+            <artifactId>bbis-core</artifactId>
+            <version>1.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
