@@ -15,6 +15,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.datatables.repository.DataTablesRepositoryFactoryBean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.annotation.PostConstruct;
 import java.net.InetAddress;
@@ -26,6 +28,7 @@ import java.util.Collection;
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 @EnableDiscoveryClient
+@EnableJpaRepositories(repositoryFactoryBeanClass = DataTablesRepositoryFactoryBean.class)
 public class MisBbisQuestionApp {
 
     private static final Logger log = LoggerFactory.getLogger(MisBbisQuestionApp.class);

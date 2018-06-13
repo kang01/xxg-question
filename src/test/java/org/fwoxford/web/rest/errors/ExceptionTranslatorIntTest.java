@@ -1,7 +1,6 @@
 package org.fwoxford.web.rest.errors;
 
 import org.fwoxford.MisBbisQuestionApp;
-import org.fwoxford.core.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

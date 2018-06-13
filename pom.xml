@@ -2,6 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <version>1.5.1.RELEASE</version>
+        <relativePath />
+    </parent>
+
     <groupId>org.fwoxford</groupId>
     <artifactId>mis-bbis-question</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -63,7 +70,7 @@
         <liquibase.version>3.5.3</liquibase.version>
         <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
         <validation-api.version>1.1.0.Final</validation-api.version>
-        <!--<mapstruct.version>1.2.0.Final</mapstruct.version>-->
+        <mapstruct.version>1.2.0.Final</mapstruct.version>
 
         <!-- Plugin versions -->
         <maven-clean-plugin.version>2.6.1</maven-clean-plugin.version>
@@ -116,13 +123,11 @@
     </dependencyManagement>
 
     <dependencies>
-<!--  引入外部导入jar  公共的实体对象 以及 mapper -->
         <dependency>
-            <groupId>com.fwoxford.core</groupId>
-            <artifactId>bbis-core</artifactId>
-            <version>1.0</version>
+            <groupId>com.github.darrachequesne</groupId>
+            <artifactId>spring-data-jpa-datatables</artifactId>
+            <version>4.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
@@ -254,15 +259,15 @@
             <artifactId>logstash-logback-encoder</artifactId>
         </dependency>
         <!--由于冲突，注掉此方法-->
-        <!--<dependency>-->
-            <!--<groupId>org.mapstruct</groupId>-->
-            <!--<artifactId>mapstruct-jdk8</artifactId>-->
-            <!--<version>${mapstruct.version}</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>spring-context-support</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-jdk8</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-actuator</artifactId>
@@ -331,7 +336,7 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
         </dependency>
-        <!-- Spring Cloud -->
+         <!--Spring Cloud-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
@@ -373,6 +378,25 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-data</artifactId>
         </dependency>
+
+        <!--  引入外部导入jar  公共的实体对象 以及 mapper -->
+        <dependency>
+            <groupId>org.fwoxford.core</groupId>
+            <artifactId>bbis-core</artifactId>
+            <version>1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.mattbertolini</groupId>
+                    <artifactId>liquibase-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-data</artifactId>
+            <version>4.1.4.RELEASE</version>
+        </dependency>
+
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
 
@@ -386,11 +410,11 @@
                 <configuration>
                     <annotationProcessorPaths>
                         <!--由于冲突，注掉此方法-->
-                        <!--<path>-->
-                            <!--<groupId>org.mapstruct</groupId>-->
-                            <!--<artifactId>mapstruct-processor</artifactId>-->
-                            <!--<version>${mapstruct.version}</version>-->
-                        <!--</path>-->
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
                         <!-- For JPA static metamodel generation -->
                         <path>
                             <groupId>org.hibernate</groupId>
@@ -919,21 +943,21 @@
             </dependencies>
         </profile>
         <!--由于冲突，注掉此方法-->
-        <!--<profile>-->
-            <!--&lt;!&ndash;-->
-                <!--Profile for applying IDE-specific configuration.-->
-                <!--At the moment it only configures MapStruct, which you need when working-->
-                <!--with DTOs.-->
-            <!--&ndash;&gt;-->
-            <!--<id>IDE</id>-->
-            <!--<dependencies>-->
-                <!--<dependency>-->
-                    <!--<groupId>org.mapstruct</groupId>-->
-                    <!--<artifactId>mapstruct-processor</artifactId>-->
-                    <!--<version>${mapstruct.version}</version>-->
-                <!--</dependency>-->
-            <!--</dependencies>-->
-        <!--</profile>-->
+        <profile>
+            <!--
+                Profile for applying IDE-specific configuration.
+                At the moment it only configures MapStruct, which you need when working
+                with DTOs.
+            -->
+            <id>IDE</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.mapstruct</groupId>
+                    <artifactId>mapstruct-processor</artifactId>
+                    <version>${mapstruct.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
         <!-- jhipster-needle-maven-add-profile -->
     </profiles>
 </project>
