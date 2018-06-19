@@ -27,7 +27,7 @@ import java.util.Collection;
 @ComponentScan
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
-//@EnableDiscoveryClient
+@EnableDiscoveryClient
 @EnableJpaRepositories(repositoryFactoryBeanClass = DataTablesRepositoryFactoryBean.class)
 public class MisBbisQuestionApp {
 

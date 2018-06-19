@@ -16,5 +16,8 @@
     <include file="classpath:config/liquibase/changelog/changelog-2018/20180211102001_added_view_Question.xml" relativeToChangelogFile="false"/>
 
     <include file="classpath:config/liquibase/changelog/changelog-2018/20180619015937_added_entity_AuthorizationRecord.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180619025401_added_entity_SendRecord.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180619031112_added_entity_ReplyRecord.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180619031112_added_entity_constraints_ReplyRecord.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

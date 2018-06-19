@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "authorization_record")
-public class AuthorizationRecord implements Serializable {
+public class AuthorizationRecord extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

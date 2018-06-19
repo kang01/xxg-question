@@ -13,47 +13,43 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
-    <changeSet id="11111111111111-9" author="jhipster" dbms="h2,postgresql,oracle">
-        <createSequence sequenceName="seq_authorization_record" startValue="1" incrementBy="1"></createSequence>
+    <changeSet id="11111111111111-10" author="jhipster" dbms="h2,postgresql,oracle">
+        <createSequence sequenceName="seq_send_record" startValue="1" incrementBy="1"></createSequence>
     </changeSet>
     <!--
-        Added the entity AuthorizationRecord.
+        Added the entity SendRecord.
     -->
-    <changeSet id="20180619015938-1" author="jhipster">
-        <createTable tableName="authorization_record" remarks="授权记录表">
+    <changeSet id="20180619025401-1" author="jhipster">
+        <createTable tableName="send_record" remarks="发送记录表">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="authorization_code" type="nvarchar(255)" remarks="授权码">
+            <column name="sender_email" type="nvarchar(255)" remarks="发件人邮箱">
                 <constraints nullable="false" />
             </column>
 
-            <column name="stranger_name" type="nvarchar(255)" remarks="陌生人姓名">
+            <column name="stranger_email" type="nvarchar(255)" remarks="陌生人邮箱">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="stranger_name" type="nvarchar(255)" remarks="陌生人名字">
                 <constraints nullable="true" />
             </column>
 
-            <column name="stranger_email" type="nvarchar(255)" remarks="陌人生邮箱">
+            <column name="question_id" type="bigint" remarks="问题ID">
                 <constraints nullable="false" />
             </column>
 
-            <column name="expiration_time" type="timestamp" remarks="过期时间">
+            <column name="question_code" type="nvarchar(255)" remarks="问题编码">
                 <constraints nullable="false" />
             </column>
 
-            <column name="apply_times" type="integer" remarks="申请加时次数">
+            <column name="authorization_record_id" type="bigint" remarks="授权记录ID">
                 <constraints nullable="true" />
             </column>
 
-            <column name="authority_person_id" type="bigint" remarks="授权人ID">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="authority_name" type="nvarchar(255)" remarks="授权项">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="status" type="nvarchar(20)" remarks="状态：（有效，过期，无效）">
-                <constraints nullable="false" />
+            <column name="status" type="nvarchar(255)" remarks="状态">
+                <constraints nullable="true" />
             </column>
 
             <column name="memo" type="nvarchar(1024)" remarks="备注">
@@ -70,7 +66,6 @@
             <column name="last_modified_date" type="timestamp" remarks="修改时间"/>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="authorization_record" columnName="expiration_time" columnDataType="datetime"/>
 
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

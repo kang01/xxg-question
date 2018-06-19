@@ -15,7 +15,7 @@ import java.util.List;
  * Mapper for the entity QuestionItemDetails and its DTO QuestionItemDetailsDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface QuestionItemDetailsMapper {
+public interface QuestionItemDetailsMapper  {
 
     @Mapping(source = "questionItem.id", target = "questionItemId")
     @Mapping(source = "frozenTube.id", target = "frozenTubeId")

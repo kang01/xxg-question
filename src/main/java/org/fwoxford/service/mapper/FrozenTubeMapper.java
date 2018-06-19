@@ -12,7 +12,7 @@ import java.util.List;
  * Mapper for the entity FrozenTube and its DTO FrozenTubeDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface FrozenTubeMapper {
+public interface FrozenTubeMapper{
 
     @Mapping(source = "frozenTubeType.id", target = "frozenTubeTypeId")
     @Mapping(source = "sampleType.id", target = "sampleTypeId")
