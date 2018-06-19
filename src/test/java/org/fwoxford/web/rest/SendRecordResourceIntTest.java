@@ -127,7 +127,7 @@ public class SendRecordResourceIntTest {
         int databaseSizeBeforeCreate = sendRecordRepository.findAll().size();
 
         // Create the SendRecord
-        SendRecordDTO sendRecordDTO = sendRecordMapper.toDto(sendRecord);
+        SendRecordDTO sendRecordDTO = sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
         restSendRecordMockMvc.perform(post("/api/send-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(sendRecordDTO)))
@@ -153,7 +153,7 @@ public class SendRecordResourceIntTest {
 
         // Create the SendRecord with an existing ID
         sendRecord.setId(1L);
-        SendRecordDTO sendRecordDTO = sendRecordMapper.toDto(sendRecord);
+        SendRecordDTO sendRecordDTO = sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restSendRecordMockMvc.perform(post("/api/send-records")
@@ -174,7 +174,7 @@ public class SendRecordResourceIntTest {
         sendRecord.setSenderEmail(null);
 
         // Create the SendRecord, which fails.
-        SendRecordDTO sendRecordDTO = sendRecordMapper.toDto(sendRecord);
+        SendRecordDTO sendRecordDTO = sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
 
         restSendRecordMockMvc.perform(post("/api/send-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -193,7 +193,7 @@ public class SendRecordResourceIntTest {
         sendRecord.setStrangerEmail(null);
 
         // Create the SendRecord, which fails.
-        SendRecordDTO sendRecordDTO = sendRecordMapper.toDto(sendRecord);
+        SendRecordDTO sendRecordDTO = sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
 
         restSendRecordMockMvc.perform(post("/api/send-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -212,7 +212,7 @@ public class SendRecordResourceIntTest {
         sendRecord.setQuestionId(null);
 
         // Create the SendRecord, which fails.
-        SendRecordDTO sendRecordDTO = sendRecordMapper.toDto(sendRecord);
+        SendRecordDTO sendRecordDTO = sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
 
         restSendRecordMockMvc.perform(post("/api/send-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -231,7 +231,7 @@ public class SendRecordResourceIntTest {
         sendRecord.setQuestionCode(null);
 
         // Create the SendRecord, which fails.
-        SendRecordDTO sendRecordDTO = sendRecordMapper.toDto(sendRecord);
+        SendRecordDTO sendRecordDTO = sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
 
         restSendRecordMockMvc.perform(post("/api/send-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -309,7 +309,7 @@ public class SendRecordResourceIntTest {
             .authorizationRecordId(UPDATED_AUTHORIZATION_RECORD_ID)
             .status(UPDATED_STATUS)
             .memo(UPDATED_MEMO);
-        SendRecordDTO sendRecordDTO = sendRecordMapper.toDto(updatedSendRecord);
+        SendRecordDTO sendRecordDTO = sendRecordMapper.sendRecordToSendRecordDTO(updatedSendRecord);
 
         restSendRecordMockMvc.perform(put("/api/send-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -335,7 +335,7 @@ public class SendRecordResourceIntTest {
         int databaseSizeBeforeUpdate = sendRecordRepository.findAll().size();
 
         // Create the SendRecord
-        SendRecordDTO sendRecordDTO = sendRecordMapper.toDto(sendRecord);
+        SendRecordDTO sendRecordDTO = sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restSendRecordMockMvc.perform(put("/api/send-records")

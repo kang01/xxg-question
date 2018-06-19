@@ -140,7 +140,7 @@ public class AuthorizationRecordResourceIntTest {
         int databaseSizeBeforeCreate = authorizationRecordRepository.findAll().size();
 
         // Create the AuthorizationRecord
-        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.toDto(authorizationRecord);
+        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
         restAuthorizationRecordMockMvc.perform(post("/api/authorization-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(authorizationRecordDTO)))
@@ -168,7 +168,7 @@ public class AuthorizationRecordResourceIntTest {
 
         // Create the AuthorizationRecord with an existing ID
         authorizationRecord.setId(1L);
-        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.toDto(authorizationRecord);
+        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAuthorizationRecordMockMvc.perform(post("/api/authorization-records")
@@ -189,7 +189,7 @@ public class AuthorizationRecordResourceIntTest {
         authorizationRecord.setAuthorizationCode(null);
 
         // Create the AuthorizationRecord, which fails.
-        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.toDto(authorizationRecord);
+        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
 
         restAuthorizationRecordMockMvc.perform(post("/api/authorization-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -208,7 +208,7 @@ public class AuthorizationRecordResourceIntTest {
         authorizationRecord.setStrangerEmail(null);
 
         // Create the AuthorizationRecord, which fails.
-        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.toDto(authorizationRecord);
+        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
 
         restAuthorizationRecordMockMvc.perform(post("/api/authorization-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -227,7 +227,7 @@ public class AuthorizationRecordResourceIntTest {
         authorizationRecord.setExpirationTime(null);
 
         // Create the AuthorizationRecord, which fails.
-        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.toDto(authorizationRecord);
+        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
 
         restAuthorizationRecordMockMvc.perform(post("/api/authorization-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -246,7 +246,7 @@ public class AuthorizationRecordResourceIntTest {
         authorizationRecord.setAuthorityPersonId(null);
 
         // Create the AuthorizationRecord, which fails.
-        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.toDto(authorizationRecord);
+        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
 
         restAuthorizationRecordMockMvc.perform(post("/api/authorization-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -265,7 +265,7 @@ public class AuthorizationRecordResourceIntTest {
         authorizationRecord.setAuthorityName(null);
 
         // Create the AuthorizationRecord, which fails.
-        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.toDto(authorizationRecord);
+        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
 
         restAuthorizationRecordMockMvc.perform(post("/api/authorization-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -284,7 +284,7 @@ public class AuthorizationRecordResourceIntTest {
         authorizationRecord.setStatus(null);
 
         // Create the AuthorizationRecord, which fails.
-        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.toDto(authorizationRecord);
+        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
 
         restAuthorizationRecordMockMvc.perform(post("/api/authorization-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -368,7 +368,7 @@ public class AuthorizationRecordResourceIntTest {
             .authorityName(UPDATED_AUTHORITY_NAME)
             .status(UPDATED_STATUS)
             .memo(UPDATED_MEMO);
-        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.toDto(updatedAuthorizationRecord);
+        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(updatedAuthorizationRecord);
 
         restAuthorizationRecordMockMvc.perform(put("/api/authorization-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -396,7 +396,7 @@ public class AuthorizationRecordResourceIntTest {
         int databaseSizeBeforeUpdate = authorizationRecordRepository.findAll().size();
 
         // Create the AuthorizationRecord
-        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.toDto(authorizationRecord);
+        AuthorizationRecordDTO authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restAuthorizationRecordMockMvc.perform(put("/api/authorization-records")
@@ -457,10 +457,10 @@ public class AuthorizationRecordResourceIntTest {
         assertThat(authorizationRecordDTO1).isNotEqualTo(authorizationRecordDTO2);
     }
 
-    @Test
-    @Transactional
-    public void testEntityFromId() {
-        assertThat(authorizationRecordMapper.fromId(42L).getId()).isEqualTo(42);
-        assertThat(authorizationRecordMapper.fromId(null)).isNull();
-    }
+//    @Test
+//    @Transactional
+//    public void testEntityFromId() {
+//        assertThat(authorizationRecordMapper.fromId(42L).getId()).isEqualTo(42);
+//        assertThat(authorizationRecordMapper.fromId(null)).isNull();
+//    }
 }

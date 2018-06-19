@@ -137,7 +137,7 @@ public class ReplyRecordResourceIntTest {
         int databaseSizeBeforeCreate = replyRecordRepository.findAll().size();
 
         // Create the ReplyRecord
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.toDto(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(replyRecordDTO)))
@@ -164,7 +164,7 @@ public class ReplyRecordResourceIntTest {
 
         // Create the ReplyRecord with an existing ID
         replyRecord.setId(1L);
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.toDto(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restReplyRecordMockMvc.perform(post("/api/reply-records")
@@ -185,7 +185,7 @@ public class ReplyRecordResourceIntTest {
         replyRecord.setStrangerEmail(null);
 
         // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.toDto(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
 
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -204,7 +204,7 @@ public class ReplyRecordResourceIntTest {
         replyRecord.setQuestionId(null);
 
         // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.toDto(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
 
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -223,7 +223,7 @@ public class ReplyRecordResourceIntTest {
         replyRecord.setQuestionCode(null);
 
         // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.toDto(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
 
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -242,7 +242,7 @@ public class ReplyRecordResourceIntTest {
         replyRecord.setHandleTypeCode(null);
 
         // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.toDto(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
 
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -261,7 +261,7 @@ public class ReplyRecordResourceIntTest {
         replyRecord.setReplyContent(null);
 
         // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.toDto(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
 
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -280,7 +280,7 @@ public class ReplyRecordResourceIntTest {
         replyRecord.setStatus(null);
 
         // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.toDto(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
 
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -361,7 +361,7 @@ public class ReplyRecordResourceIntTest {
             .replyContent(UPDATED_REPLY_CONTENT)
             .status(UPDATED_STATUS)
             .memo(UPDATED_MEMO);
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.toDto(updatedReplyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(updatedReplyRecord);
 
         restReplyRecordMockMvc.perform(put("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -388,7 +388,7 @@ public class ReplyRecordResourceIntTest {
         int databaseSizeBeforeUpdate = replyRecordRepository.findAll().size();
 
         // Create the ReplyRecord
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.toDto(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restReplyRecordMockMvc.perform(put("/api/reply-records")

@@ -5,24 +5,30 @@ import org.fwoxford.service.dto.ReplyRecordDTO;
 
 import org.mapstruct.*;
 
+import java.util.List;
+
 /**
  * Mapper for the entity ReplyRecord and its DTO ReplyRecordDTO.
  */
-@Mapper(componentModel = "spring", uses = {QuestionItemDetailsMapper.class})
-public interface ReplyRecordMapper extends EntityMapper<ReplyRecordDTO, ReplyRecord> {
+@Mapper(componentModel = "spring", uses = {})
+public interface  ReplyRecordMapper {
 
-//    @Mapping(source = "questionItemDetails.id", target = "questionItemDetailsId")
-    ReplyRecordDTO toDto(ReplyRecord replyRecord);
+    @Mapping(source = "questionItemDetails.id", target = "questionItemDetailsId")
+    ReplyRecordDTO replyRecordToRreplyRecordDTO(ReplyRecord replyRecord);
 
-//    @Mapping(source = "questionItemDetailsId", target = "questionItemDetails")
-    ReplyRecord toEntity(ReplyRecordDTO replyRecordDTO);
+    List<ReplyRecordDTO> replyRecordsToReplyRecordDTOs(List<ReplyRecord> replyRecordList);
 
-    default ReplyRecord replyRecordFromId(Long id) {
+    @Mapping(source = "questionItemDetailsId", target = "questionItemDetails")
+    ReplyRecord replyRecordDTOToRreplyRecord(ReplyRecordDTO replyRecordDTO);
+
+    List<ReplyRecord> replyRecordDTOsToReplyRecords(List<ReplyRecordDTO> replyRecordDTOList);
+
+    default QuestionItemDetails questionItemDetailsFromId(Long id) {
         if (id == null) {
             return null;
         }
-        ReplyRecord replyRecord = new ReplyRecord();
-        replyRecord.setId(id);
-        return replyRecord;
+        QuestionItemDetails questionItemDetails = new QuestionItemDetails();
+        questionItemDetails.setId(id);
+        return questionItemDetails;
     }
 }

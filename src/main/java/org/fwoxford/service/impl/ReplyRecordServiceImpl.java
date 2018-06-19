@@ -40,9 +40,9 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
     @Override
     public ReplyRecordDTO save(ReplyRecordDTO replyRecordDTO) {
         log.debug("Request to save ReplyRecord : {}", replyRecordDTO);
-        ReplyRecord replyRecord = replyRecordMapper.toEntity(replyRecordDTO);
+        ReplyRecord replyRecord = replyRecordMapper.replyRecordDTOToRreplyRecord(replyRecordDTO);
         replyRecord = replyRecordRepository.save(replyRecord);
-        return replyRecordMapper.toDto(replyRecord);
+        return replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
     }
 
     /**
@@ -56,7 +56,7 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
     public Page<ReplyRecordDTO> findAll(Pageable pageable) {
         log.debug("Request to get all ReplyRecords");
         return replyRecordRepository.findAll(pageable)
-            .map(replyRecordMapper::toDto);
+            .map(replyRecordMapper::replyRecordToRreplyRecordDTO);
     }
 
     /**
@@ -70,7 +70,7 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
     public ReplyRecordDTO findOne(Long id) {
         log.debug("Request to get ReplyRecord : {}", id);
         ReplyRecord replyRecord = replyRecordRepository.findOne(id);
-        return replyRecordMapper.toDto(replyRecord);
+        return replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
     }
 
     /**

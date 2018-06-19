@@ -40,9 +40,9 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
     @Override
     public AuthorizationRecordDTO save(AuthorizationRecordDTO authorizationRecordDTO) {
         log.debug("Request to save AuthorizationRecord : {}", authorizationRecordDTO);
-        AuthorizationRecord authorizationRecord = authorizationRecordMapper.toEntity(authorizationRecordDTO);
+        AuthorizationRecord authorizationRecord = authorizationRecordMapper.authorizationRecordDTOToAuthorizationRecord(authorizationRecordDTO);
         authorizationRecord = authorizationRecordRepository.save(authorizationRecord);
-        return authorizationRecordMapper.toDto(authorizationRecord);
+        return authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
     }
 
     /**
@@ -56,7 +56,7 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
     public Page<AuthorizationRecordDTO> findAll(Pageable pageable) {
         log.debug("Request to get all AuthorizationRecords");
         return authorizationRecordRepository.findAll(pageable)
-            .map(authorizationRecordMapper::toDto);
+            .map(authorizationRecordMapper::authorizationRecordToAuthorizationRecordDTO);
     }
 
     /**
@@ -70,7 +70,7 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
     public AuthorizationRecordDTO findOne(Long id) {
         log.debug("Request to get AuthorizationRecord : {}", id);
         AuthorizationRecord authorizationRecord = authorizationRecordRepository.findOne(id);
-        return authorizationRecordMapper.toDto(authorizationRecord);
+        return authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
     }
 
     /**

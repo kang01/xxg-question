@@ -40,9 +40,9 @@ public class SendRecordServiceImpl implements SendRecordService {
     @Override
     public SendRecordDTO save(SendRecordDTO sendRecordDTO) {
         log.debug("Request to save SendRecord : {}", sendRecordDTO);
-        SendRecord sendRecord = sendRecordMapper.toEntity(sendRecordDTO);
+        SendRecord sendRecord = sendRecordMapper.sendRecordDTOToSendRecord(sendRecordDTO);
         sendRecord = sendRecordRepository.save(sendRecord);
-        return sendRecordMapper.toDto(sendRecord);
+        return sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
     }
 
     /**
@@ -56,7 +56,7 @@ public class SendRecordServiceImpl implements SendRecordService {
     public Page<SendRecordDTO> findAll(Pageable pageable) {
         log.debug("Request to get all SendRecords");
         return sendRecordRepository.findAll(pageable)
-            .map(sendRecordMapper::toDto);
+            .map(sendRecordMapper::sendRecordToSendRecordDTO);
     }
 
     /**
@@ -70,7 +70,7 @@ public class SendRecordServiceImpl implements SendRecordService {
     public SendRecordDTO findOne(Long id) {
         log.debug("Request to get SendRecord : {}", id);
         SendRecord sendRecord = sendRecordRepository.findOne(id);
-        return sendRecordMapper.toDto(sendRecord);
+        return sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
     }
 
     /**

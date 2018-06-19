@@ -1,7 +1,13 @@
 package org.fwoxford.domain;
 
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
@@ -12,6 +18,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "reply_record")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ReplyRecord extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,9 +65,9 @@ public class ReplyRecord extends AbstractAuditingEntity implements Serializable 
     @Column(name = "memo", length = 1024)
     private String memo;
 
-//    @ManyToOne(optional = false)
-//    @NotNull
-//    private QuestionItemDetails questionItemDetails;
+    @ManyToOne(optional = false)
+    @NotNull
+    private QuestionItemDetails questionItemDetails;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -175,18 +182,18 @@ public class ReplyRecord extends AbstractAuditingEntity implements Serializable 
         this.memo = memo;
     }
 
-//    public QuestionItemDetails getQuestionItemDetails() {
-//        return questionItemDetails;
-//    }
-//
-//    public ReplyRecord questionItemDetails(QuestionItemDetails questionItemDetails) {
-//        this.questionItemDetails = questionItemDetails;
-//        return this;
-//    }
-//
-//    public void setQuestionItemDetails(QuestionItemDetails questionItemDetails) {
-//        this.questionItemDetails = questionItemDetails;
-//    }
+    public QuestionItemDetails getQuestionItemDetails() {
+        return questionItemDetails;
+    }
+
+    public ReplyRecord questionItemDetails(QuestionItemDetails questionItemDetails) {
+        this.questionItemDetails = questionItemDetails;
+        return this;
+    }
+
+    public void setQuestionItemDetails(QuestionItemDetails questionItemDetails) {
+        this.questionItemDetails = questionItemDetails;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
