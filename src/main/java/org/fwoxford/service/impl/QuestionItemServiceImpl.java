@@ -1,8 +1,8 @@
 package org.fwoxford.service.impl;
 
-import org.fwoxford.core.config.Constants;
-import org.fwoxford.core.domain.FrozenTube;
-import org.fwoxford.core.web.rest.errors.BankServiceException;
+import org.fwoxford.config.Constants;
+import org.fwoxford.domain.FrozenTube;
+import org.fwoxford.web.rest.errors.BankServiceException;
 import org.fwoxford.domain.Question;
 import org.fwoxford.domain.QuestionItem;
 import org.fwoxford.domain.QuestionItemDetails;

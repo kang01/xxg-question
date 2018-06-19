@@ -1,6 +1,6 @@
 package org.fwoxford.service.mapper;
 
-import org.fwoxford.core.domain.Project;
+import org.fwoxford.domain.Project;
 import org.fwoxford.domain.Question;
 import org.fwoxford.service.dto.QuestionDTO;
 import org.mapstruct.Mapper;

@@ -1,6 +1,5 @@
 package org.fwoxford.domain;
 
-import org.fwoxford.core.domain.Project;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

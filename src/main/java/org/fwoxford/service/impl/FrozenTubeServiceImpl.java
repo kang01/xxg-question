@@ -1,13 +1,13 @@
 package org.fwoxford.service.impl;
 
 import com.google.common.collect.Lists;
-import org.fwoxford.core.config.Constants;
-import org.fwoxford.core.domain.FrozenBox;
-import org.fwoxford.core.repository.FrozenBoxRepository;
-import org.fwoxford.core.repository.FrozenTubeRepository;
-import org.fwoxford.core.service.mapper.FrozenTubeMapper;
+import org.fwoxford.config.Constants;
+import org.fwoxford.domain.FrozenBox;
+import org.fwoxford.repository.FrozenBoxRepository;
+import org.fwoxford.repository.FrozenTubeRepository;
 import org.fwoxford.service.FrozenTubeService;
 import org.fwoxford.service.dto.QuestionItemDetailsDTO;
+import org.fwoxford.service.mapper.FrozenTubeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

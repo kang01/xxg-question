@@ -1,6 +1,6 @@
 package org.fwoxford.repository;
 
-import org.fwoxford.core.config.Constants;
+import org.fwoxford.config.Constants;
 import org.fwoxford.domain.QuestionItemDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

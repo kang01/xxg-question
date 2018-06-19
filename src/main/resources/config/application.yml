@@ -62,7 +62,12 @@ management:
             mode: full
     health:
         mail:
-            enabled: false # When using the MailService, configure an SMTP server and set this to true
+            enabled: true # When using the MailService, configure an SMTP server and set this to true
+            host: smtp.163.com  # 发送邮件的smtp服务器
+            username: gengluying@163.com  # 用户名
+            password: gengluying000 # 登陆smtp服务器的密码
+            default-encoding: UTF-8
+            port: 25
 spring:
     application:
         name: MisBbisQuestion

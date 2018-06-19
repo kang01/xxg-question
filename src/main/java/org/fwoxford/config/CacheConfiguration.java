@@ -9,13 +9,11 @@ import org.ehcache.jsr107.Eh107Configuration;
 
 import java.util.concurrent.TimeUnit;
 
+import org.fwoxford.service.dto.response.QuestionForDataTableEntity;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.context.annotation.*;
 
 @Configuration
@@ -40,6 +38,36 @@ public class CacheConfiguration {
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
+            cm.createCache(org.fwoxford.domain.User.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.Authority.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.PersistentToken.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.User.class.getName() + ".persistentTokens", jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.Project.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.Project.class.getName() + ".projectRelates", jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.ProjectSite.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.ProjectSite.class.getName() + ".projectRelates", jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.ProjectRelate.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.EquipmentGroup.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.EquipmentModle.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.Equipment.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.Area.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.SupportRackType.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.SupportRack.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.SampleType.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.FrozenBoxType.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.FrozenTubeType.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.FrozenBox.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.FrozenTube.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.FrozenTube.class.getName() + ".frozenBoxes", jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.FrozenBox.class.getName() + ".frozenTubes", jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.SampleClassification.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.Delegate.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.SerialNo.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.Question.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.QuestionItem.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.QuestionItemDetails.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.service.dto.response.QuestionForDataTableEntity.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

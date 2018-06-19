@@ -1,11 +1,10 @@
 package org.fwoxford.service.impl;
-
-import org.fwoxford.core.config.Constants;
-import org.fwoxford.core.domain.Delegate;
-import org.fwoxford.core.repository.DelegateRepository;
-import org.fwoxford.core.service.dto.response.DelegateResponse;
-import org.fwoxford.core.service.mapper.DelegateMapper;
+import org.fwoxford.config.Constants;
+import org.fwoxford.domain.Delegate;
+import org.fwoxford.repository.DelegateRepository;
 import org.fwoxford.service.DelegateService;
+import org.fwoxford.service.dto.response.DelegateResponse;
+import org.fwoxford.service.mapper.DelegateMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

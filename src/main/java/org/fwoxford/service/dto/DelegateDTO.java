@@ -1,6 +1,5 @@
 package org.fwoxford.service.dto;
 
-import org.fwoxford.service.dto.response.FrozenTubeForQuestion;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -8,11 +7,19 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the QuestionItemDetails entity.
+ * A DTO for the Delegate entity.
  */
-public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Serializable {
+public class DelegateDTO implements Serializable {
 
     private Long id;
+
+    @NotNull
+    @Size(max = 100)
+    private String delegateCode;
+
+    @NotNull
+    @Size(max = 255)
+    private String delegateName;
 
     @NotNull
     @Size(max = 20)
@@ -21,10 +28,6 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
     @Size(max = 1024)
     private String memo;
 
-    private Long questionItemId;
-
-    private Long frozenTubeId;
-
     public Long getId() {
         return id;
     }
@@ -32,6 +35,23 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getDelegateCode() {
+        return delegateCode;
+    }
+
+    public void setDelegateCode(String delegateCode) {
+        this.delegateCode = delegateCode;
+    }
+
+    public String getDelegateName() {
+        return delegateName;
+    }
+
+    public void setDelegateName(String delegateName) {
+        this.delegateName = delegateName;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -47,22 +67,6 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
         this.memo = memo;
     }
 
-    public Long getQuestionItemId() {
-        return questionItemId;
-    }
-
-    public void setQuestionItemId(Long questionItemId) {
-        this.questionItemId = questionItemId;
-    }
-
-    public Long getFrozenTubeId() {
-        return frozenTubeId;
-    }
-
-    public void setFrozenTubeId(Long frozenTubeId) {
-        this.frozenTubeId = frozenTubeId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -72,9 +76,9 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
             return false;
         }
 
-        QuestionItemDetailsDTO questionItemDetailsDTO = (QuestionItemDetailsDTO) o;
+        DelegateDTO delegateDTO = (DelegateDTO) o;
 
-        if ( ! Objects.equals(id, questionItemDetailsDTO.id)) { return false; }
+        if ( ! Objects.equals(id, delegateDTO.id)) { return false; }
 
         return true;
     }
@@ -86,11 +90,12 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
 
     @Override
     public String toString() {
-        return "QuestionItemDetailsDTO{" +
+        return "DelegateDTO{" +
             "id=" + id +
+            ", delegateCode='" + delegateCode + "'" +
+            ", delegateName='" + delegateName + "'" +
             ", status='" + status + "'" +
             ", memo='" + memo + "'" +
             '}';
     }
-
 }

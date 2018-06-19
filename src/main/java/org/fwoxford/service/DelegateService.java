@@ -1,5 +1,5 @@
 package org.fwoxford.service;
-import org.fwoxford.core.service.dto.response.DelegateResponse;
+import org.fwoxford.service.dto.response.DelegateResponse;
 
 import java.util.List;
 

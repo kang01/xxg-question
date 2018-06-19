@@ -2,7 +2,7 @@ package org.fwoxford.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.fwoxford.core.service.dto.response.DelegateResponse;
+import org.fwoxford.service.dto.response.DelegateResponse;
 import org.fwoxford.service.DelegateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

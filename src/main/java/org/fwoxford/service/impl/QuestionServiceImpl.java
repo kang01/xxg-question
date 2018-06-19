@@ -1,22 +1,19 @@
 package org.fwoxford.service.impl;
 
-
-import org.fwoxford.core.config.Constants;
-import org.fwoxford.core.domain.*;
-import org.fwoxford.core.repository.DelegateRepository;
-import org.fwoxford.core.repository.ProjectRepository;
-import org.fwoxford.core.repository.UserRepository;
-import org.fwoxford.core.web.rest.errors.BankServiceException;
-import org.fwoxford.core.web.rest.util.BankUtil;
+import org.fwoxford.config.Constants;
+import org.fwoxford.domain.Delegate;
+import org.fwoxford.domain.Project;
 import org.fwoxford.domain.Question;
-import org.fwoxford.repository.QuestionRepositories;
-import org.fwoxford.repository.QuestionRepository;
+import org.fwoxford.domain.User;
+import org.fwoxford.repository.*;
 import org.fwoxford.service.QuestionItemService;
 import org.fwoxford.service.QuestionService;
 import org.fwoxford.service.dto.QuestionDTO;
 import org.fwoxford.service.dto.QuestionItemDTO;
 import org.fwoxford.service.dto.response.QuestionForDataTableEntity;
 import org.fwoxford.service.mapper.QuestionMapper;
+import org.fwoxford.web.rest.errors.BankServiceException;
+import org.fwoxford.web.rest.util.BankUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -25,32 +25,32 @@ spring:
         name: MisBbisQuestion
     jackson:
         serialization.write_dates_as_timestamps: false
-    cache:
-        type: simple
+#    cache:
+#        type: simple
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:mem:MisBbisQuestion;DB_CLOSE_DELAY=-1
-        name:
-        username:
-        password:
+        url: jdbc:oracle:thin:@10.24.10.56:1521/orcl
+        username: C##biobank_t_20180118
+        password: root123
     jpa:
-        database-platform: io.github.jhipster.domain.util.FixedH2Dialect
-        database: H2
-        open-in-view: false
-        show-sql: false
-        hibernate:
-            ddl-auto: none
-            naming:
-                physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-                implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        database-platform: org.fwoxford.config.database.BBISOracle12cDialect
+        database: ORACLE
+        show-sql: true
         properties:
             hibernate.id.new_generator_mappings: true
-            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
-            hibernate.hbm2ddl.auto: validate
+            hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
+            hibernate.jdbc.batch_size: 1000
+            hibernate.jdbc.fetch_size: 100
+            hibernate.jdbc.batch_versioned_data: true
     mail:
-        host: localhost
+        enable: true
+        host: smtp.163.com  # 发送邮件的smtp服务器
+        username: gengluy@163.com  # 用户名
+        password: gengluying000   # 登陆smtp服务器的密码
+        port: 25
     messages:
         basename: i18n/messages
     mvc:
@@ -84,18 +84,18 @@ jhipster:
     # To test logstash appender
     logging:
         logstash:
-            enabled: true
+            enabled: false
             host: localhost
             port: 5000
             queue-size: 512
     security:
         authentication:
             jwt:
-                secret: 61f0f4c30b926770c73fce817a5735bf93b2197a
+                secret: FTilgxtd4SI4lBtaIkxvxa0FaXEK8DQJ5U1cGD6fNZUmo4w66XVLYs3EcXEC1sL9
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
-        jmx.enabled: true
+        jmx.enabled: false
         logs: # Reports Dropwizard metrics in the logs
             enabled: true
             report-frequency: 60 # in seconds
