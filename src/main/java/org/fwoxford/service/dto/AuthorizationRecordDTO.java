@@ -20,24 +20,25 @@ public class AuthorizationRecordDTO implements Serializable {
     @Size(max = 255)
     private String strangerName;
 
+    private Long questionId;
+
+    @Size(max = 255)
+    private String questionCode;
+
     @NotNull
     @Size(max = 255)
     private String strangerEmail;
 
-    @NotNull
     private ZonedDateTime expirationTime;
 
     @Max(value = 10)
     private Integer applyTimes;
 
-    @NotNull
     private Long authorityPersonId;
 
-    @NotNull
     @Size(max = 255)
     private String authorityName;
 
-    @NotNull
     @Size(max = 20)
     private String status;
 
@@ -74,6 +75,22 @@ public class AuthorizationRecordDTO implements Serializable {
 
     public void setStrangerEmail(String strangerEmail) {
         this.strangerEmail = strangerEmail;
+    }
+
+    public Long getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(Long questionId) {
+        this.questionId = questionId;
+    }
+
+    public String getQuestionCode() {
+        return questionCode;
+    }
+
+    public void setQuestionCode(String questionCode) {
+        this.questionCode = questionCode;
     }
 
     public ZonedDateTime getExpirationTime() {

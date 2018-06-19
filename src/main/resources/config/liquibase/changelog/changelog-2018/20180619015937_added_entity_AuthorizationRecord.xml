@@ -74,4 +74,10 @@
 
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+    <changeSet id="20180619015938-2" author="jhipster">
+        <addColumn tableName="authorization_record">
+            <column name="question_id" type="bigint" remarks="问题ID"></column>
+            <column name="question_code" type="nvarchar(255)" remarks="问题编码"> </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

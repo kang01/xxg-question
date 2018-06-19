@@ -35,6 +35,14 @@ public class AuthorizationRecord extends AbstractAuditingEntity implements Seria
     @Size(max = 255)
     @Column(name = "stranger_email", length = 255, nullable = false)
     private String strangerEmail;
+    @NotNull
+    @Column(name = "question_id", nullable = false)
+    private Long questionId;
+
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "question_code", length = 255, nullable = false)
+    private String questionCode;
 
     @NotNull
     @Column(name = "expiration_time", nullable = false)
@@ -108,6 +116,28 @@ public class AuthorizationRecord extends AbstractAuditingEntity implements Seria
 
     public void setStrangerEmail(String strangerEmail) {
         this.strangerEmail = strangerEmail;
+    }
+
+    public Long getQuestionId() {
+        return questionId;
+    }
+    public AuthorizationRecord questionId(Long questionId) {
+        this.questionId = questionId;
+        return this;
+    }
+    public void setQuestionId(Long questionId) {
+        this.questionId = questionId;
+    }
+
+    public String getQuestionCode() {
+        return questionCode;
+    }
+    public AuthorizationRecord questionCode(String questionCode) {
+        this.questionCode = questionCode;
+        return this;
+    }
+    public void setQuestionCode(String questionCode) {
+        this.questionCode = questionCode;
     }
 
     public ZonedDateTime getExpirationTime() {

@@ -1,16 +1,27 @@
 package org.fwoxford.service.impl;
 
+import org.fwoxford.config.Constants;
+import org.fwoxford.domain.Question;
+import org.fwoxford.repository.QuestionRepository;
+import org.fwoxford.security.SecurityUtils;
 import org.fwoxford.service.AuthorizationRecordService;
 import org.fwoxford.domain.AuthorizationRecord;
 import org.fwoxford.repository.AuthorizationRecordRepository;
 import org.fwoxford.service.dto.AuthorizationRecordDTO;
 import org.fwoxford.service.mapper.AuthorizationRecordMapper;
+import org.fwoxford.web.rest.errors.BankServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -25,6 +36,9 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
     private final AuthorizationRecordRepository authorizationRecordRepository;
 
     private final AuthorizationRecordMapper authorizationRecordMapper;
+
+    @Autowired
+    QuestionRepository questionRepository;
 
     public AuthorizationRecordServiceImpl(AuthorizationRecordRepository authorizationRecordRepository, AuthorizationRecordMapper authorizationRecordMapper) {
         this.authorizationRecordRepository = authorizationRecordRepository;
@@ -82,5 +96,63 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
     public void delete(Long id) {
         log.debug("Request to delete AuthorizationRecord : {}", id);
         authorizationRecordRepository.delete(id);
+    }
+
+    /**
+     * 保存授权码
+     * @param questionId
+     * @param authorizationRecordDTOs
+     * @return
+     */
+    @Override
+    public List<AuthorizationRecordDTO> saveAuthorizationRecords(Long questionId, List<AuthorizationRecordDTO> authorizationRecordDTOs) {
+        if(questionId == null){
+            throw new BankServiceException("问题ID不能为空！");
+        }
+        Question question = questionRepository.findOne(questionId);
+        if(question == null || (question!=null &&! question.getStatus().equals(Constants.QUESTION_IN_DRAFT))){
+            throw new BankServiceException("问题不在草拟中，不能编辑授权信息！");
+        }
+        String username = SecurityUtils.getCurrentUserLogin().get();
+        List<Long> oldIds = authorizationRecordDTOs.stream().map(s->
+            {
+                Long id = -1L;
+                if(s.getId()!=null){
+                    id = s.getId();
+                }
+                return id;
+            }
+        ).collect(Collectors.toList());
+        List<AuthorizationRecord> authorizationRecords = authorizationRecordRepository.findByQuestionIdAndStatusNot(questionId, Constants.INVALID);
+        List<AuthorizationRecord> authorizationRecordsForDelete = new ArrayList<>();
+        authorizationRecords.forEach(s->{
+            if(s.getId()!=null && !oldIds.contains(s.getId())){
+                s.status(Constants.INVALID);
+                authorizationRecordsForDelete.add(s);
+            }
+        });
+        //删除无效的
+        authorizationRecordRepository.save(authorizationRecordsForDelete);
+        //保存有效的
+        List<AuthorizationRecord> authorizationRecordsForSave = new ArrayList<>();
+        ZonedDateTime expirationTime = ZonedDateTime.now().plusDays(1);
+        for(AuthorizationRecordDTO dto : authorizationRecordDTOs ){
+            AuthorizationRecord authorizationRecord = authorizationRecordMapper.authorizationRecordDTOToAuthorizationRecord(dto);
+
+            authorizationRecord.questionId(questionId).applyTimes(0).authorityName(Constants.AUTHORITY_ROLE_STRANGER+";")
+                .expirationTime(expirationTime).authorityPersonId(3L).questionCode(question.getQuestionCode())
+                .status(Constants.VALID);
+
+            authorizationRecordsForSave.add(authorizationRecord);
+        }
+
+        authorizationRecordRepository.save(authorizationRecordsForSave);
+        return authorizationRecordMapper.authorizationRecordsToAuthorizationRecordDTOs(authorizationRecordsForSave);
+    }
+
+    @Override
+    public List<AuthorizationRecordDTO> findAllAuthorizationRecordsByQuestionId(Long id) {
+        List<AuthorizationRecord> authorizationRecords = authorizationRecordRepository.findByQuestionIdAndStatusNot(id, Constants.INVALID);
+        return  authorizationRecordMapper.authorizationRecordsToAuthorizationRecordDTOs(authorizationRecords);
     }
 }

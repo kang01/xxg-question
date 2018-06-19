@@ -4,6 +4,8 @@ import org.fwoxford.service.dto.AuthorizationRecordDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Service Interface for managing AuthorizationRecord.
  */
@@ -39,4 +41,18 @@ public interface AuthorizationRecordService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * 保存授权码
+     * @param authorizationRecordDTOs
+     * @return
+     */
+    List<AuthorizationRecordDTO> saveAuthorizationRecords(Long questionId,List<AuthorizationRecordDTO> authorizationRecordDTOs);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    List<AuthorizationRecordDTO> findAllAuthorizationRecordsByQuestionId(Long id);
 }

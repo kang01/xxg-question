@@ -3,6 +3,7 @@ package org.fwoxford.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import org.fwoxford.service.AuthorizationRecordService;
 import org.fwoxford.web.rest.errors.BadRequestAlertException;
+import org.fwoxford.web.rest.errors.BankServiceException;
 import org.fwoxford.web.rest.util.HeaderUtil;
 import org.fwoxford.web.rest.util.PaginationUtil;
 import org.fwoxford.service.dto.AuthorizationRecordDTO;
@@ -42,59 +43,60 @@ public class AuthorizationRecordResource {
 
     /**
      * POST  /authorization-records : Create a new authorizationRecord.
-     *
-     * @param authorizationRecordDTO the authorizationRecordDTO to create
+     * 保存授权码
+     * @param authorizationRecordDTOs the authorizationRecordDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new authorizationRecordDTO, or with status 400 (Bad Request) if the authorizationRecord has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/authorization-records")
+    @PostMapping("/authorization-records/questionId/{id}")
     @Timed
-    public ResponseEntity<AuthorizationRecordDTO> createAuthorizationRecord(@Valid @RequestBody AuthorizationRecordDTO authorizationRecordDTO) throws URISyntaxException {
-        log.debug("REST request to save AuthorizationRecord : {}", authorizationRecordDTO);
-        if (authorizationRecordDTO.getId() != null) {
-            throw new BadRequestAlertException("A new authorizationRecord cannot already have an ID", ENTITY_NAME, "idexists");
+    public ResponseEntity<List<AuthorizationRecordDTO>> createAuthorizationRecords(@Valid @PathVariable Long id ,@Valid @RequestBody List<AuthorizationRecordDTO> authorizationRecordDTOs) throws URISyntaxException {
+        log.debug("REST request to save AuthorizationRecord List : {}", authorizationRecordDTOs);
+        for(AuthorizationRecordDTO authorizationRecordDTO : authorizationRecordDTOs){
+            if (authorizationRecordDTO.getId() != null) {
+                return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new authorization_records cannot already have an ID")).body(null);
+
+            }
         }
-        AuthorizationRecordDTO result = authorizationRecordService.save(authorizationRecordDTO);
-        return ResponseEntity.created(new URI("/api/authorization-records/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        List<AuthorizationRecordDTO> result = authorizationRecordService.saveAuthorizationRecords(id,authorizationRecordDTOs);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 
     /**
      * PUT  /authorization-records : Updates an existing authorizationRecord.
      *
-     * @param authorizationRecordDTO the authorizationRecordDTO to update
+     * @param authorizationRecordDTOs the authorizationRecordDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated authorizationRecordDTO,
      * or with status 400 (Bad Request) if the authorizationRecordDTO is not valid,
      * or with status 500 (Internal Server Error) if the authorizationRecordDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/authorization-records")
+    @PutMapping("/authorization-records/questionId/{id}")
     @Timed
-    public ResponseEntity<AuthorizationRecordDTO> updateAuthorizationRecord(@Valid @RequestBody AuthorizationRecordDTO authorizationRecordDTO) throws URISyntaxException {
-        log.debug("REST request to update AuthorizationRecord : {}", authorizationRecordDTO);
-        if (authorizationRecordDTO.getId() == null) {
-            return createAuthorizationRecord(authorizationRecordDTO);
-        }
-        AuthorizationRecordDTO result = authorizationRecordService.save(authorizationRecordDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, authorizationRecordDTO.getId().toString()))
-            .body(result);
+    public ResponseEntity<List<AuthorizationRecordDTO>> updateAuthorizationRecord(@Valid @PathVariable Long id ,@Valid @RequestBody List<AuthorizationRecordDTO> authorizationRecordDTOs) throws URISyntaxException {
+        log.debug("REST request to update AuthorizationRecord List : {}", authorizationRecordDTOs);
+//        for(AuthorizationRecordDTO authorizationRecordDTO :authorizationRecordDTOs){
+//            if (authorizationRecordDTO.getId() == null) {
+//                throw new BankServiceException("授权码ID不能为空！");
+//            }
+//        }
+
+        List<AuthorizationRecordDTO> result = authorizationRecordService.saveAuthorizationRecords(id,authorizationRecordDTOs);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 
     /**
      * GET  /authorization-records : get all the authorizationRecords.
      *
-     * @param pageable the pagination information
+     * @param id the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of authorizationRecords in body
      */
-    @GetMapping("/authorization-records")
+    @GetMapping("/authorization-records/questionId/{id}")
     @Timed
-    public ResponseEntity<List<AuthorizationRecordDTO>> getAllAuthorizationRecords(Pageable pageable) {
-        log.debug("REST request to get a page of AuthorizationRecords");
-        Page<AuthorizationRecordDTO> page = authorizationRecordService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/authorization-records");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public ResponseEntity<List<AuthorizationRecordDTO>> getAllAuthorizationRecords(@Valid @PathVariable Long id) {
+        log.debug("REST request to get all AuthorizationRecords of one question");
+        List<AuthorizationRecordDTO> result = authorizationRecordService.findAllAuthorizationRecordsByQuestionId(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 
     /**

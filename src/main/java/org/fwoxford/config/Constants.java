@@ -54,7 +54,8 @@ public final class Constants {
     public static final String QUESTION_REPLY = "2203";
     public static final String QUESTION_OVERDUE= "2204";
     public static final String QUESTION_FINISHED= "2205";
-
+    //
+    public static final String AUTHORITY_ROLE_STRANGER = "ROLE_STRANGER";
     private Constants() {
     }
 }
