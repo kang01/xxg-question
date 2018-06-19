@@ -27,11 +27,11 @@ import java.util.Map;
 public class MailServiceImpl implements MailService {
     //注入MailSender
     @Autowired
-    private JavaMailSender mailSender;
+    JavaMailSender mailSender;
 
     //发送邮件的模板引擎
     @Autowired
-    private FreeMarkerConfigurer configurer;
+    FreeMarkerConfigurer configurer;
 
 
     /**

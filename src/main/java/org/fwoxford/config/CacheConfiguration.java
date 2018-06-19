@@ -68,6 +68,7 @@ public class CacheConfiguration {
             cm.createCache(org.fwoxford.domain.QuestionItem.class.getName(), jcacheConfiguration);
             cm.createCache(org.fwoxford.domain.QuestionItemDetails.class.getName(), jcacheConfiguration);
             cm.createCache(org.fwoxford.service.dto.response.QuestionForDataTableEntity.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.AuthorizationRecord.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

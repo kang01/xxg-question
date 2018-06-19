@@ -55,12 +55,12 @@ spring:
             hibernate.jdbc.batch_size: 1000
             hibernate.jdbc.fetch_size: 100
             hibernate.jdbc.batch_versioned_data: true
-#    mail:
-#        host: smtp.163.com  # 发送邮件的smtp服务器
-#        username: gengluying@163.com  # 用户名
-#        password: gengluying000 # 登陆smtp服务器的密码
-#        default-encoding: UTF-8
-#        port: 25
+    mail:
+        host: smtp.163.com  # 发送邮件的smtp服务器
+        username: gengluying@163.com  # 用户名
+        password: gengluying000 # 登陆smtp服务器的密码
+        default-encoding: UTF-8
+        port: 25
     messages:
         cache-seconds: 1
     thymeleaf:
