@@ -124,4 +124,17 @@ public class SendRecordResource {
         sendRecordService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/send-records/question/{id}")
+    @Timed
+    public ResponseEntity<SendRecordDTO> sendRecord(@PathVariable Long id) {
+        log.debug("REST request to get SendRecord : {}", id);
+        SendRecordDTO sendRecordDTO = sendRecordService.sendRecord(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(sendRecordDTO));
+    }
 }

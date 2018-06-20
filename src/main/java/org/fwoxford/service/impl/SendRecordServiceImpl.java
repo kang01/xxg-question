@@ -1,16 +1,28 @@
 package org.fwoxford.service.impl;
 
+import org.fwoxford.config.Constants;
+import org.fwoxford.domain.AuthorizationRecord;
+import org.fwoxford.domain.Question;
+import org.fwoxford.service.MailService;
 import org.fwoxford.service.SendRecordService;
 import org.fwoxford.domain.SendRecord;
 import org.fwoxford.repository.SendRecordRepository;
+import org.fwoxford.service.dto.EmailMessage;
+import org.fwoxford.service.dto.MessagerDTO;
 import org.fwoxford.service.dto.SendRecordDTO;
 import org.fwoxford.service.mapper.SendRecordMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -25,6 +37,8 @@ public class SendRecordServiceImpl implements SendRecordService {
     private final SendRecordRepository sendRecordRepository;
 
     private final SendRecordMapper sendRecordMapper;
+    @Autowired
+    MailService mailService;
 
     public SendRecordServiceImpl(SendRecordRepository sendRecordRepository, SendRecordMapper sendRecordMapper) {
         this.sendRecordRepository = sendRecordRepository;
@@ -82,5 +96,43 @@ public class SendRecordServiceImpl implements SendRecordService {
     public void delete(Long id) {
         log.debug("Request to delete SendRecord : {}", id);
         sendRecordRepository.delete(id);
+    }
+
+    /**
+     * 发送邮件
+     * @param questionId
+     * @return
+     */
+    @Override
+    public SendRecordDTO sendRecord(Long questionId) {
+
+        return null;
+    }
+
+    @Override
+    public void sendEmailRecordToStranger(Question question, List<AuthorizationRecord> authorizationRecordsForSave) {
+        List<SendRecord> sendRecords = new ArrayList<>();
+        for(AuthorizationRecord authorizationRecord : authorizationRecordsForSave){
+            EmailMessage emailMessage = new EmailMessage();
+            emailMessage.setAuthor(question.getAuthor());
+            emailMessage.setAuthorizationCode(authorizationRecord.getAuthorizationCode());
+            emailMessage.setStrangerName(authorizationRecord.getStrangerName());
+            emailMessage.setOccurDate(question.getOccurDate());
+            emailMessage.setQuestionType(Constants.QUESTION_TYPE_MAP.get(question.getQuestionTypeCode()));
+            emailMessage.setProjectCode(question.getProjectCode());
+            emailMessage.setProjectName(question.getProjectName());
+            emailMessage.setQuestionDescription(question.getQuestionDescription());
+            emailMessage.setQuestionSummary(question.getQuestionSummary());
+            MessagerDTO messagerDTO = new MessagerDTO();
+            messagerDTO.setFromUser("gengluy@163.com");
+            messagerDTO.setToUser(authorizationRecord.getStrangerEmail());
+            mailService.sendMessageMail(emailMessage, question.getQuestionSummary(), "message.ftl",messagerDTO);
+            SendRecord sendRecord = new SendRecord();
+            sendRecord.questionCode(question.getQuestionCode()).questionId(question.getId())
+                .authorizationRecordId(authorizationRecord.getId()).status(Constants.VALID)
+                .senderEmail("gengluy@163.com").strangerName(authorizationRecord.getStrangerName()).strangerEmail(authorizationRecord.getStrangerEmail());
+            sendRecords.add(sendRecord);
+        }
+        sendRecordRepository.save(sendRecords);
     }
 }

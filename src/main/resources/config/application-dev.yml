@@ -56,8 +56,9 @@ spring:
             hibernate.jdbc.fetch_size: 100
             hibernate.jdbc.batch_versioned_data: true
     mail:
+        enable: true
         host: smtp.163.com  # 发送邮件的smtp服务器
-        username: gengluying@163.com  # 用户名
+        username: gengluy@163.com  # 用户名
         password: gengluying000 # 登陆smtp服务器的密码
         default-encoding: UTF-8
         port: 25
@@ -120,12 +121,12 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: my-secret-token-to-change-in-production
+                secret: FTilgxtd4SI4lBtaIkxvxa0FaXEK8DQJ5U1cGD6fNZUmo4w66XVLYs3EcXEC1sL9
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: 757107321@qq.com
+        from: gengluy@163.com
         base-url: http://127.0.0.1:8605
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true

@@ -48,7 +48,7 @@ public class AuthorizationRecordResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new authorizationRecordDTO, or with status 400 (Bad Request) if the authorizationRecord has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/authorization-records/questionId/{id}")
+    @PostMapping("/authorization-records/questionId/{id}/send")
     @Timed
     public ResponseEntity<List<AuthorizationRecordDTO>> createAuthorizationRecords(@Valid @PathVariable Long id ,@Valid @RequestBody List<AuthorizationRecordDTO> authorizationRecordDTOs) throws URISyntaxException {
         log.debug("REST request to save AuthorizationRecord List : {}", authorizationRecordDTOs);

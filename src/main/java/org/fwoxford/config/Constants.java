@@ -1,5 +1,8 @@
 package org.fwoxford.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Application constants.
  */
@@ -54,8 +57,17 @@ public final class Constants {
     public static final String QUESTION_REPLY = "2203";
     public static final String QUESTION_OVERDUE= "2204";
     public static final String QUESTION_FINISHED= "2205";
-    //
+
+    //问题类型：2301：样本类型，2302：其他问题
+    public static final String QUESTION_TYPE_SAMPLE= "2301";
+    public static final String QUESTION_TYPE_OTHER= "2302";
+
     public static final String AUTHORITY_ROLE_STRANGER = "ROLE_STRANGER";
     private Constants() {
     }
+    public static final Map<String,String> QUESTION_TYPE_MAP = new HashMap<String,String>(){
+        {
+            put("2301", "样本类型");
+            put("2302", "其他问题");
+        }};
 }

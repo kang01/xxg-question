@@ -29,19 +29,14 @@
 </style>
 <body>
 <div>
-    <h2>邮件消息通知</h2>
-    <table id="customers">
-        <tr>
-            <th>MessageCode</th>
-            <th>MessageStatus</th>
-            <th>Cause</th>
-        </tr>
-        <tr>
-            <td>${(params.messageCode)!""}</td>
-            <td>${(params.messageStatus)!""}</td>
-            <td>${(params.cause)!""}</td>
-        </tr>
-    </table>
+    <h2>${(params.strangerName)!""}，您好！</h2>
+        <p>样本库<strong>${(params.author)!""}</strong>，于 ${(params.occurDate)!""} 向您提出问题，问题类型：${(params.questionType)!""}</p>
+        <p>相关项目：${(params.projectCode)!""}(${(params.projectName)!""})</p>
+        <p>问题详情：${(params.questionDescription)!""}</p>
+        <p>请点击此链接查看问题详情：</p>
+        <p><a>http://10.24.200.21:8080</a></p>
+        <p>登录授权码为：（<strong>${(params.authorizationCode)!""}</strong>）。</p>
+        <p>注：请勿回复此邮件！</p>
 </div>
 </body>
 </html>

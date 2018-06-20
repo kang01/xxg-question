@@ -3,6 +3,7 @@ package org.fwoxford.web.rest;
 import io.github.jhipster.config.JHipsterProperties;
 import org.fwoxford.MisBbisQuestionApp;
 import org.fwoxford.service.MailService;
+import org.fwoxford.service.dto.MessagerDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,8 +43,9 @@ public class MailServiceIntTest {
         map.put("messageCode","MissingParameter");
         map.put("messageStatus","Failed");
         map.put("cause","缺少参数,请确认");
+        MessagerDTO messagerDTO = new MessagerDTO();
 
-        mailService.sendMessageMail(map, "测试消息通知", "message.ftl");
+        mailService.sendMessageMail(map, "测试消息通知", "message.ftl",messagerDTO);
     }
 
 }

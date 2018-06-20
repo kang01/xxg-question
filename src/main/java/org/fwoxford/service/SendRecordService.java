@@ -1,8 +1,12 @@
 package org.fwoxford.service;
 
+import org.fwoxford.domain.AuthorizationRecord;
+import org.fwoxford.domain.Question;
 import org.fwoxford.service.dto.SendRecordDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * Service Interface for managing SendRecord.
@@ -39,4 +43,18 @@ public interface SendRecordService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * 发送邮件
+     * @param id
+     * @return
+     */
+    SendRecordDTO sendRecord(Long id);
+
+    /**
+     * 发送邮件
+     * @param question
+     * @param authorizationRecordsForSave
+     */
+    void sendEmailRecordToStranger(Question question, List<AuthorizationRecord> authorizationRecordsForSave);
 }

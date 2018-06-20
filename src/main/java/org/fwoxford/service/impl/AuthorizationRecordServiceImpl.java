@@ -2,11 +2,14 @@ package org.fwoxford.service.impl;
 
 import org.fwoxford.config.Constants;
 import org.fwoxford.domain.Question;
+import org.fwoxford.domain.User;
 import org.fwoxford.repository.QuestionRepository;
+import org.fwoxford.repository.UserRepository;
 import org.fwoxford.security.SecurityUtils;
 import org.fwoxford.service.AuthorizationRecordService;
 import org.fwoxford.domain.AuthorizationRecord;
 import org.fwoxford.repository.AuthorizationRecordRepository;
+import org.fwoxford.service.SendRecordService;
 import org.fwoxford.service.dto.AuthorizationRecordDTO;
 import org.fwoxford.service.mapper.AuthorizationRecordMapper;
 import org.fwoxford.web.rest.errors.BankServiceException;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -39,6 +43,10 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
 
     @Autowired
     QuestionRepository questionRepository;
+    @Autowired
+    SendRecordService sendRecordService;
+    @Autowired
+    UserRepository userRepository;
 
     public AuthorizationRecordServiceImpl(AuthorizationRecordRepository authorizationRecordRepository, AuthorizationRecordMapper authorizationRecordMapper) {
         this.authorizationRecordRepository = authorizationRecordRepository;
@@ -114,6 +122,11 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
             throw new BankServiceException("问题不在草拟中，不能编辑授权信息！");
         }
         String username = SecurityUtils.getCurrentUserLogin().get();
+        Long authorizationPersonId = null;
+        if(!StringUtils.isEmpty(username)){
+            User user = userRepository.findByLogin(username);
+            authorizationPersonId = user!=null?user.getId():3L;
+        }
         List<Long> oldIds = authorizationRecordDTOs.stream().map(s->
             {
                 Long id = -1L;
@@ -140,13 +153,15 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
             AuthorizationRecord authorizationRecord = authorizationRecordMapper.authorizationRecordDTOToAuthorizationRecord(dto);
 
             authorizationRecord.questionId(questionId).applyTimes(0).authorityName(Constants.AUTHORITY_ROLE_STRANGER+";")
-                .expirationTime(expirationTime).authorityPersonId(3L).questionCode(question.getQuestionCode())
+                .expirationTime(expirationTime).authorityPersonId(authorizationPersonId).questionCode(question.getQuestionCode())
                 .status(Constants.VALID);
-
             authorizationRecordsForSave.add(authorizationRecord);
         }
 
         authorizationRecordRepository.save(authorizationRecordsForSave);
+        sendRecordService.sendEmailRecordToStranger(question,authorizationRecordsForSave);
+        question.setStatus(Constants.QUESTION_ASKED);
+        questionRepository.save(question);
         return authorizationRecordMapper.authorizationRecordsToAuthorizationRecordDTOs(authorizationRecordsForSave);
     }
 
