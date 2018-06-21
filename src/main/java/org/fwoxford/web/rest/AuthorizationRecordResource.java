@@ -71,7 +71,7 @@ public class AuthorizationRecordResource {
      * or with status 500 (Internal Server Error) if the authorizationRecordDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/authorization-records/questionId/{id}")
+    @PutMapping("/authorization-records/questionId/{id}/send")
     @Timed
     public ResponseEntity<List<AuthorizationRecordDTO>> updateAuthorizationRecord(@Valid @PathVariable Long id ,@Valid @RequestBody List<AuthorizationRecordDTO> authorizationRecordDTOs) throws URISyntaxException {
         log.debug("REST request to update AuthorizationRecord List : {}", authorizationRecordDTOs);

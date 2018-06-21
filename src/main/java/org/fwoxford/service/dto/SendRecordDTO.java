@@ -3,6 +3,7 @@ package org.fwoxford.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -36,6 +37,8 @@ public class SendRecordDTO implements Serializable {
 
     @Size(max = 1024)
     private String memo;
+
+    private ZonedDateTime replyDate ;
 
     public Long getId() {
         return id;
@@ -107,6 +110,14 @@ public class SendRecordDTO implements Serializable {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public ZonedDateTime getReplyDate() {
+        return replyDate;
+    }
+
+    public void setReplyDate(ZonedDateTime replyDate) {
+        this.replyDate = replyDate;
     }
 
     @Override

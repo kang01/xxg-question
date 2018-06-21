@@ -7,12 +7,12 @@
         Added the constraints for entity ReplyRecord.
     -->
     <changeSet id="20180619031112-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="question_item_details_id"
+
+        <addForeignKeyConstraint baseColumnNames="send_record_id"
                                  baseTableName="reply_record"
-                                 constraintName="reply_record_question_item_id"
+                                 constraintName="reply_record_send_record_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="question_item_details"/>
+                                 referencedTableName="send_record"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -42,45 +42,20 @@ public class ReplyRecordResource {
 
     /**
      * POST  /reply-records : Create a new replyRecord.
-     *
-     * @param replyRecordDTO the replyRecordDTO to create
+     * 回复问题
+     * @param replyRecordDTOs the replyRecordDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new replyRecordDTO, or with status 400 (Bad Request) if the replyRecord has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/reply-records")
+    @PostMapping("/reply-records/question/{id}")
     @Timed
-    public ResponseEntity<ReplyRecordDTO> createReplyRecord(@Valid @RequestBody ReplyRecordDTO replyRecordDTO) throws URISyntaxException {
-        log.debug("REST request to save ReplyRecord : {}", replyRecordDTO);
-        if (replyRecordDTO.getId() != null) {
-            throw new BadRequestAlertException("A new replyRecord cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        ReplyRecordDTO result = replyRecordService.save(replyRecordDTO);
-        return ResponseEntity.created(new URI("/api/reply-records/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+    public ResponseEntity<List<ReplyRecordDTO>> createReplyRecordList(@Valid @PathVariable Long id , @Valid @RequestBody List<ReplyRecordDTO> replyRecordDTOs) throws URISyntaxException {
+        log.debug("REST request to save ReplyRecordList For One Question : {}", replyRecordDTOs);
+
+        List<ReplyRecordDTO> result = replyRecordService.saveReplyQuestionList(id , replyRecordDTOs);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 
-    /**
-     * PUT  /reply-records : Updates an existing replyRecord.
-     *
-     * @param replyRecordDTO the replyRecordDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated replyRecordDTO,
-     * or with status 400 (Bad Request) if the replyRecordDTO is not valid,
-     * or with status 500 (Internal Server Error) if the replyRecordDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
-    @PutMapping("/reply-records")
-    @Timed
-    public ResponseEntity<ReplyRecordDTO> updateReplyRecord(@Valid @RequestBody ReplyRecordDTO replyRecordDTO) throws URISyntaxException {
-        log.debug("REST request to update ReplyRecord : {}", replyRecordDTO);
-        if (replyRecordDTO.getId() == null) {
-            return createReplyRecord(replyRecordDTO);
-        }
-        ReplyRecordDTO result = replyRecordService.save(replyRecordDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, replyRecordDTO.getId().toString()))
-            .body(result);
-    }
 
     /**
      * GET  /reply-records : get all the replyRecords.

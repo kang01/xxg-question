@@ -19,4 +19,5 @@ public interface QuestionItemDetailsRepository extends JpaRepository<QuestionIte
     void updateStatusByQuestionItemquestionItemId(Long id);
 
     List<QuestionItemDetails> findByQuestionItemIdAndStatusNot(Long id, String status);
+
 }

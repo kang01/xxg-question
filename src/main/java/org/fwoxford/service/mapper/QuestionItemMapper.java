@@ -1,7 +1,5 @@
 package org.fwoxford.service.mapper;
 
-import org.fwoxford.domain.FrozenTube;
-import org.fwoxford.domain.FrozenTube_;
 import org.fwoxford.domain.Question;
 import org.fwoxford.domain.QuestionItem;
 import org.fwoxford.service.dto.QuestionItemDTO;

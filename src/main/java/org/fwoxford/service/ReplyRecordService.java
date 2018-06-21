@@ -4,6 +4,8 @@ import org.fwoxford.service.dto.ReplyRecordDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
  * Service Interface for managing ReplyRecord.
  */
@@ -39,4 +41,12 @@ public interface ReplyRecordService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * 回复问题
+     * @param id
+     * @param replyRecordDTOs
+     * @return
+     */
+    List<ReplyRecordDTO> saveReplyQuestionList(Long id, List<ReplyRecordDTO> replyRecordDTOs);
 }

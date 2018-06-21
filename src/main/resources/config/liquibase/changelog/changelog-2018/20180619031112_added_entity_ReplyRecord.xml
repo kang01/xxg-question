@@ -20,31 +20,23 @@
         Added the entity ReplyRecord.
     -->
     <changeSet id="20180619031112-1" author="jhipster">
-        <createTable tableName="reply_record">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+        <createTable tableName="reply_record" remarks="回复记录表">
+            <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="stranger_email" type="varchar(255)">
+            <column name="stranger_email" type="varchar(255)" remarks="回复人邮箱">
                 <constraints nullable="false" />
             </column>
 
-            <column name="stranger_name" type="varchar(255)">
+            <column name="stranger_name" type="varchar(255)" remarks="回复人名字">
                 <constraints nullable="true" />
             </column>
 
-            <column name="question_id" type="bigint">
+            <column name="question_id" type="bigint" remarks="问题ID">
                 <constraints nullable="false" />
             </column>
 
-            <column name="question_code" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="handle_type_code" type="varchar(100)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="reply_content" type="varchar(1024)">
+            <column name="question_code" type="varchar(255)" remarks="问题编码">
                 <constraints nullable="false" />
             </column>
 
@@ -56,7 +48,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="question_item_details_id" type="bigint">
+            <column name="send_record_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 

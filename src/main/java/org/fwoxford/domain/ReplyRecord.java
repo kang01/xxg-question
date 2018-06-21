@@ -47,16 +47,6 @@ public class ReplyRecord extends AbstractAuditingEntity implements Serializable 
     private String questionCode;
 
     @NotNull
-    @Size(max = 100)
-    @Column(name = "handle_type_code", length = 100, nullable = false)
-    private String handleTypeCode;
-
-    @NotNull
-    @Size(max = 1024)
-    @Column(name = "reply_content", length = 1024, nullable = false)
-    private String replyContent;
-
-    @NotNull
     @Size(max = 20)
     @Column(name = "status", length = 20, nullable = false)
     private String status;
@@ -67,7 +57,7 @@ public class ReplyRecord extends AbstractAuditingEntity implements Serializable 
 
     @ManyToOne(optional = false)
     @NotNull
-    private QuestionItemDetails questionItemDetails;
+    private SendRecord sendRecord;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -130,32 +120,6 @@ public class ReplyRecord extends AbstractAuditingEntity implements Serializable 
         this.questionCode = questionCode;
     }
 
-    public String getHandleTypeCode() {
-        return handleTypeCode;
-    }
-
-    public ReplyRecord handleTypeCode(String handleTypeCode) {
-        this.handleTypeCode = handleTypeCode;
-        return this;
-    }
-
-    public void setHandleTypeCode(String handleTypeCode) {
-        this.handleTypeCode = handleTypeCode;
-    }
-
-    public String getReplyContent() {
-        return replyContent;
-    }
-
-    public ReplyRecord replyContent(String replyContent) {
-        this.replyContent = replyContent;
-        return this;
-    }
-
-    public void setReplyContent(String replyContent) {
-        this.replyContent = replyContent;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -182,19 +146,17 @@ public class ReplyRecord extends AbstractAuditingEntity implements Serializable 
         this.memo = memo;
     }
 
-    public QuestionItemDetails getQuestionItemDetails() {
-        return questionItemDetails;
+    public SendRecord getSendRecord() {
+        return sendRecord;
     }
-
-    public ReplyRecord questionItemDetails(QuestionItemDetails questionItemDetails) {
-        this.questionItemDetails = questionItemDetails;
+    public ReplyRecord sendRecord(SendRecord sendRecord) {
+        this.sendRecord = sendRecord;
         return this;
     }
-
-    public void setQuestionItemDetails(QuestionItemDetails questionItemDetails) {
-        this.questionItemDetails = questionItemDetails;
+    public void setSendRecord(SendRecord sendRecord) {
+        this.sendRecord = sendRecord;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -224,8 +186,6 @@ public class ReplyRecord extends AbstractAuditingEntity implements Serializable 
             ", strangerName='" + getStrangerName() + "'" +
             ", questionId=" + getQuestionId() +
             ", questionCode='" + getQuestionCode() + "'" +
-            ", handleTypeCode='" + getHandleTypeCode() + "'" +
-            ", replyContent='" + getReplyContent() + "'" +
             ", status='" + getStatus() + "'" +
             ", memo='" + getMemo() + "'" +
             "}";

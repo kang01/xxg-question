@@ -114,8 +114,6 @@ public class ReplyRecordResourceIntTest {
             .strangerName(DEFAULT_STRANGER_NAME)
             .questionId(DEFAULT_QUESTION_ID)
             .questionCode(DEFAULT_QUESTION_CODE)
-            .handleTypeCode(DEFAULT_HANDLE_TYPE_CODE)
-            .replyContent(DEFAULT_REPLY_CONTENT)
             .status(DEFAULT_STATUS)
             .memo(DEFAULT_MEMO);
         // Add required entity
@@ -151,8 +149,6 @@ public class ReplyRecordResourceIntTest {
         assertThat(testReplyRecord.getStrangerName()).isEqualTo(DEFAULT_STRANGER_NAME);
         assertThat(testReplyRecord.getQuestionId()).isEqualTo(DEFAULT_QUESTION_ID);
         assertThat(testReplyRecord.getQuestionCode()).isEqualTo(DEFAULT_QUESTION_CODE);
-        assertThat(testReplyRecord.getHandleTypeCode()).isEqualTo(DEFAULT_HANDLE_TYPE_CODE);
-        assertThat(testReplyRecord.getReplyContent()).isEqualTo(DEFAULT_REPLY_CONTENT);
         assertThat(testReplyRecord.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testReplyRecord.getMemo()).isEqualTo(DEFAULT_MEMO);
     }
@@ -221,44 +217,6 @@ public class ReplyRecordResourceIntTest {
         int databaseSizeBeforeTest = replyRecordRepository.findAll().size();
         // set the field null
         replyRecord.setQuestionCode(null);
-
-        // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
-
-        restReplyRecordMockMvc.perform(post("/api/reply-records")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(replyRecordDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<ReplyRecord> replyRecordList = replyRecordRepository.findAll();
-        assertThat(replyRecordList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkHandleTypeCodeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = replyRecordRepository.findAll().size();
-        // set the field null
-        replyRecord.setHandleTypeCode(null);
-
-        // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
-
-        restReplyRecordMockMvc.perform(post("/api/reply-records")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(replyRecordDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<ReplyRecord> replyRecordList = replyRecordRepository.findAll();
-        assertThat(replyRecordList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkReplyContentIsRequired() throws Exception {
-        int databaseSizeBeforeTest = replyRecordRepository.findAll().size();
-        // set the field null
-        replyRecord.setReplyContent(null);
 
         // Create the ReplyRecord, which fails.
         ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
@@ -357,8 +315,6 @@ public class ReplyRecordResourceIntTest {
             .strangerName(UPDATED_STRANGER_NAME)
             .questionId(UPDATED_QUESTION_ID)
             .questionCode(UPDATED_QUESTION_CODE)
-            .handleTypeCode(UPDATED_HANDLE_TYPE_CODE)
-            .replyContent(UPDATED_REPLY_CONTENT)
             .status(UPDATED_STATUS)
             .memo(UPDATED_MEMO);
         ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(updatedReplyRecord);
@@ -376,8 +332,6 @@ public class ReplyRecordResourceIntTest {
         assertThat(testReplyRecord.getStrangerName()).isEqualTo(UPDATED_STRANGER_NAME);
         assertThat(testReplyRecord.getQuestionId()).isEqualTo(UPDATED_QUESTION_ID);
         assertThat(testReplyRecord.getQuestionCode()).isEqualTo(UPDATED_QUESTION_CODE);
-        assertThat(testReplyRecord.getHandleTypeCode()).isEqualTo(UPDATED_HANDLE_TYPE_CODE);
-        assertThat(testReplyRecord.getReplyContent()).isEqualTo(UPDATED_REPLY_CONTENT);
         assertThat(testReplyRecord.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testReplyRecord.getMemo()).isEqualTo(UPDATED_MEMO);
     }

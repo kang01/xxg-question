@@ -13,49 +13,40 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
-    <changeSet id="11111111111111-10" author="jhipster" dbms="h2,postgresql,oracle">
-        <createSequence sequenceName="seq_send_record" startValue="1" incrementBy="1"></createSequence>
+    <changeSet id="11111111111111-12" author="jhipster" dbms="h2,postgresql,oracle">
+        <createSequence sequenceName="seq_reply_details" startValue="1" incrementBy="1"></createSequence>
     </changeSet>
     <!--
-        Added the entity SendRecord.
+        Added the entity ReplyDetails.
     -->
-    <changeSet id="20180619025401-1" author="jhipster">
-        <createTable tableName="send_record" remarks="发送记录表">
+    <changeSet id="20180621052402-1" author="jhipster">
+        <createTable tableName="reply_details" remarks="回复详情表">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="sender_email" type="nvarchar(255)" remarks="发件人邮箱">
+            <column name="handle_type_code" type="nvarchar(255)" remarks="处理方式编码">
                 <constraints nullable="false" />
             </column>
 
-            <column name="stranger_email" type="nvarchar(255)" remarks="陌生人邮箱">
+            <column name="reply_content" type="nvarchar(1024)" remarks="回复内容">
                 <constraints nullable="false" />
             </column>
 
-            <column name="stranger_name" type="nvarchar(255)" remarks="陌生人名字">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="question_id" type="bigint" remarks="问题ID">
+            <column name="status" type="nvarchar(20)" remarks="状态">
                 <constraints nullable="false" />
-            </column>
-
-            <column name="question_code" type="nvarchar(255)" remarks="问题编码">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="authorization_record_id" type="bigint" remarks="授权记录ID">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="status" type="nvarchar(255)" remarks="状态">
-                <constraints nullable="true" />
             </column>
 
             <column name="memo" type="nvarchar(1024)" remarks="备注">
                 <constraints nullable="true" />
             </column>
 
+            <column name="reply_record_id" type="bigint" remarks="记录ID">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="question_item_details_id" type="bigint" remarks="问题样本ID">
+                <constraints nullable="false" />
+            </column>
             <column name="created_by" type="nvarchar(50)" remarks="创建人">
                 <constraints nullable="false"/>
             </column>
@@ -67,11 +58,6 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
 
-    </changeSet>
-    <changeSet id="20180619025401-2" author="jhipster">
-        <addColumn tableName="send_record">
-            <column name="reply_date" type="timestamp" remarks="回复时间"/>
-        </addColumn>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

@@ -5,6 +5,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -55,6 +56,9 @@ public class SendRecord extends AbstractAuditingEntity implements Serializable {
     @Size(max = 1024)
     @Column(name = "memo", length = 1024)
     private String memo;
+
+    @Column(name = "reply_date")
+    private ZonedDateTime replyDate;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -166,6 +170,17 @@ public class SendRecord extends AbstractAuditingEntity implements Serializable {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public ZonedDateTime getReplyDate() {
+        return replyDate;
+    }
+    public SendRecord replyDate(ZonedDateTime replyDate) {
+        this.replyDate = replyDate;
+        return this;
+    }
+    public void setReplyDate(ZonedDateTime replyDate) {
+        this.replyDate = replyDate;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

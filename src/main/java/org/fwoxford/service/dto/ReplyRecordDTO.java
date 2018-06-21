@@ -21,20 +21,10 @@ public class ReplyRecordDTO implements Serializable {
     @Size(max = 255)
     private String strangerName;
 
-    @NotNull
     private Long questionId;
 
-    @NotNull
     @Size(max = 255)
     private String questionCode;
-
-    @NotNull
-    @Size(max = 100)
-    private String handleTypeCode;
-
-    @NotNull
-    @Size(max = 1024)
-    private String replyContent;
 
     @Size(max = 20)
     private String status;
@@ -42,7 +32,7 @@ public class ReplyRecordDTO implements Serializable {
     @Size(max = 1024)
     private String memo;
 
-    private Long questionItemDetailsId;
+    private Long sendRecordId;
 
     public Long getId() {
         return id;
@@ -84,22 +74,6 @@ public class ReplyRecordDTO implements Serializable {
         this.questionCode = questionCode;
     }
 
-    public String getHandleTypeCode() {
-        return handleTypeCode;
-    }
-
-    public void setHandleTypeCode(String handleTypeCode) {
-        this.handleTypeCode = handleTypeCode;
-    }
-
-    public String getReplyContent() {
-        return replyContent;
-    }
-
-    public void setReplyContent(String replyContent) {
-        this.replyContent = replyContent;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -116,12 +90,12 @@ public class ReplyRecordDTO implements Serializable {
         this.memo = memo;
     }
 
-    public Long getQuestionItemDetailsId() {
-        return questionItemDetailsId;
+    public Long getSendRecordId() {
+        return sendRecordId;
     }
 
-    public void setQuestionItemDetailsId(Long questionItemDetailsId) {
-        this.questionItemDetailsId = questionItemDetailsId;
+    public void setSendRecordId(Long sendRecordId) {
+        this.sendRecordId = sendRecordId;
     }
 
     @Override
@@ -153,8 +127,6 @@ public class ReplyRecordDTO implements Serializable {
             ", strangerName='" + getStrangerName() + "'" +
             ", questionId=" + getQuestionId() +
             ", questionCode='" + getQuestionCode() + "'" +
-            ", handleTypeCode='" + getHandleTypeCode() + "'" +
-            ", replyContent='" + getReplyContent() + "'" +
             ", status='" + getStatus() + "'" +
             ", memo='" + getMemo() + "'" +
             "}";

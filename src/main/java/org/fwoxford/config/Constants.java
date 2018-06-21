@@ -50,17 +50,33 @@ public final class Constants {
      */
     public static final String QUESTION_CODE = "Q";
     /**
-     * 问题状态：2201：草拟中；2202：已提问；2203：已回复；2204已过期；2205：已结束
+     * 问题状态：2201：草拟中；2202：已提问；2203：有回复；2204：已回复，2205已过期；2206：已结束.
      */
     public static final String QUESTION_IN_DRAFT = "2201";
     public static final String QUESTION_ASKED = "2202";
-    public static final String QUESTION_REPLY = "2203";
-    public static final String QUESTION_OVERDUE= "2204";
-    public static final String QUESTION_FINISHED= "2205";
+    public static final String QUESTION_REPLY_PART = "2203";
+    public static final String QUESTION_REPLY = "2204";
+    public static final String QUESTION_OVERDUE= "2205";
+    public static final String QUESTION_FINISHED= "2206";
 
     //问题类型：2301：样本类型，2302：其他问题
     public static final String QUESTION_TYPE_SAMPLE= "2301";
     public static final String QUESTION_TYPE_OTHER= "2302";
+
+    /**
+     * 问题发送记录状态：2401：已发送，2402:回复中，2403: 已回复，2404:已过期
+     */
+    public static final String QUESTION_SENT = "2401";
+    public static final String QUESTION_SEND_REPLY_PENDING= "2402";
+    public static final String QUESTION_SEND_REPLIED= "2403";
+    public static final String QUESTION_SEND_OVERDUE= "2403";
+
+    /**
+     * 问题回复状态：2501：进行中，2502：已回复，2503：已过期
+     */
+    public static final String QUESTION_REPLY_PENDING= "2501";
+    public static final String QUESTION_REPLY_FINISHED= "2502";
+    public static final String QUESTION_REPLY_OVERDUE= "2503";
 
     public static final String AUTHORITY_ROLE_STRANGER = "ROLE_STRANGER";
     private Constants() {

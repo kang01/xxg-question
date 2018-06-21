@@ -20,4 +20,7 @@
     <include file="classpath:config/liquibase/changelog/changelog-2018/20180619031112_added_entity_ReplyRecord.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/changelog-2018/20180619031112_added_entity_constraints_ReplyRecord.xml" relativeToChangelogFile="false"/>
 
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180621052402_added_entity_ReplyDetails.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180621052402_added_entity_constraints_ReplyDetails.xml" relativeToChangelogFile="false"/>
+
 </databaseChangeLog>
