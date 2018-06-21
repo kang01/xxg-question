@@ -154,4 +154,50 @@ public class SendRecordDTO implements Serializable {
             ", memo='" + getMemo() + "'" +
             "}";
     }
+
+    private String questionTypeCode;
+    private String questionSummary;
+    private Long projectId;
+    private String projectCode;
+    private Long countOfSample;
+
+    public String getQuestionTypeCode() {
+        return questionTypeCode;
+    }
+
+    public void setQuestionTypeCode(String questionTypeCode) {
+        this.questionTypeCode = questionTypeCode;
+    }
+
+    public String getQuestionSummary() {
+        return questionSummary;
+    }
+
+    public void setQuestionSummary(String questionSummary) {
+        this.questionSummary = questionSummary;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public Long getCountOfSample() {
+        return countOfSample;
+    }
+
+    public void setCountOfSample(Long countOfSample) {
+        this.countOfSample = countOfSample;
+    }
 }

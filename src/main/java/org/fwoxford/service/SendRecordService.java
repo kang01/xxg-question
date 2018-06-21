@@ -57,4 +57,11 @@ public interface SendRecordService {
      * @param authorizationRecordsForSave
      */
     void sendEmailRecordToStranger(Question question, List<AuthorizationRecord> authorizationRecordsForSave);
+
+    /**
+     * 查询某一个问题的发送记录
+     * @param id
+     * @return
+     */
+    List<SendRecordDTO> findSendRecordByQuestionId(Long id);
 }

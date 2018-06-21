@@ -126,15 +126,15 @@ public class SendRecordResource {
     }
 
     /**
-     *
+     * 查询发送记录
      * @param id
      * @return
      */
     @GetMapping("/send-records/question/{id}")
     @Timed
-    public ResponseEntity<SendRecordDTO> sendRecord(@PathVariable Long id) {
+    public ResponseEntity<List<SendRecordDTO>> getSendRecordByQuestionId(@PathVariable Long id) {
         log.debug("REST request to get SendRecord : {}", id);
-        SendRecordDTO sendRecordDTO = sendRecordService.sendRecord(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(sendRecordDTO));
+        List<SendRecordDTO> sendRecordDTOs = sendRecordService.findSendRecordByQuestionId(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(sendRecordDTOs));
     }
 }

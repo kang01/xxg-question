@@ -3,6 +3,9 @@ package org.fwoxford.service.impl;
 import org.fwoxford.config.Constants;
 import org.fwoxford.domain.AuthorizationRecord;
 import org.fwoxford.domain.Question;
+import org.fwoxford.domain.QuestionItemDetails;
+import org.fwoxford.repository.QuestionItemDetailsRepository;
+import org.fwoxford.repository.QuestionRepository;
 import org.fwoxford.service.MailService;
 import org.fwoxford.service.SendRecordService;
 import org.fwoxford.domain.SendRecord;
@@ -11,6 +14,7 @@ import org.fwoxford.service.dto.EmailMessage;
 import org.fwoxford.service.dto.MessagerDTO;
 import org.fwoxford.service.dto.SendRecordDTO;
 import org.fwoxford.service.mapper.SendRecordMapper;
+import org.fwoxford.web.rest.errors.BankServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +43,10 @@ public class SendRecordServiceImpl implements SendRecordService {
     private final SendRecordMapper sendRecordMapper;
     @Autowired
     MailService mailService;
+    @Autowired
+    QuestionRepository questionRepository;
+    @Autowired
+    QuestionItemDetailsRepository questionItemDetailsRepository;
 
     public SendRecordServiceImpl(SendRecordRepository sendRecordRepository, SendRecordMapper sendRecordMapper) {
         this.sendRecordRepository = sendRecordRepository;
@@ -140,5 +148,29 @@ public class SendRecordServiceImpl implements SendRecordService {
             sendRecords.add(sendRecord);
         }
         sendRecordRepository.save(sendRecords);
+    }
+
+    /**
+     * 查询某一个问题的发送记录
+     * @param questionId
+     * @return
+     */
+    @Override
+    public List<SendRecordDTO> findSendRecordByQuestionId(Long questionId) {
+        List<SendRecord> sendRecords = sendRecordRepository.findByQuestionId(questionId);
+        Question question = questionRepository.findOne(questionId);
+        if(question == null){
+            throw new BankServiceException("问题不存在!",questionId.toString());
+        }
+        List<SendRecordDTO> alist = sendRecordMapper.sendRecordsToSendRecordDTOs(sendRecords);
+        Long countOfSample = questionItemDetailsRepository.countByQuestionId(questionId);
+        alist.forEach(s->{
+            s.setProjectCode(question.getProjectCode());
+            s.setProjectId(question.getProject().getId());
+            s.setQuestionSummary(question.getQuestionSummary());
+            s.setQuestionTypeCode(question.getQuestionTypeCode());
+            s.setCountOfSample(countOfSample);
+        });
+        return alist;
     }
 }
