@@ -22,7 +22,6 @@ public class ReplyDetailsDTO implements Serializable {
     @Size(max = 1024)
     private String replyContent;
 
-    @NotNull
     @Size(max = 20)
     private String status;
 
@@ -30,7 +29,7 @@ public class ReplyDetailsDTO implements Serializable {
     private String memo;
 
     private Long replyRecordId;
-
+    @NotNull
     private Long questionItemDetailsId;
 
     public Long getId() {

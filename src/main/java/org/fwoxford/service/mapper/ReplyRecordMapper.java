@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface  ReplyRecordMapper {
 
-    ReplyRecordDTO replyRecordToRreplyRecordDTO(ReplyRecord replyRecord);
+    ReplyRecordDTO replyRecordToReplyRecordDTO(ReplyRecord replyRecord);
 
     List<ReplyRecordDTO> replyRecordsToReplyRecordDTOs(List<ReplyRecord> replyRecordList);
 

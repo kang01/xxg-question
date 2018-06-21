@@ -111,8 +111,14 @@ public class SendRecordServiceImpl implements SendRecordService {
 
     @Override
     public void sendEmailRecordToStranger(Question question, List<AuthorizationRecord> authorizationRecordsForSave) {
+        //一个问题只能发送给一个人一次（不在过期状态）
+        List<SendRecord> sendRecordsOldList = sendRecordRepository.findByQuestionIdAndStatusNot(question.getId(),Constants.QUESTION_SEND_OVERDUE);
         List<SendRecord> sendRecords = new ArrayList<>();
         for(AuthorizationRecord authorizationRecord : authorizationRecordsForSave){
+            SendRecord sendRecordsOld = sendRecordsOldList.stream().filter(s->s.getStrangerEmail().equals(authorizationRecord.getStrangerEmail())).findFirst().orElse(null);
+            if(sendRecordsOld!=null){
+                continue;
+            }
             EmailMessage emailMessage = new EmailMessage();
             emailMessage.setAuthor(question.getAuthor());
             emailMessage.setAuthorizationCode(authorizationRecord.getAuthorizationCode());

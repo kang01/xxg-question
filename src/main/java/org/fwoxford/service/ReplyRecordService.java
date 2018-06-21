@@ -1,5 +1,6 @@
 package org.fwoxford.service;
 
+import org.fwoxford.service.dto.ReplyDetailsDTO;
 import org.fwoxford.service.dto.ReplyRecordDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,8 +46,15 @@ public interface ReplyRecordService {
     /**
      * 回复问题
      * @param id
-     * @param replyRecordDTOs
+     * @param replyDetailsDTOS
      * @return
      */
-    List<ReplyRecordDTO> saveReplyQuestionList(Long id, List<ReplyRecordDTO> replyRecordDTOs);
+    List<ReplyDetailsDTO> saveReplyQuestionList(Long id, List<ReplyDetailsDTO> replyDetailsDTOS);
+
+    /**
+     * 回复完成
+     * @param id
+     * @return
+     */
+    ReplyRecordDTO completedReplyRecord(Long id);
 }

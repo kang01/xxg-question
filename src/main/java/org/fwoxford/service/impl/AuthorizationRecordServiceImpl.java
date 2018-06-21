@@ -25,6 +25,7 @@ import org.springframework.util.StringUtils;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -114,6 +115,13 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
      */
     @Override
     public List<AuthorizationRecordDTO> saveAuthorizationRecords(Long questionId, List<AuthorizationRecordDTO> authorizationRecordDTOs) {
+        //验证传递参数中邮箱是否有重复项
+        Map<String,List<AuthorizationRecordDTO>> mapGroupByEmail = authorizationRecordDTOs.stream().collect(Collectors.groupingBy(s->s.getStrangerEmail()));
+        for(List<AuthorizationRecordDTO> values :mapGroupByEmail.values()){
+            if(values.size()>1){
+                throw new BankServiceException("请勿提交重复的邮箱！",values.get(0).getStrangerEmail());
+            }
+        }
         if(questionId == null){
             throw new BankServiceException("问题ID不能为空！");
         }

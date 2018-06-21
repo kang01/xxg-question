@@ -2,6 +2,7 @@ package org.fwoxford.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import org.fwoxford.service.ReplyRecordService;
+import org.fwoxford.service.dto.ReplyDetailsDTO;
 import org.fwoxford.web.rest.errors.BadRequestAlertException;
 import org.fwoxford.web.rest.util.HeaderUtil;
 import org.fwoxford.web.rest.util.PaginationUtil;
@@ -43,19 +44,32 @@ public class ReplyRecordResource {
     /**
      * POST  /reply-records : Create a new replyRecord.
      * 回复问题
-     * @param replyRecordDTOs the replyRecordDTO to create
+     * @param replyDetailsDTOS the replyRecordDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new replyRecordDTO, or with status 400 (Bad Request) if the replyRecord has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/reply-records/question/{id}")
+    @PostMapping("/reply-records/sendRecord/{id}")
     @Timed
-    public ResponseEntity<List<ReplyRecordDTO>> createReplyRecordList(@Valid @PathVariable Long id , @Valid @RequestBody List<ReplyRecordDTO> replyRecordDTOs) throws URISyntaxException {
-        log.debug("REST request to save ReplyRecordList For One Question : {}", replyRecordDTOs);
+    public ResponseEntity<List<ReplyDetailsDTO>> createReplyRecordList(@Valid @PathVariable Long id , @Valid @RequestBody List<ReplyDetailsDTO> replyDetailsDTOS) throws URISyntaxException {
+        log.debug("REST request to save ReplyRecordList For One Question : {}", replyDetailsDTOS);
 
-        List<ReplyRecordDTO> result = replyRecordService.saveReplyQuestionList(id , replyRecordDTOs);
+        List<ReplyDetailsDTO> result = replyRecordService.saveReplyQuestionList(id , replyDetailsDTOS);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 
+    /**
+     * 完成回复
+     * @param id
+     * @return
+     * @throws URISyntaxException
+     */
+    @PutMapping("/reply-records/{id}/completed")
+    @Timed
+    public ResponseEntity<ReplyRecordDTO> completedReplyRecord(@Valid @PathVariable Long id) throws URISyntaxException {
+        log.debug("REST request to update ReplyRecord : {}", id);
+        ReplyRecordDTO result = replyRecordService.completedReplyRecord(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
+    }
 
     /**
      * GET  /reply-records : get all the replyRecords.

@@ -13,4 +13,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface ReplyRecordRepository extends JpaRepository<ReplyRecord, Long> {
 
+    ReplyRecord findBySendRecordId(Long sendRecordId);
 }
