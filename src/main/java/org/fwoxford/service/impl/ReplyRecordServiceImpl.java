@@ -166,12 +166,13 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
         //保存回复的详情，其中，回复类型编码不能为空，问题ITEM ID不能为空
         List<ReplyDetails> replyDetailss = new ArrayList<>();
         for(ReplyDetailsDTO replyDetailsDTO : replyDetailsDTOS){
-            ReplyDetails replyDetailsOld = replyDetailsOldList.stream().filter(s->s.getQuestionItemDetails().getId().equals(replyDetailsDTO.getId())).findFirst().orElse(null);
+            ReplyDetails replyDetailsOld = replyDetailsOldList.stream().filter(s->s.getQuestionItemDetails().getId().equals(replyDetailsDTO.getQuestionItemDetailsId())).findFirst().orElse(null);
             if(replyDetailsOld != null && replyDetailsDTO.getId() == null){
                 throw new BankServiceException(replyDetailsOld.getQuestionItemDetails().getFrozenTube().getSampleCode()+"已经回复过，不能再回复！");
             }
             replyDetailsDTO.setReplyRecordId(replyRecord.getId());
             ReplyDetails replyDetails = replyDetailsMapper.toEntity(replyDetailsDTO);
+            replyDetails.setStatus(Constants.VALID);
             replyDetailss.add(replyDetails);
         }
         replyDetailsRepository.save(replyDetailss);
@@ -213,6 +214,8 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
         }else{
             question = question.status(Constants.QUESTION_REPLY_PART);
         }
+        question.setReplyDate(sendRecord.getReplyDate().toLocalDate());
+        question.replyPerson(sendRecord.getStrangerEmail());
         questionRepository.save(question);
 
         return replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);

@@ -213,7 +213,7 @@ public class QuestionResource {
      */
     @GetMapping("/question/reply-records/sendRecord/{id}")
     @Timed
-    public ResponseEntity<QuestionDTO> getReplyRecordAndQuestionDetails(@PathVariable Long id) {
+    public ResponseEntity<QuestionDTO> getReplyRecordAndQuestionDetails(@Valid @PathVariable Long id) {
         log.debug("REST request to get ReplyRecord : {}", id);
         QuestionDTO questionDTO = questionService.findReplyRecordAndQuestionDetails(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionDTO));

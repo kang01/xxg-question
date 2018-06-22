@@ -240,6 +240,6 @@ public class QuestionServiceImpl implements QuestionService {
             s.setReplyDetailsDTOS(replyDetailsDTOS);
             s.setQuestionItemDetailsDTOS(null);
         });
-        return null;
+        return questionDTO;
     }
 }

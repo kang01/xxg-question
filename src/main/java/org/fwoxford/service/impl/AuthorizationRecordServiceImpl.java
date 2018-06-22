@@ -126,7 +126,8 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
             throw new BankServiceException("问题ID不能为空！");
         }
         Question question = questionRepository.findOne(questionId);
-        if(question == null || (question!=null &&! question.getStatus().equals(Constants.QUESTION_IN_DRAFT))){
+        //判断每一个人的邮箱是否有发送过，每一个人在有效期之内，只能发送一次
+        if(question == null || (question!=null &&! question.getStatus().equals(Constants.QUESTION_IN_DRAFT)&&! question.getStatus().equals(Constants.QUESTION_ASKED))){
             throw new BankServiceException("问题不在草拟中，不能编辑授权信息！");
         }
         String username = SecurityUtils.getCurrentUserLogin().get();

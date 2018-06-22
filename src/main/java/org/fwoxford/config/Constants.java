@@ -87,7 +87,9 @@ public final class Constants {
         }};
 
     public static ZonedDateTime EXPRIATIONTIME = ZonedDateTime.now().plusDays(7);
-
+    //问题样本处理方式 ： 2601：销毁，2602：正常
+    public static final String QUESTION_SAMPLE_DESTROY= "2601";
+    public static final String QUESTION_SAMPLE_NORMAL= "2602";
     private Constants() {
     }
 
