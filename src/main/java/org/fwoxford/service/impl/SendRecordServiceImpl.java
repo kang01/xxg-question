@@ -143,7 +143,7 @@ public class SendRecordServiceImpl implements SendRecordService {
             mailService.sendMessageMail(emailMessage, question.getQuestionSummary(), "message.ftl",messagerDTO);
             SendRecord sendRecord = new SendRecord();
             sendRecord.questionCode(question.getQuestionCode()).questionId(question.getId())
-                .authorizationRecordId(authorizationRecord.getId()).status(Constants.VALID)
+                .authorizationRecordId(authorizationRecord.getId()).status(Constants.QUESTION_SENT)
                 .senderEmail("gengluy@163.com").strangerName(authorizationRecord.getStrangerName()).strangerEmail(authorizationRecord.getStrangerEmail());
             sendRecords.add(sendRecord);
         }

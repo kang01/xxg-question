@@ -228,7 +228,7 @@ public class QuestionServiceImpl implements QuestionService {
 
         ReplyRecord replyRecord = replyRecordRepository.findBySendRecordId(id);
         if(replyRecord == null){
-            throw new BankServiceException("未查询到回复记录");
+            throw new BankServiceException("未查询到回复记录！");
         }
         //查询回复详情
         List<ReplyDetails> replyDetailss = replyDetailsRepository.findByReplyRecordId(replyRecord.getId());
