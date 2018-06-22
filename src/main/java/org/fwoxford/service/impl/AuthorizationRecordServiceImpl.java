@@ -156,12 +156,12 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
         authorizationRecordRepository.save(authorizationRecordsForDelete);
         //保存有效的
         List<AuthorizationRecord> authorizationRecordsForSave = new ArrayList<>();
-        ZonedDateTime expirationTime = ZonedDateTime.now().plusDays(1);
+
         for(AuthorizationRecordDTO dto : authorizationRecordDTOs ){
             AuthorizationRecord authorizationRecord = authorizationRecordMapper.authorizationRecordDTOToAuthorizationRecord(dto);
 
             authorizationRecord.questionId(questionId).applyTimes(0).authorityName(Constants.AUTHORITY_ROLE_STRANGER+";")
-                .expirationTime(expirationTime).authorityPersonId(authorizationPersonId).questionCode(question.getQuestionCode())
+                .expirationTime(Constants.EXPRIATIONTIME).authorityPersonId(authorizationPersonId).questionCode(question.getQuestionCode())
                 .status(Constants.VALID);
             authorizationRecordsForSave.add(authorizationRecord);
         }

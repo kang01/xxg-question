@@ -20,6 +20,6 @@ public interface QuestionItemDetailsRepository extends JpaRepository<QuestionIte
 
     List<QuestionItemDetails> findByQuestionItemIdAndStatusNot(Long id, String status);
 
-    @Query("select count(t.id) from  QuestionItemDetails where t.status != '"+ Constants.INVALID+" ' where t.questionItem.question.id = ?1")
+    @Query("select count(t.id) from  QuestionItemDetails t where t.status != '"+ Constants.INVALID+" ' and t.questionItem.question.id = ?1")
     Long countByQuestionId(Long questionId);
 }

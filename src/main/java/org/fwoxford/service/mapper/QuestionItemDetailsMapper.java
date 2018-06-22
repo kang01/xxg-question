@@ -43,6 +43,7 @@ public interface QuestionItemDetailsMapper  {
     @Mapping( target = "position", expression ="java(questionItemDetailsFrozenTubePosition(questionItemDetails))")
 
     @Mapping(source = "frozenTube.projectCode", target = "projectCode")
+    @Mapping(source = "frozenTube.patientId", target = "patientId")
     QuestionItemDetailsDTO questionItemDetailsToQuestionItemDetailsDTO(QuestionItemDetails questionItemDetails);
 
     List<QuestionItemDetailsDTO> questionItemDetailsToQuestionItemDetailsDTOs(List<QuestionItemDetails> questionItemDetails);

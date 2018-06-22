@@ -181,12 +181,12 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
 
     /**
      * 回复完成
-     * @param id
+     * @param sendRecordId
      * @return
      */
     @Override
-    public ReplyRecordDTO completedReplyRecord(Long id) {
-        ReplyRecord replyRecord = replyRecordRepository.findOne(id);
+    public ReplyRecordDTO completedReplyRecord(Long sendRecordId) {
+        ReplyRecord replyRecord = replyRecordRepository.findBySendRecordId(sendRecordId);
         if(replyRecord == null){
             throw new BankServiceException("未查询到回复内容！");
         }

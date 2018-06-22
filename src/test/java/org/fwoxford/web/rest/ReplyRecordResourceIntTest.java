@@ -135,7 +135,7 @@ public class ReplyRecordResourceIntTest {
         int databaseSizeBeforeCreate = replyRecordRepository.findAll().size();
 
         // Create the ReplyRecord
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(replyRecordDTO)))
@@ -160,7 +160,7 @@ public class ReplyRecordResourceIntTest {
 
         // Create the ReplyRecord with an existing ID
         replyRecord.setId(1L);
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restReplyRecordMockMvc.perform(post("/api/reply-records")
@@ -181,7 +181,7 @@ public class ReplyRecordResourceIntTest {
         replyRecord.setStrangerEmail(null);
 
         // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);
 
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -200,7 +200,7 @@ public class ReplyRecordResourceIntTest {
         replyRecord.setQuestionId(null);
 
         // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);
 
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -219,7 +219,7 @@ public class ReplyRecordResourceIntTest {
         replyRecord.setQuestionCode(null);
 
         // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);
 
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -238,7 +238,7 @@ public class ReplyRecordResourceIntTest {
         replyRecord.setStatus(null);
 
         // Create the ReplyRecord, which fails.
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);
 
         restReplyRecordMockMvc.perform(post("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -317,7 +317,7 @@ public class ReplyRecordResourceIntTest {
             .questionCode(UPDATED_QUESTION_CODE)
             .status(UPDATED_STATUS)
             .memo(UPDATED_MEMO);
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(updatedReplyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToReplyRecordDTO(updatedReplyRecord);
 
         restReplyRecordMockMvc.perform(put("/api/reply-records")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -342,7 +342,7 @@ public class ReplyRecordResourceIntTest {
         int databaseSizeBeforeUpdate = replyRecordRepository.findAll().size();
 
         // Create the ReplyRecord
-        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToRreplyRecordDTO(replyRecord);
+        ReplyRecordDTO replyRecordDTO = replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restReplyRecordMockMvc.perform(put("/api/reply-records")

@@ -63,7 +63,7 @@ public class ReplyRecordResource {
      * @return
      * @throws URISyntaxException
      */
-    @PutMapping("/reply-records/{id}/completed")
+    @PutMapping("/reply-records/sendRecord/{id}/completed")
     @Timed
     public ResponseEntity<ReplyRecordDTO> completedReplyRecord(@Valid @PathVariable Long id) throws URISyntaxException {
         log.debug("REST request to update ReplyRecord : {}", id);

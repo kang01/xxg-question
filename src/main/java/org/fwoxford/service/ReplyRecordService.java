@@ -53,8 +53,8 @@ public interface ReplyRecordService {
 
     /**
      * 回复完成
-     * @param id
+     * @param sendRecordId
      * @return
      */
-    ReplyRecordDTO completedReplyRecord(Long id);
+    ReplyRecordDTO completedReplyRecord(Long sendRecordId);
 }

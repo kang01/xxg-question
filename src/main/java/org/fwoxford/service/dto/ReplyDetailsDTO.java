@@ -1,6 +1,8 @@
 package org.fwoxford.service.dto;
 
 
+import org.fwoxford.service.dto.response.FrozenTubeForQuestion;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -10,7 +12,7 @@ import java.util.Objects;
 /**
  * A DTO for the ReplyDetails entity.
  */
-public class ReplyDetailsDTO implements Serializable {
+public class ReplyDetailsDTO extends FrozenTubeForQuestion implements Serializable {
 
     private Long id;
 

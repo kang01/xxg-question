@@ -1,5 +1,6 @@
 package org.fwoxford.config;
 
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,11 +80,15 @@ public final class Constants {
     public static final String QUESTION_REPLY_OVERDUE= "2503";
 
     public static final String AUTHORITY_ROLE_STRANGER = "ROLE_STRANGER";
-    private Constants() {
-    }
     public static final Map<String,String> QUESTION_TYPE_MAP = new HashMap<String,String>(){
         {
             put("2301", "样本类型");
             put("2302", "其他问题");
         }};
+
+    public static ZonedDateTime EXPRIATIONTIME = ZonedDateTime.now().plusDays(7);
+
+    private Constants() {
+    }
+
 }

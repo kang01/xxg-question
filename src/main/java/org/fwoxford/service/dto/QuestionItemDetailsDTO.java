@@ -92,5 +92,4 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
             ", memo='" + memo + "'" +
             '}';
     }
-
 }

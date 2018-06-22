@@ -3,7 +3,7 @@ package org.fwoxford.service.impl;
 import org.fwoxford.config.Constants;
 import org.fwoxford.domain.AuthorizationRecord;
 import org.fwoxford.domain.Question;
-import org.fwoxford.domain.QuestionItemDetails;
+import org.fwoxford.repository.AuthorizationRecordRepository;
 import org.fwoxford.repository.QuestionItemDetailsRepository;
 import org.fwoxford.repository.QuestionRepository;
 import org.fwoxford.service.MailService;
@@ -24,9 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -47,6 +45,8 @@ public class SendRecordServiceImpl implements SendRecordService {
     QuestionRepository questionRepository;
     @Autowired
     QuestionItemDetailsRepository questionItemDetailsRepository;
+    @Autowired
+    AuthorizationRecordRepository authorizationRecordRepository;
 
     public SendRecordServiceImpl(SendRecordRepository sendRecordRepository, SendRecordMapper sendRecordMapper) {
         this.sendRecordRepository = sendRecordRepository;
@@ -172,5 +172,54 @@ public class SendRecordServiceImpl implements SendRecordService {
             s.setCountOfSample(countOfSample);
         });
         return alist;
+    }
+
+    /**
+     * 重发
+     * @param id
+     * @return
+     */
+    @Override
+    public SendRecordDTO saveSendRecordForReSend(Long id) {
+        SendRecord sendRecord = sendRecordRepository.findOne(id);
+        if(sendRecord ==null || !sendRecord.equals(Constants.QUESTION_SEND_OVERDUE)){
+            throw new BankServiceException("上一次发送未过期，无法再次发送！");
+        }
+        Long questionId =  sendRecord.getQuestionId();
+        Long authorizationId = sendRecord.getAuthorizationRecordId();
+        //
+        Question question = questionRepository.findOne(questionId);
+        if(question == null || (question!=null && question.getStatus().equals(Constants.QUESTION_FINISHED))){
+            throw new BankServiceException("问题"+sendRecord.getQuestionCode()+"已结束，无法再次发送！");
+        }
+        //授权加时
+        AuthorizationRecord authorizationRecord = authorizationRecordRepository.findOne(authorizationId);
+        if(authorizationRecord==null){
+            throw new BankServiceException("未查询到"+sendRecord.getStrangerEmail()+"的上一次授权信息！");
+        }
+
+        authorizationRecord.setExpirationTime(Constants.EXPRIATIONTIME);
+        authorizationRecordRepository.save(authorizationRecord);
+
+        EmailMessage emailMessage = new EmailMessage();
+        emailMessage.setAuthor(question.getAuthor());
+        emailMessage.setAuthorizationCode(authorizationRecord.getAuthorizationCode());
+        emailMessage.setStrangerName(authorizationRecord.getStrangerName());
+        emailMessage.setOccurDate(question.getOccurDate());
+        emailMessage.setQuestionType(Constants.QUESTION_TYPE_MAP.get(question.getQuestionTypeCode()));
+        emailMessage.setProjectCode(question.getProjectCode());
+        emailMessage.setProjectName(question.getProjectName());
+        emailMessage.setQuestionDescription(question.getQuestionDescription());
+        emailMessage.setQuestionSummary(question.getQuestionSummary());
+        MessagerDTO messagerDTO = new MessagerDTO();
+        messagerDTO.setFromUser("gengluy@163.com");
+        messagerDTO.setToUser(authorizationRecord.getStrangerEmail());
+        mailService.sendMessageMail(emailMessage, question.getQuestionSummary(), "message.ftl",messagerDTO);
+        SendRecord sendRecordNew = new SendRecord();
+        sendRecordNew.questionCode(question.getQuestionCode()).questionId(question.getId())
+            .authorizationRecordId(authorizationRecord.getId()).status(Constants.VALID)
+            .senderEmail("gengluy@163.com").strangerName(authorizationRecord.getStrangerName()).strangerEmail(authorizationRecord.getStrangerEmail());
+        sendRecordRepository.save(sendRecordNew);
+        return sendRecordMapper.sendRecordToSendRecordDTO(sendRecordNew);
     }
 }

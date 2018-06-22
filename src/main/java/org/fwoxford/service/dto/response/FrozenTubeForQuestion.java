@@ -83,6 +83,8 @@ public class FrozenTubeForQuestion {
 
     private String[] tags;
 
+    private String patientId;
+
     public Long getId() {
         return id;
     }
@@ -264,5 +266,13 @@ public class FrozenTubeForQuestion {
 
     public void setTags(String[] tags) {
         this.tags = tags;
+    }
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 }

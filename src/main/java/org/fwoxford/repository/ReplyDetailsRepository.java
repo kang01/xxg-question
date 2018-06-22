@@ -16,4 +16,6 @@ import java.util.List;
 public interface ReplyDetailsRepository extends JpaRepository<ReplyDetails, Long> {
 
     List<ReplyDetails> findByReplyRecordIdAndQuestionItemDetailsIdIn(Long id, List<Long> qids);
+
+    List<ReplyDetails> findByReplyRecordId(Long id);
 }

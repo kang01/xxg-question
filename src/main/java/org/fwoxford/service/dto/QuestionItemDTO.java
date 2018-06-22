@@ -30,6 +30,8 @@ public class QuestionItemDTO  implements Serializable {
 
     private List<QuestionItemDetailsDTO> questionItemDetailsDTOS;
 
+    private List<ReplyDetailsDTO> replyDetailsDTOS;
+
     public Long getId() {
         return id;
     }
@@ -81,6 +83,14 @@ public class QuestionItemDTO  implements Serializable {
 
     public void setQuestionItemDetailsDTOS(List<QuestionItemDetailsDTO> questionItemDetailsDTOS) {
         this.questionItemDetailsDTOS = questionItemDetailsDTOS;
+    }
+
+    public List<ReplyDetailsDTO> getReplyDetailsDTOS() {
+        return replyDetailsDTOS;
+    }
+
+    public void setReplyDetailsDTOS(List<ReplyDetailsDTO> replyDetailsDTOS) {
+        this.replyDetailsDTOS = replyDetailsDTOS;
     }
 
     @Override

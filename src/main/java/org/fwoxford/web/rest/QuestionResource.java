@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiParam;
 import org.fwoxford.service.MailService;
 import org.fwoxford.service.QuestionService;
 import org.fwoxford.service.dto.QuestionDTO;
+import org.fwoxford.service.dto.ReplyRecordDTO;
 import org.fwoxford.service.dto.response.QuestionForDataTableEntity;
 import org.fwoxford.web.rest.util.HeaderUtil;
 import org.fwoxford.web.rest.util.PaginationUtil;
@@ -201,6 +202,20 @@ public class QuestionResource {
     public ResponseEntity<QuestionDTO> getQuestionAndItemsAndDetails(@PathVariable Long id) {
         log.debug("REST request to get Question : {}", id);
         QuestionDTO questionDTO = questionService.findQuestionAndItemsAndDetails(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionDTO));
+    }
+
+
+    /**
+     * 陌生人查询问题详情以及回复内容列表
+     * @param id
+     * @return
+     */
+    @GetMapping("/question/reply-records/sendRecord/{id}")
+    @Timed
+    public ResponseEntity<QuestionDTO> getReplyRecordAndQuestionDetails(@PathVariable Long id) {
+        log.debug("REST request to get ReplyRecord : {}", id);
+        QuestionDTO questionDTO = questionService.findReplyRecordAndQuestionDetails(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionDTO));
     }
 }

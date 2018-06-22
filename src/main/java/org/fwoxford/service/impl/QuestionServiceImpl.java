@@ -1,17 +1,17 @@
 package org.fwoxford.service.impl;
 
 import org.fwoxford.config.Constants;
-import org.fwoxford.domain.Delegate;
-import org.fwoxford.domain.Project;
-import org.fwoxford.domain.Question;
-import org.fwoxford.domain.User;
+import org.fwoxford.domain.*;
 import org.fwoxford.repository.*;
 import org.fwoxford.service.QuestionItemService;
 import org.fwoxford.service.QuestionService;
 import org.fwoxford.service.dto.QuestionDTO;
 import org.fwoxford.service.dto.QuestionItemDTO;
+import org.fwoxford.service.dto.QuestionItemDetailsDTO;
+import org.fwoxford.service.dto.ReplyDetailsDTO;
 import org.fwoxford.service.dto.response.QuestionForDataTableEntity;
 import org.fwoxford.service.mapper.QuestionMapper;
+import org.fwoxford.service.mapper.ReplyDetailsMapper;
 import org.fwoxford.web.rest.errors.BankServiceException;
 import org.fwoxford.web.rest.util.BankUtil;
 import org.slf4j.Logger;
@@ -24,6 +24,7 @@ import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +54,16 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     QuestionItemService questionItemService;
 
+    @Autowired
+    SendRecordRepository sendRecordRepository;
+
+    @Autowired
+    ReplyRecordRepository replyRecordRepository;
+
+    @Autowired
+    ReplyDetailsRepository replyDetailsRepository;
+    @Autowired
+    ReplyDetailsMapper replyDetailsMapper;
     public QuestionServiceImpl(QuestionRepository questionRepository, QuestionMapper questionMapper) {
         this.questionRepository = questionRepository;
         this.questionMapper = questionMapper;
@@ -199,5 +210,36 @@ public class QuestionServiceImpl implements QuestionService {
         List<QuestionItemDTO> questionItemDTOs = questionItemService.findQuestionItemAndDetailsByQuestionId(id);
         questionDTO.setQuestionItemDTOList(questionItemDTOs);
         return questionDTO;
+    }
+
+    /**
+     * 陌生人查询问题详情以及回复内容列表
+     * @param id
+     * @return
+     */
+    @Override
+    public QuestionDTO findReplyRecordAndQuestionDetails(Long id) {
+        SendRecord sendRecord = sendRecordRepository.findOne(id);
+        if(sendRecord == null){
+            throw new BankServiceException("未查询到发送记录！");
+        }
+        Long questionId = sendRecord.getQuestionId();
+        QuestionDTO questionDTO = findQuestionAndItemsAndDetails(questionId);
+
+        ReplyRecord replyRecord = replyRecordRepository.findBySendRecordId(id);
+        if(replyRecord == null){
+            throw new BankServiceException("未查询到回复记录");
+        }
+        //查询回复详情
+        List<ReplyDetails> replyDetailss = replyDetailsRepository.findByReplyRecordId(replyRecord.getId());
+        List<QuestionItemDTO> questionItemDTOS = questionDTO.getQuestionItemDTOList();
+
+        questionItemDTOS.forEach(s->{
+            List<QuestionItemDetailsDTO> questionItemDetailss = s.getQuestionItemDetailsDTOS();
+            List<ReplyDetailsDTO> replyDetailsDTOS = replyDetailsMapper.questionItemDetailsToReplyDetailsDTOs(questionItemDetailss,replyDetailss);
+            s.setReplyDetailsDTOS(replyDetailsDTOS);
+            s.setQuestionItemDetailsDTOS(null);
+        });
+        return null;
     }
 }

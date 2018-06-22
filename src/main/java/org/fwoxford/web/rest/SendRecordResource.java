@@ -137,4 +137,21 @@ public class SendRecordResource {
         List<SendRecordDTO> sendRecordDTOs = sendRecordService.findSendRecordByQuestionId(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(sendRecordDTOs));
     }
+
+    /**
+     * 重发
+     * @param id
+     * @return
+     * @throws URISyntaxException
+     */
+    @PutMapping("/send-records/{id}/re-send")
+    @Timed
+    public ResponseEntity<SendRecordDTO> createNewSendRecord(@Valid @PathVariable Long id ) throws URISyntaxException {
+        log.debug("REST request to update SendRecord : {}", id);
+        SendRecordDTO result = sendRecordService.saveSendRecordForReSend(id);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString()))
+            .body(result);
+    }
+
 }

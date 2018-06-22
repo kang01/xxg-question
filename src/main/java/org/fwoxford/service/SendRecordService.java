@@ -64,4 +64,11 @@ public interface SendRecordService {
      * @return
      */
     List<SendRecordDTO> findSendRecordByQuestionId(Long id);
+
+    /**
+     * 重发
+     * @param id
+     * @return
+     */
+    SendRecordDTO saveSendRecordForReSend(Long id);
 }

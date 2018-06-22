@@ -63,4 +63,11 @@ public interface QuestionService {
      * @return
      */
     QuestionDTO findQuestionAndItemsAndDetails(Long id);
+
+    /**
+     * 陌生人查询问题详情以及回复内容列表
+     * @param id
+     * @return
+     */
+    QuestionDTO findReplyRecordAndQuestionDetails(Long id);
 }
