@@ -1,15 +1,18 @@
 package org.fwoxford.service.dto;
 
 
+import org.fwoxford.domain.AbstractAuditingEntity;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
  * A DTO for the SendRecord entity.
  */
-public class SendRecordDTO implements Serializable {
+public class SendRecordDTO extends AbstractAuditingEntity implements Serializable {
 
     private Long id;
 
@@ -199,5 +202,24 @@ public class SendRecordDTO implements Serializable {
 
     public void setCountOfSample(Long countOfSample) {
         this.countOfSample = countOfSample;
+    }
+
+    private String projectName;
+    private LocalDate sendDate;
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public LocalDate getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(LocalDate sendDate) {
+        this.sendDate = sendDate;
     }
 }

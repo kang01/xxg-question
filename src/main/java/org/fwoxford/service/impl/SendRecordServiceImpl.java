@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,6 +166,8 @@ public class SendRecordServiceImpl implements SendRecordService {
         List<SendRecordDTO> alist = sendRecordMapper.sendRecordsToSendRecordDTOs(sendRecords);
         Long countOfSample = questionItemDetailsRepository.countByQuestionId(questionId);
         alist.forEach(s->{
+            s.setProjectName(question.getProjectName());
+            s.setSendDate(s.getCreatedDate().atZone(ZoneId.systemDefault()).toLocalDate());
             s.setProjectCode(question.getProjectCode());
             s.setProjectId(question.getProject().getId());
             s.setQuestionSummary(question.getQuestionSummary());
