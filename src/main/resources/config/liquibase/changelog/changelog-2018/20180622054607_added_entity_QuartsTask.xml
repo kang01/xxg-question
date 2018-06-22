@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="sysdate" dbms="oracle"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+    <changeSet id="11111111111111-13" author="jhipster" dbms="h2,postgresql,oracle">
+        <createSequence sequenceName="seq_quarts_task" startValue="1" incrementBy="1"></createSequence>
+    </changeSet>
+    <!--
+        Added the entity QuartsTask.
+    -->
+    <changeSet id="20180622054607-1" author="jhipster">
+        <createTable tableName="quarts_task" remarks="定时任务表">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="job_name" type="nvarchar(256)" remarks="任务名称">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="trigger_name" type="nvarchar(128)" remarks="触发器名称">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="class_name" type="nvarchar(128)" remarks="执行代码的类名">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="enable_status" type="integer" remarks="是否禁用:0禁用;1启用">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="trigger_time" type="timestamp" remarks="触发时间 ">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="status" type="nvarchar(20)" remarks="任务状态">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="memo" type="nvarchar(1024)" remarks="备注">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_by" type="nvarchar(50)" remarks="创建人">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}" remarks="创建时间">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="nvarchar(50)" remarks="修改人"/>
+            <column name="last_modified_date" type="timestamp" remarks="修改时间"/>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        <dropDefaultValue tableName="quarts_task" columnName="trigger_time" columnDataType="datetime"/>
+
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>
