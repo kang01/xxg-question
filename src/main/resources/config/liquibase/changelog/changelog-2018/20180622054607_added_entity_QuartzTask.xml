@@ -13,13 +13,13 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
     <changeSet id="11111111111111-13" author="jhipster" dbms="h2,postgresql,oracle">
-        <createSequence sequenceName="seq_quarts_task" startValue="1" incrementBy="1"></createSequence>
+        <createSequence sequenceName="seq_quartz_task" startValue="1" incrementBy="1"></createSequence>
     </changeSet>
     <!--
-        Added the entity QuartsTask.
+        Added the entity QuartzTask.
     -->
     <changeSet id="20180622054607-1" author="jhipster">
-        <createTable tableName="quarts_task" remarks="定时任务表">
+        <createTable tableName="quartz_task" remarks="定时任务表">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -60,7 +60,7 @@
             <column name="last_modified_date" type="timestamp" remarks="修改时间"/>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="quarts_task" columnName="trigger_time" columnDataType="datetime"/>
+        <dropDefaultValue tableName="quartz_task" columnName="trigger_time" columnDataType="datetime"/>
 
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

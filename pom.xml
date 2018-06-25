@@ -124,6 +124,14 @@
     </dependencyManagement>
 
     <dependencies>
+
+        <!--quartz-->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.2.3</version>
+        </dependency>
+
         <!--  引入外部导入jar  公共的实体对象 以及 mapper -->
         <!--<dependency>-->
             <!--<groupId>org.fwoxford.core</groupId>-->

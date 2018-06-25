@@ -7,9 +7,9 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the QuartsTask entity.
+ * A DTO for the QuartzTask entity.
  */
-public class QuartsTaskDTO implements Serializable {
+public class QuartzTaskDTO implements Serializable {
 
     private Long id;
 
@@ -112,11 +112,11 @@ public class QuartsTaskDTO implements Serializable {
             return false;
         }
 
-        QuartsTaskDTO quartsTaskDTO = (QuartsTaskDTO) o;
-        if(quartsTaskDTO.getId() == null || getId() == null) {
+        QuartzTaskDTO quartzTaskDTO = (QuartzTaskDTO) o;
+        if(quartzTaskDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), quartsTaskDTO.getId());
+        return Objects.equals(getId(), quartzTaskDTO.getId());
     }
 
     @Override
@@ -126,7 +126,7 @@ public class QuartsTaskDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "QuartsTaskDTO{" +
+        return "QuartzTaskDTO{" +
             "id=" + getId() +
             ", jobName='" + getJobName() + "'" +
             ", triggerName='" + getTriggerName() + "'" +

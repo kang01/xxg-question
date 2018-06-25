@@ -9,17 +9,17 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
- * A QuartsTask.
+ * A QuartzTask.
  */
 @Entity
-@Table(name = "quarts_task")
-public class QuartsTask extends AbstractAuditingEntity implements Serializable {
+@Table(name = "quartz_task")
+public class QuartzTask extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_quarts_task")
-    @SequenceGenerator(name = "seq_quarts_task" ,sequenceName = "seq_quarts_task",allocationSize = 1,initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_quartz_task")
+    @SequenceGenerator(name = "seq_quartz_task" ,sequenceName = "seq_quartz_task",allocationSize = 1,initialValue = 1)
     private Long id;
 
     @NotNull
@@ -68,7 +68,7 @@ public class QuartsTask extends AbstractAuditingEntity implements Serializable {
         return jobName;
     }
 
-    public QuartsTask jobName(String jobName) {
+    public QuartzTask jobName(String jobName) {
         this.jobName = jobName;
         return this;
     }
@@ -81,7 +81,7 @@ public class QuartsTask extends AbstractAuditingEntity implements Serializable {
         return triggerName;
     }
 
-    public QuartsTask triggerName(String triggerName) {
+    public QuartzTask triggerName(String triggerName) {
         this.triggerName = triggerName;
         return this;
     }
@@ -94,7 +94,7 @@ public class QuartsTask extends AbstractAuditingEntity implements Serializable {
         return className;
     }
 
-    public QuartsTask className(String className) {
+    public QuartzTask className(String className) {
         this.className = className;
         return this;
     }
@@ -107,7 +107,7 @@ public class QuartsTask extends AbstractAuditingEntity implements Serializable {
         return enableStatus;
     }
 
-    public QuartsTask enableStatus(Integer enableStatus) {
+    public QuartzTask enableStatus(Integer enableStatus) {
         this.enableStatus = enableStatus;
         return this;
     }
@@ -120,7 +120,7 @@ public class QuartsTask extends AbstractAuditingEntity implements Serializable {
         return triggerTime;
     }
 
-    public QuartsTask triggerTime(ZonedDateTime triggerTime) {
+    public QuartzTask triggerTime(ZonedDateTime triggerTime) {
         this.triggerTime = triggerTime;
         return this;
     }
@@ -133,7 +133,7 @@ public class QuartsTask extends AbstractAuditingEntity implements Serializable {
         return status;
     }
 
-    public QuartsTask status(String status) {
+    public QuartzTask status(String status) {
         this.status = status;
         return this;
     }
@@ -146,7 +146,7 @@ public class QuartsTask extends AbstractAuditingEntity implements Serializable {
         return memo;
     }
 
-    public QuartsTask memo(String memo) {
+    public QuartzTask memo(String memo) {
         this.memo = memo;
         return this;
     }
@@ -164,11 +164,11 @@ public class QuartsTask extends AbstractAuditingEntity implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        QuartsTask quartsTask = (QuartsTask) o;
-        if (quartsTask.getId() == null || getId() == null) {
+        QuartzTask quartzTask = (QuartzTask) o;
+        if (quartzTask.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), quartsTask.getId());
+        return Objects.equals(getId(), quartzTask.getId());
     }
 
     @Override
@@ -178,7 +178,7 @@ public class QuartsTask extends AbstractAuditingEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "QuartsTask{" +
+        return "QuartzTask{" +
             "id=" + getId() +
             ", jobName='" + getJobName() + "'" +
             ", triggerName='" + getTriggerName() + "'" +

@@ -15,14 +15,14 @@ import io.github.jhipster.service.filter.ZonedDateTimeFilter;
 
 
 /**
- * Criteria class for the QuartsTask entity. This class is used in QuartsTaskResource to
+ * Criteria class for the QuartzTask entity. This class is used in QuartsTaskResource to
  * receive all the possible filtering options from the Http GET request parameters.
  * For example the following could be a valid requests:
  * <code> /quarts-tasks?id.greaterThan=5&amp;attr1.contains=something&amp;attr2.specified=false</code>
  * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
  * fix type specific filters.
  */
-public class QuartsTaskCriteria implements Serializable {
+public class QuartzTaskCriteria implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
@@ -42,7 +42,7 @@ public class QuartsTaskCriteria implements Serializable {
 
     private StringFilter memo;
 
-    public QuartsTaskCriteria() {
+    public QuartzTaskCriteria() {
     }
 
     public LongFilter getId() {
@@ -111,7 +111,7 @@ public class QuartsTaskCriteria implements Serializable {
 
     @Override
     public String toString() {
-        return "QuartsTaskCriteria{" +
+        return "QuartzTaskCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (jobName != null ? "jobName=" + jobName + ", " : "") +
                 (triggerName != null ? "triggerName=" + triggerName + ", " : "") +

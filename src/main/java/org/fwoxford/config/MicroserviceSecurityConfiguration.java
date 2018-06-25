@@ -27,11 +27,9 @@ public class MicroserviceSecurityConfiguration extends WebSecurityConfigurerAdap
 
     private final SecurityProblemSupport problemSupport;
 
-    private final CorsFilter corsFilter;
-    public MicroserviceSecurityConfiguration(TokenProvider tokenProvider, SecurityProblemSupport problemSupport, CorsFilter corsFilter) {
+    public MicroserviceSecurityConfiguration(TokenProvider tokenProvider, SecurityProblemSupport problemSupport) {
         this.tokenProvider = tokenProvider;
         this.problemSupport = problemSupport;
-        this.corsFilter = corsFilter;
     }
 
     @Override
@@ -50,11 +48,6 @@ public class MicroserviceSecurityConfiguration extends WebSecurityConfigurerAdap
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling()
-            .authenticationEntryPoint(problemSupport)
-            .accessDeniedHandler(problemSupport)
-        .and()
             .csrf()
             .disable()
             .exceptionHandling()

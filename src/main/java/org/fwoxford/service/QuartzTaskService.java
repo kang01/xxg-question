@@ -1,21 +1,21 @@
 package org.fwoxford.service;
 
-import org.fwoxford.service.dto.QuartsTaskDTO;
+import org.fwoxford.service.dto.QuartzTaskDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing QuartsTask.
+ * Service Interface for managing QuartzTask.
  */
-public interface QuartsTaskService {
+public interface QuartzTaskService {
 
     /**
      * Save a quartsTask.
      *
-     * @param quartsTaskDTO the entity to save
+     * @param quartzTaskDTO the entity to save
      * @return the persisted entity
      */
-    QuartsTaskDTO save(QuartsTaskDTO quartsTaskDTO);
+    QuartzTaskDTO save(QuartzTaskDTO quartzTaskDTO);
 
     /**
      * Get all the quartsTasks.
@@ -23,7 +23,7 @@ public interface QuartsTaskService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<QuartsTaskDTO> findAll(Pageable pageable);
+    Page<QuartzTaskDTO> findAll(Pageable pageable);
 
     /**
      * Get the "id" quartsTask.
@@ -31,7 +31,7 @@ public interface QuartsTaskService {
      * @param id the id of the entity
      * @return the entity
      */
-    QuartsTaskDTO findOne(Long id);
+    QuartzTaskDTO findOne(Long id);
 
     /**
      * Delete the "id" quartsTask.

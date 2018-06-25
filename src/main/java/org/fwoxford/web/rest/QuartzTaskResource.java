@@ -1,13 +1,13 @@
 package org.fwoxford.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import org.fwoxford.service.QuartsTaskService;
+import org.fwoxford.service.QuartzTaskService;
+import org.fwoxford.service.dto.QuartzTaskDTO;
 import org.fwoxford.web.rest.errors.BadRequestAlertException;
 import org.fwoxford.web.rest.util.HeaderUtil;
 import org.fwoxford.web.rest.util.PaginationUtil;
-import org.fwoxford.service.dto.QuartsTaskDTO;
-import org.fwoxford.service.dto.QuartsTaskCriteria;
-import org.fwoxford.service.QuartsTaskQueryService;
+import org.fwoxford.service.dto.QuartzTaskCriteria;
+import org.fwoxford.service.QuartzTaskQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,40 +26,40 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * REST controller for managing QuartsTask.
+ * REST controller for managing QuartzTask.
  */
 @RestController
 @RequestMapping("/api")
-public class QuartsTaskResource {
+public class QuartzTaskResource {
 
-    private final Logger log = LoggerFactory.getLogger(QuartsTaskResource.class);
+    private final Logger log = LoggerFactory.getLogger(QuartzTaskResource.class);
 
     private static final String ENTITY_NAME = "quartsTask";
 
-    private final QuartsTaskService quartsTaskService;
+    private final QuartzTaskService quartzTaskService;
 
-    private final QuartsTaskQueryService quartsTaskQueryService;
+    private final QuartzTaskQueryService quartzTaskQueryService;
 
-    public QuartsTaskResource(QuartsTaskService quartsTaskService, QuartsTaskQueryService quartsTaskQueryService) {
-        this.quartsTaskService = quartsTaskService;
-        this.quartsTaskQueryService = quartsTaskQueryService;
+    public QuartzTaskResource(QuartzTaskService quartzTaskService, QuartzTaskQueryService quartzTaskQueryService) {
+        this.quartzTaskService = quartzTaskService;
+        this.quartzTaskQueryService = quartzTaskQueryService;
     }
 
     /**
      * POST  /quarts-tasks : Create a new quartsTask.
      *
-     * @param quartsTaskDTO the quartsTaskDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new quartsTaskDTO, or with status 400 (Bad Request) if the quartsTask has already an ID
+     * @param quartzTaskDTO the quartzTaskDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new quartzTaskDTO, or with status 400 (Bad Request) if the quartsTask has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/quarts-tasks")
     @Timed
-    public ResponseEntity<QuartsTaskDTO> createQuartsTask(@Valid @RequestBody QuartsTaskDTO quartsTaskDTO) throws URISyntaxException {
-        log.debug("REST request to save QuartsTask : {}", quartsTaskDTO);
-        if (quartsTaskDTO.getId() != null) {
+    public ResponseEntity<QuartzTaskDTO> createQuartsTask(@Valid @RequestBody QuartzTaskDTO quartzTaskDTO) throws URISyntaxException {
+        log.debug("REST request to save QuartzTask : {}", quartzTaskDTO);
+        if (quartzTaskDTO.getId() != null) {
             throw new BadRequestAlertException("A new quartsTask cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        QuartsTaskDTO result = quartsTaskService.save(quartsTaskDTO);
+        QuartzTaskDTO result = quartzTaskService.save(quartzTaskDTO);
         return ResponseEntity.created(new URI("/api/quarts-tasks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -68,22 +68,22 @@ public class QuartsTaskResource {
     /**
      * PUT  /quarts-tasks : Updates an existing quartsTask.
      *
-     * @param quartsTaskDTO the quartsTaskDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated quartsTaskDTO,
-     * or with status 400 (Bad Request) if the quartsTaskDTO is not valid,
-     * or with status 500 (Internal Server Error) if the quartsTaskDTO couldn't be updated
+     * @param quartzTaskDTO the quartzTaskDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated quartzTaskDTO,
+     * or with status 400 (Bad Request) if the quartzTaskDTO is not valid,
+     * or with status 500 (Internal Server Error) if the quartzTaskDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/quarts-tasks")
     @Timed
-    public ResponseEntity<QuartsTaskDTO> updateQuartsTask(@Valid @RequestBody QuartsTaskDTO quartsTaskDTO) throws URISyntaxException {
-        log.debug("REST request to update QuartsTask : {}", quartsTaskDTO);
-        if (quartsTaskDTO.getId() == null) {
-            return createQuartsTask(quartsTaskDTO);
+    public ResponseEntity<QuartzTaskDTO> updateQuartsTask(@Valid @RequestBody QuartzTaskDTO quartzTaskDTO) throws URISyntaxException {
+        log.debug("REST request to update QuartzTask : {}", quartzTaskDTO);
+        if (quartzTaskDTO.getId() == null) {
+            return createQuartsTask(quartzTaskDTO);
         }
-        QuartsTaskDTO result = quartsTaskService.save(quartsTaskDTO);
+        QuartzTaskDTO result = quartzTaskService.save(quartzTaskDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, quartsTaskDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, quartzTaskDTO.getId().toString()))
             .body(result);
     }
 
@@ -96,9 +96,9 @@ public class QuartsTaskResource {
      */
     @GetMapping("/quarts-tasks")
     @Timed
-    public ResponseEntity<List<QuartsTaskDTO>> getAllQuartsTasks(QuartsTaskCriteria criteria, Pageable pageable) {
+    public ResponseEntity<List<QuartzTaskDTO>> getAllQuartsTasks(QuartzTaskCriteria criteria, Pageable pageable) {
         log.debug("REST request to get QuartsTasks by criteria: {}", criteria);
-        Page<QuartsTaskDTO> page = quartsTaskQueryService.findByCriteria(criteria, pageable);
+        Page<QuartzTaskDTO> page = quartzTaskQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/quarts-tasks");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -111,10 +111,10 @@ public class QuartsTaskResource {
      */
     @GetMapping("/quarts-tasks/{id}")
     @Timed
-    public ResponseEntity<QuartsTaskDTO> getQuartsTask(@PathVariable Long id) {
-        log.debug("REST request to get QuartsTask : {}", id);
-        QuartsTaskDTO quartsTaskDTO = quartsTaskService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(quartsTaskDTO));
+    public ResponseEntity<QuartzTaskDTO> getQuartsTask(@PathVariable Long id) {
+        log.debug("REST request to get QuartzTask : {}", id);
+        QuartzTaskDTO quartzTaskDTO = quartzTaskService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(quartzTaskDTO));
     }
 
     /**
@@ -126,8 +126,8 @@ public class QuartsTaskResource {
     @DeleteMapping("/quarts-tasks/{id}")
     @Timed
     public ResponseEntity<Void> deleteQuartsTask(@PathVariable Long id) {
-        log.debug("REST request to delete QuartsTask : {}", id);
-        quartsTaskService.delete(id);
+        log.debug("REST request to delete QuartzTask : {}", id);
+        quartzTaskService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

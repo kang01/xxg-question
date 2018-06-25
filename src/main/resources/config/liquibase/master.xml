@@ -12,7 +12,7 @@
     <include file="classpath:config/liquibase/changelog/changelog-2018/20180619025401_added_entity_SendRecord.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/changelog-2018/20180619031112_added_entity_ReplyRecord.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/changelog-2018/20180621052402_added_entity_ReplyDetails.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/changelog-2018/20180622054607_added_entity_QuartsTask.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/changelog-2018/20180622054607_added_entity_QuartzTask.xml" relativeToChangelogFile="false"/>
 
     <include file="classpath:config/liquibase/changelog/changelog-2018/20180202062511_added_entity_constraints_Question.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/changelog-2018/20180211012148_added_entity_constraints_QuestionItem.xml" relativeToChangelogFile="false"/>
