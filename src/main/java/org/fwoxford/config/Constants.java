@@ -91,6 +91,11 @@ public final class Constants {
     public static final String QUESTION_SAMPLE_DESTROY= "2601";
     public static final String QUESTION_SAMPLE_NORMAL= "2602";
 
+
+    public static final Integer TASK_ENABLE_STATUS_YES= 1;
+    public static final Integer TASK_ENABLE_STATUS_NO= 0;
+
+
     private Constants() {
     }
 

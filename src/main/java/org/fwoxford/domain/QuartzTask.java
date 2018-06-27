@@ -28,9 +28,19 @@ public class QuartzTask extends AbstractAuditingEntity implements Serializable {
     private String jobName;
 
     @NotNull
+    @Size(max = 256)
+    @Column(name = "job_group", length = 256, nullable = false)
+    private String jobGroup;
+
+    @NotNull
     @Size(max = 128)
     @Column(name = "trigger_name", length = 128, nullable = false)
     private String triggerName;
+
+    @NotNull
+    @Size(max = 128)
+    @Column(name = "trigger_group", length = 128, nullable = false)
+    private String triggerGroup;
 
     @NotNull
     @Size(max = 128)
@@ -44,7 +54,7 @@ public class QuartzTask extends AbstractAuditingEntity implements Serializable {
 
     @NotNull
     @Column(name = "trigger_time", nullable = false)
-    private ZonedDateTime triggerTime;
+    private String triggerTime;
 
     @NotNull
     @Size(max = 20)
@@ -71,6 +81,30 @@ public class QuartzTask extends AbstractAuditingEntity implements Serializable {
     public QuartzTask jobName(String jobName) {
         this.jobName = jobName;
         return this;
+    }
+
+    public String getJobGroup() {
+        return jobGroup;
+    }
+    public QuartzTask jobGroup(String jobGroup) {
+        this.jobGroup = jobGroup;
+        return this;
+    }
+    public void setJobGroup(String jobGroup) {
+        this.jobGroup = jobGroup;
+    }
+
+    public String getTriggerGroup() {
+        return triggerGroup;
+    }
+
+    public QuartzTask triggerGroup(String triggerGroup) {
+        this.triggerGroup = triggerGroup;
+        return this;
+    }
+
+    public void setTriggerGroup(String triggerGroup) {
+        this.triggerGroup = triggerGroup;
     }
 
     public void setJobName(String jobName) {
@@ -116,16 +150,16 @@ public class QuartzTask extends AbstractAuditingEntity implements Serializable {
         this.enableStatus = enableStatus;
     }
 
-    public ZonedDateTime getTriggerTime() {
+    public String getTriggerTime() {
         return triggerTime;
     }
 
-    public QuartzTask triggerTime(ZonedDateTime triggerTime) {
+    public QuartzTask triggerTime(String triggerTime) {
         this.triggerTime = triggerTime;
         return this;
     }
 
-    public void setTriggerTime(ZonedDateTime triggerTime) {
+    public void setTriggerTime(String triggerTime) {
         this.triggerTime = triggerTime;
     }
 

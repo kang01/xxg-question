@@ -8,7 +8,6 @@ import org.fwoxford.service.QuartzTaskService;
 import org.fwoxford.service.dto.QuartzTaskDTO;
 import org.fwoxford.service.mapper.QuartzTaskMapper;
 import org.fwoxford.web.rest.errors.ExceptionTranslator;
-import org.fwoxford.service.QuartzTaskQueryService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -59,8 +58,8 @@ public class QuartzTaskResourceIntTest {
     private static final Integer DEFAULT_ENABLE_STATUS = 10;
     private static final Integer UPDATED_ENABLE_STATUS = 9;
 
-    private static final ZonedDateTime DEFAULT_TRIGGER_TIME = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_TRIGGER_TIME = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final String DEFAULT_TRIGGER_TIME = "AAAAAAAAAA";
+    private static final String UPDATED_TRIGGER_TIME = "BBBBBBBBBB";
 
     private static final String DEFAULT_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_STATUS = "BBBBBBBBBB";
@@ -76,9 +75,6 @@ public class QuartzTaskResourceIntTest {
 
     @Autowired
     private QuartzTaskService quartzTaskService;
-
-    @Autowired
-    private QuartzTaskQueryService quartzTaskQueryService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -99,7 +95,7 @@ public class QuartzTaskResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final QuartzTaskResource quartzTaskResource = new QuartzTaskResource(quartzTaskService, quartzTaskQueryService);
+        final QuartzTaskResource quartzTaskResource = new QuartzTaskResource(quartzTaskService);
         this.restQuartsTaskMockMvc = MockMvcBuilders.standaloneSetup(quartzTaskResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -304,7 +300,7 @@ public class QuartzTaskResourceIntTest {
             .andExpect(jsonPath("$.[*].triggerName").value(hasItem(DEFAULT_TRIGGER_NAME.toString())))
             .andExpect(jsonPath("$.[*].className").value(hasItem(DEFAULT_CLASS_NAME.toString())))
             .andExpect(jsonPath("$.[*].enableStatus").value(hasItem(DEFAULT_ENABLE_STATUS)))
-            .andExpect(jsonPath("$.[*].triggerTime").value(hasItem(sameInstant(DEFAULT_TRIGGER_TIME))))
+            .andExpect(jsonPath("$.[*].triggerTime").value(hasItem((DEFAULT_TRIGGER_TIME))))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].memo").value(hasItem(DEFAULT_MEMO.toString())));
     }
@@ -324,7 +320,7 @@ public class QuartzTaskResourceIntTest {
             .andExpect(jsonPath("$.triggerName").value(DEFAULT_TRIGGER_NAME.toString()))
             .andExpect(jsonPath("$.className").value(DEFAULT_CLASS_NAME.toString()))
             .andExpect(jsonPath("$.enableStatus").value(DEFAULT_ENABLE_STATUS))
-            .andExpect(jsonPath("$.triggerTime").value(sameInstant(DEFAULT_TRIGGER_TIME)))
+            .andExpect(jsonPath("$.triggerTime").value((DEFAULT_TRIGGER_TIME)))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.memo").value(DEFAULT_MEMO.toString()));
     }
@@ -667,7 +663,7 @@ public class QuartzTaskResourceIntTest {
             .andExpect(jsonPath("$.[*].triggerName").value(hasItem(DEFAULT_TRIGGER_NAME.toString())))
             .andExpect(jsonPath("$.[*].className").value(hasItem(DEFAULT_CLASS_NAME.toString())))
             .andExpect(jsonPath("$.[*].enableStatus").value(hasItem(DEFAULT_ENABLE_STATUS)))
-            .andExpect(jsonPath("$.[*].triggerTime").value(hasItem(sameInstant(DEFAULT_TRIGGER_TIME))))
+            .andExpect(jsonPath("$.[*].triggerTime").value(hasItem((DEFAULT_TRIGGER_TIME))))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].memo").value(hasItem(DEFAULT_MEMO.toString())));
     }

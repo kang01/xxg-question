@@ -48,39 +48,30 @@ public class MailServiceImpl implements MailService {
     @Override
     public void sendMessageMail(Object params, String title, String templateName, MessagerDTO messagerDTO) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
-        Boolean flag = true;
         MimeMessageHelper helper = null;
         try {
             helper = new MimeMessageHelper(mimeMessage, true);
             helper.setFrom(messagerDTO.getFromUser());
             helper.setTo(InternetAddress.parse(messagerDTO.getToUser()));//发送给谁
-            if(StringUtils.isEmpty(title)){
+            if (StringUtils.isEmpty(title)) {
                 title = "问题样本确认";
             }
             helper.setSubject(title);
             Map<String, Object> model = new HashMap<>();
             model.put("params", params);
-
-            try {
-                Template template = configurer.getConfiguration().getTemplate(templateName);
-                try {
-                    String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-
-                    helper.setText(text, true);
-                    mailSender.send(mimeMessage);
-                    log.debug("Sent e-mail to User '{}'", messagerDTO.getToUser());
-                } catch (TemplateException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Template template = configurer.getConfiguration().getTemplate(templateName);
+            String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+            helper.setText(text, true);
+            mailSender.send(mimeMessage);
+            log.debug("Sent e-mail to User '{}'", messagerDTO.getToUser());
         } catch (MessagingException e) {
             e.printStackTrace();
-            log.warn("E-mail could not be sent to user '{}'", messagerDTO.getToUser(), e);
-            flag = false;
+        }  catch (IOException e) {
+            e.printStackTrace();
+        } catch (TemplateException e) {
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
         }
-
-
     }
 }

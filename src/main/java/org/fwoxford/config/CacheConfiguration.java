@@ -71,6 +71,8 @@ public class CacheConfiguration {
             cm.createCache(org.fwoxford.domain.AuthorizationRecord.class.getName(), jcacheConfiguration);
             cm.createCache(org.fwoxford.domain.ReplyRecord.class.getName(), jcacheConfiguration);
             cm.createCache(org.fwoxford.domain.SendRecord.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.ReplyDetails.class.getName(), jcacheConfiguration);
+            cm.createCache(org.fwoxford.domain.QuartzTask.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

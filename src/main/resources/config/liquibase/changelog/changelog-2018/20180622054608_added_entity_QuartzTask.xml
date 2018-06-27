@@ -18,7 +18,7 @@
     <!--
         Added the entity QuartzTask.
     -->
-    <changeSet id="20180622054607-1" author="jhipster">
+    <changeSet id="20180622054608-1" author="jhipster">
         <createTable tableName="quartz_task" remarks="定时任务表">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -27,7 +27,15 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="job_group" type="nvarchar(256)" remarks="任务所在组">
+                <constraints nullable="false" />
+            </column>
+
             <column name="trigger_name" type="nvarchar(128)" remarks="触发器名称">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="trigger_group" type="nvarchar(256)" remarks="触发器所在组">
                 <constraints nullable="false" />
             </column>
 
@@ -39,7 +47,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="trigger_time" type="timestamp" remarks="触发时间 ">
+            <column name="trigger_time" type="nvarchar(128)" remarks="触发时间表达式">
                 <constraints nullable="false" />
             </column>
 
@@ -60,8 +68,6 @@
             <column name="last_modified_date" type="timestamp" remarks="修改时间"/>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="quartz_task" columnName="trigger_time" columnDataType="datetime"/>
-
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
