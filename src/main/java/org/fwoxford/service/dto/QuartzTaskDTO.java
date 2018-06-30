@@ -18,8 +18,14 @@ public class QuartzTaskDTO implements Serializable {
     private String jobName;
 
     @NotNull
+    private String jobGroup;
+
+    @NotNull
     @Size(max = 128)
     private String triggerName;
+
+    @NotNull
+    private String triggerGroup;
 
     @NotNull
     @Size(max = 128)
@@ -53,6 +59,22 @@ public class QuartzTaskDTO implements Serializable {
 
     public void setJobName(String jobName) {
         this.jobName = jobName;
+    }
+
+    public String getJobGroup() {
+        return jobGroup;
+    }
+
+    public void setJobGroup(String jobGroup) {
+        this.jobGroup = jobGroup;
+    }
+
+    public String getTriggerGroup() {
+        return triggerGroup;
+    }
+
+    public void setTriggerGroup(String triggerGroup) {
+        this.triggerGroup = triggerGroup;
     }
 
     public String getTriggerName() {

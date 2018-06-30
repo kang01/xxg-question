@@ -6,8 +6,6 @@ import org.fwoxford.service.dto.QuartzTaskDTO;
 import org.fwoxford.web.rest.errors.BadRequestAlertException;
 import org.fwoxford.web.rest.util.HeaderUtil;
 import org.fwoxford.web.rest.util.PaginationUtil;
-import org.fwoxford.service.dto.QuartzTaskCriteria;
-import org.fwoxford.service.QuartzTaskQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,11 +36,9 @@ public class QuartzTaskResource {
 
     private final QuartzTaskService quartzTaskService;
 
-    private final QuartzTaskQueryService quartzTaskQueryService;
 
-    public QuartzTaskResource(QuartzTaskService quartzTaskService, QuartzTaskQueryService quartzTaskQueryService) {
+    public QuartzTaskResource(QuartzTaskService quartzTaskService) {
         this.quartzTaskService = quartzTaskService;
-        this.quartzTaskQueryService = quartzTaskQueryService;
     }
 
     /**
@@ -86,37 +82,6 @@ public class QuartzTaskResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, quartzTaskDTO.getId().toString()))
             .body(result);
     }
-
-    /**
-     * GET  /quarts-tasks : get all the quartsTasks.
-     *
-     * @param pageable the pagination information
-     * @param criteria the criterias which the requested entities should match
-     * @return the ResponseEntity with status 200 (OK) and the list of quartsTasks in body
-     */
-    @GetMapping("/quarts-tasks")
-    @Timed
-    public ResponseEntity<List<QuartzTaskDTO>> getAllQuartsTasks(QuartzTaskCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get QuartsTasks by criteria: {}", criteria);
-        Page<QuartzTaskDTO> page = quartzTaskQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/quarts-tasks");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
-    /**
-     * GET  /quarts-tasks/:id : get the "id" quartsTask.
-     *
-     * @param id the id of the quartsTaskDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the quartsTaskDTO, or with status 404 (Not Found)
-     */
-    @GetMapping("/quarts-tasks/{id}")
-    @Timed
-    public ResponseEntity<QuartzTaskDTO> getQuartsTask(@PathVariable Long id) {
-        log.debug("REST request to get QuartzTask : {}", id);
-        QuartzTaskDTO quartzTaskDTO = quartzTaskService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(quartzTaskDTO));
-    }
-
     /**
      * DELETE  /quarts-tasks/:id : delete the "id" quartsTask.
      *
