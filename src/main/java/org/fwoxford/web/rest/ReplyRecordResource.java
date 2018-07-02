@@ -58,7 +58,7 @@ public class ReplyRecordResource {
     }
 
     /**
-     * 完成回复
+     * 完成回复并且停止任务
      * @param id
      * @return
      * @throws URISyntaxException

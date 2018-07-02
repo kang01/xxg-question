@@ -2,12 +2,10 @@ package org.fwoxford.service.impl;
 
 import com.google.common.collect.Lists;
 import org.fwoxford.config.Constants;
-import org.fwoxford.domain.Question;
-import org.fwoxford.domain.ReplyDetails;
-import org.fwoxford.domain.SendRecord;
+import org.fwoxford.config.QuartzManager;
+import org.fwoxford.domain.*;
 import org.fwoxford.repository.*;
 import org.fwoxford.service.ReplyRecordService;
-import org.fwoxford.domain.ReplyRecord;
 import org.fwoxford.service.dto.ReplyDetailsDTO;
 import org.fwoxford.service.dto.ReplyRecordDTO;
 import org.fwoxford.service.mapper.ReplyDetailsMapper;
@@ -51,6 +49,10 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
     ReplyDetailsMapper replyDetailsMapper;
     @Autowired
     ReplyDetailsRepository replyDetailsRepository;
+    @Autowired
+    QuartzTaskRepository quartzTaskRepository;
+    @Autowired
+    QuartzManager quartzManager;
 
     public ReplyRecordServiceImpl(ReplyRecordRepository replyRecordRepository, ReplyRecordMapper replyRecordMapper) {
         this.replyRecordRepository = replyRecordRepository;
@@ -217,7 +219,13 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
         question.setReplyDate(sendRecord.getReplyDate().toLocalDate());
         question.replyPerson(sendRecord.getStrangerEmail());
         questionRepository.save(question);
-
+        //同时停止任务
+        QuartzTask quartzTask = quartzTaskRepository.findByBusinessIdAndJobGroup(sendRecordId,Constants.QUARTZ_GROUP_DELAY);
+        if(quartzTask!=null){
+            quartzTask.enableStatus(Constants.TASK_ENABLE_STATUS_NO);
+            quartzTaskRepository.save(quartzTask);
+            quartzManager.removeJob(quartzTask.getJobName(),quartzTask.getJobGroup(),quartzTask.getTriggerName(),quartzTask.getTriggerGroup());
+        }
         return replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);
     }
 }

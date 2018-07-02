@@ -2,11 +2,13 @@ package org.fwoxford.service.impl;
 
 import org.fwoxford.config.Constants;
 import org.fwoxford.domain.AuthorizationRecord;
+import org.fwoxford.domain.QuartzTask;
 import org.fwoxford.domain.Question;
 import org.fwoxford.repository.AuthorizationRecordRepository;
 import org.fwoxford.repository.QuestionItemDetailsRepository;
 import org.fwoxford.repository.QuestionRepository;
 import org.fwoxford.service.MailService;
+import org.fwoxford.service.QuartzTaskService;
 import org.fwoxford.service.SendRecordService;
 import org.fwoxford.domain.SendRecord;
 import org.fwoxford.repository.SendRecordRepository;
@@ -49,6 +51,8 @@ public class SendRecordServiceImpl implements SendRecordService {
     QuestionItemDetailsRepository questionItemDetailsRepository;
     @Autowired
     AuthorizationRecordRepository authorizationRecordRepository;
+    @Autowired
+    QuartzTaskService quartzTaskService;
 
     public SendRecordServiceImpl(SendRecordRepository sendRecordRepository, SendRecordMapper sendRecordMapper) {
         this.sendRecordRepository = sendRecordRepository;
@@ -224,6 +228,11 @@ public class SendRecordServiceImpl implements SendRecordService {
             .authorizationRecordId(authorizationRecord.getId()).status(Constants.VALID)
             .senderEmail("gengluy@163.com").strangerName(authorizationRecord.getStrangerName()).strangerEmail(authorizationRecord.getStrangerEmail());
         sendRecordRepository.save(sendRecordNew);
-        return sendRecordMapper.sendRecordToSendRecordDTO(sendRecordNew);
+        SendRecordDTO sendRecordDTO = sendRecordMapper.sendRecordToSendRecordDTO(sendRecordNew);
+        sendRecordDTO.setExpirationTime(authorizationRecord.getExpirationTime());
+        //重新创造定时任务
+        quartzTaskService.createQuartzTaskForDelayCheck(new ArrayList<SendRecordDTO>(){{add(sendRecordDTO);}});
+        quartzTaskService.createQuartzTaskForNotice(new ArrayList<SendRecordDTO>(){{add(sendRecordDTO);}});
+        return sendRecordDTO;
     }
 }

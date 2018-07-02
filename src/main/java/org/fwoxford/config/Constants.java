@@ -104,7 +104,9 @@ public final class Constants {
     public static final String CLASS_NAME_TASK_MESSAGE ="org.fwoxford.service.ScheduleTaskMessage";
     public static final String CLASS_NAME_TASK_REPLY="org.fwoxford.service.ScheduleTaskReply";
 
+    public static final String QUARTZ_GROUP_DELAY = "DELAY";
+    public static final String QUARTZ_GROUP_MESSAGE = "MESSAGE";
+
     private Constants() {
     }
-
 }

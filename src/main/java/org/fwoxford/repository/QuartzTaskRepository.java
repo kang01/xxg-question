@@ -16,4 +16,6 @@ import java.util.List;
 public interface QuartzTaskRepository extends JpaRepository<QuartzTask, Long> {
     @Query("select t from QuartzTask t where t.enableStatus = ?1 and t.status = '"+Constants.VALID+"' ")
     List<QuartzTask> findByEnableStatus(Integer taskEnableStatusYes);
+
+    QuartzTask findByBusinessIdAndJobGroup(Long sendRecordId, String quartzGroupDelay);
 }
