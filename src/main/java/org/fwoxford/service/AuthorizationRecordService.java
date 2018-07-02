@@ -1,5 +1,6 @@
 package org.fwoxford.service;
 
+import org.fwoxford.domain.SendRecord;
 import org.fwoxford.service.dto.AuthorizationRecordDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,7 +48,7 @@ public interface AuthorizationRecordService {
      * @param authorizationRecordDTOs
      * @return
      */
-    List<AuthorizationRecordDTO> saveAuthorizationRecords(Long questionId,List<AuthorizationRecordDTO> authorizationRecordDTOs);
+    List<AuthorizationRecordDTO> saveAuthorizationRecords(Long questionId, List<AuthorizationRecordDTO> authorizationRecordDTOs);
 
     /**
      *

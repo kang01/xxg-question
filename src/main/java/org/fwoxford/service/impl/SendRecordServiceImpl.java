@@ -10,6 +10,7 @@ import org.fwoxford.service.MailService;
 import org.fwoxford.service.SendRecordService;
 import org.fwoxford.domain.SendRecord;
 import org.fwoxford.repository.SendRecordRepository;
+import org.fwoxford.service.dto.AuthorizationRecordDTO;
 import org.fwoxford.service.dto.EmailMessage;
 import org.fwoxford.service.dto.MessagerDTO;
 import org.fwoxford.service.dto.SendRecordDTO;
@@ -107,22 +108,13 @@ public class SendRecordServiceImpl implements SendRecordService {
         sendRecordRepository.delete(id);
     }
 
-    /**
-     * 发送邮件
-     * @param questionId
-     * @return
-     */
-    @Override
-    public SendRecordDTO sendRecord(Long questionId) {
-
-        return null;
-    }
 
     @Override
-    public void sendEmailRecordToStranger(Question question, List<AuthorizationRecord> authorizationRecordsForSave) {
+    public List<SendRecordDTO> sendEmailRecordToStranger(Question question, List<AuthorizationRecord> authorizationRecordsForSave) {
         //一个问题只能发送给一个人一次（不在过期状态）
         List<SendRecord> sendRecordsOldList = sendRecordRepository.findByQuestionIdAndStatusNot(question.getId(),Constants.QUESTION_SEND_OVERDUE);
         List<SendRecord> sendRecords = new ArrayList<>();
+        List<SendRecordDTO> sendRecordDTOS = new ArrayList<>();
         for(AuthorizationRecord authorizationRecord : authorizationRecordsForSave){
             SendRecord sendRecordsOld = sendRecordsOldList.stream().filter(s->s.getStrangerEmail().equals(authorizationRecord.getStrangerEmail())).findFirst().orElse(null);
             if(sendRecordsOld!=null){
@@ -149,6 +141,15 @@ public class SendRecordServiceImpl implements SendRecordService {
             sendRecords.add(sendRecord);
         }
         sendRecordRepository.save(sendRecords);
+        sendRecordDTOS = sendRecordMapper.sendRecordsToSendRecordDTOs(sendRecords);
+        sendRecordDTOS.forEach(s->{
+            AuthorizationRecord authorizationRecord =authorizationRecordsForSave.stream().filter(a->a.getId().equals(s.getAuthorizationRecordId())).findFirst().orElse(null);
+            if(authorizationRecord == null){
+                throw new BankServiceException("发送记录获取授权信息失败!");
+            }
+            s.setExpirationTime(authorizationRecord.getExpirationTime());
+        });
+        return sendRecordDTOS;
     }
 
     /**

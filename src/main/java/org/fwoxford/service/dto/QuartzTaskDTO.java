@@ -36,7 +36,7 @@ public class QuartzTaskDTO implements Serializable {
     private Integer enableStatus;
 
     @NotNull
-    private ZonedDateTime triggerTime;
+    private String triggerTime;
 
     @NotNull
     @Size(max = 20)
@@ -44,6 +44,8 @@ public class QuartzTaskDTO implements Serializable {
 
     @Size(max = 1024)
     private String memo;
+
+    private Long businessId;
 
     public Long getId() {
         return id;
@@ -101,11 +103,11 @@ public class QuartzTaskDTO implements Serializable {
         this.enableStatus = enableStatus;
     }
 
-    public ZonedDateTime getTriggerTime() {
+    public String getTriggerTime() {
         return triggerTime;
     }
 
-    public void setTriggerTime(ZonedDateTime triggerTime) {
+    public void setTriggerTime(String triggerTime) {
         this.triggerTime = triggerTime;
     }
 
@@ -123,6 +125,14 @@ public class QuartzTaskDTO implements Serializable {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public Long getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(Long businessId) {
+        this.businessId = businessId;
     }
 
     @Override

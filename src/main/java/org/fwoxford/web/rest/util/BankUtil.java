@@ -6,15 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by gengluying on 2017/3/31.
@@ -180,5 +178,48 @@ public class BankUtil {
         }
 
         return string.toString();
+    }
+
+    public static HashMap<String, Object> convertToMap(Object obj)
+        throws Exception {
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        Field[] fields = obj.getClass().getDeclaredFields();
+        for (int i = 0, len = fields.length; i < len; i++) {
+            String varName = fields[i].getName();
+            boolean accessFlag = fields[i].isAccessible();
+            fields[i].setAccessible(true);
+
+            Object o = fields[i].get(obj);
+            if (o != null)
+                map.put(varName, o.toString());
+
+            fields[i].setAccessible(accessFlag);
+        }
+
+        return map;
+    }
+    /***
+     *
+     * @param date
+     * @param dateFormat : e.g:yyyy-MM-dd HH:mm:ss
+     * @return
+     */
+    public static String formatDateByPattern(Date date,String dateFormat){
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        String formatTimeStr = null;
+        if (date != null) {
+            formatTimeStr = sdf.format(date);
+        }
+        return formatTimeStr;
+    }
+    /***
+     * convert Date to cron ,eg.  "0 06 10 15 1 ? 2014"
+     * @param date  : 时间点
+     * @return
+     */
+    public static String getCron(Date date){
+        String dateFormat="ss mm HH dd MM ? yyyy";
+        return formatDateByPattern(date, dateFormat);
     }
 }

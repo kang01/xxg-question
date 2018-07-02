@@ -65,6 +65,9 @@ public class QuartzTask extends AbstractAuditingEntity implements Serializable {
     @Column(name = "memo", length = 1024)
     private String memo;
 
+    @Column(name = "business_id", nullable = false)
+    private Long businessId;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -189,6 +192,17 @@ public class QuartzTask extends AbstractAuditingEntity implements Serializable {
         this.memo = memo;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public Long getBusinessId() {
+        return businessId;
+    }
+    public QuartzTask businessId(Long businessId) {
+        this.businessId = businessId;
+        return this;
+    }
+    public void setBusinessId(Long businessId) {
+        this.businessId = businessId;
+    }
 
     @Override
     public boolean equals(Object o) {

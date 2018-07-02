@@ -203,10 +203,18 @@ public class SendRecordDTO extends AbstractAuditingEntity implements Serializabl
     public void setCountOfSample(Long countOfSample) {
         this.countOfSample = countOfSample;
     }
-
+    /**
+     * 项目名称
+     */
     private String projectName;
+    /**
+     * 发送日期
+     */
     private LocalDate sendDate;
-
+    /**
+     * 到期时间
+     */
+    private ZonedDateTime expirationTime;
     public String getProjectName() {
         return projectName;
     }
@@ -221,5 +229,13 @@ public class SendRecordDTO extends AbstractAuditingEntity implements Serializabl
 
     public void setSendDate(LocalDate sendDate) {
         this.sendDate = sendDate;
+    }
+
+    public ZonedDateTime getExpirationTime() {
+        return expirationTime;
+    }
+
+    public void setExpirationTime(ZonedDateTime expirationTime) {
+        this.expirationTime = expirationTime;
     }
 }

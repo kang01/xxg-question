@@ -21,4 +21,6 @@ public interface SendRecordRepository extends JpaRepository<SendRecord, Long> {
     List<SendRecord> findByQuestionIdAndStatusNot(Long id, String questionSendOverdue);
 
     List<SendRecord> findByQuestionId(Long questionId);
+
+    Long countByQuestionIdAndStatus(Long questionId, String questionSendOverdue);
 }

@@ -86,15 +86,23 @@ public final class Constants {
             put("2302", "其他问题");
         }};
 
-    public static ZonedDateTime EXPRIATIONTIME = ZonedDateTime.now().plusDays(7);
-    //问题样本处理方式 ： 2601：销毁，2602：正常
-    public static final String QUESTION_SAMPLE_DESTROY= "2601";
-    public static final String QUESTION_SAMPLE_NORMAL= "2602";
+    public static ZonedDateTime EXPRIATIONTIME = ZonedDateTime.now().plusHours(2);
+
+    //问题样本处理方式 ： 2601：销毁样本，2602：样本正常
+    public static final String QUESTION_SAMPLE_DESTROY= "2701";
+    public static final String QUESTION_SAMPLE_NORMAL= "2702";
+    public static final String QUESTION_SAMPLE_DELAY= "2703";
 
 
-    public static final Integer TASK_ENABLE_STATUS_YES= 1;
-    public static final Integer TASK_ENABLE_STATUS_NO= 0;
+    public static final Integer TASK_ENABLE_STATUS_YES = 1;
+    public static final Integer TASK_ENABLE_STATUS_NO = 0;
+    /**
+     * 任务已完成
+     */
+    public static final String TASK_STATUS_FINISHED = "0003";
 
+    public static final String CLASS_NAME_TASK_MESSAGE ="org.fwoxford.service.ScheduleTaskMessage";
+    public static final String CLASS_NAME_TASK_REPLY="org.fwoxford.service.ScheduleTaskReply";
 
     private Constants() {
     }

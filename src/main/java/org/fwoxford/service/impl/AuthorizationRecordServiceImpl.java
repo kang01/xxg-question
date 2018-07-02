@@ -2,6 +2,7 @@ package org.fwoxford.service.impl;
 
 import org.fwoxford.config.Constants;
 import org.fwoxford.domain.Question;
+import org.fwoxford.domain.SendRecord;
 import org.fwoxford.domain.User;
 import org.fwoxford.repository.QuestionRepository;
 import org.fwoxford.repository.UserRepository;
@@ -9,9 +10,12 @@ import org.fwoxford.security.SecurityUtils;
 import org.fwoxford.service.AuthorizationRecordService;
 import org.fwoxford.domain.AuthorizationRecord;
 import org.fwoxford.repository.AuthorizationRecordRepository;
+import org.fwoxford.service.QuartzTaskService;
 import org.fwoxford.service.SendRecordService;
 import org.fwoxford.service.dto.AuthorizationRecordDTO;
+import org.fwoxford.service.dto.SendRecordDTO;
 import org.fwoxford.service.mapper.AuthorizationRecordMapper;
+import org.fwoxford.service.mapper.SendRecordMapper;
 import org.fwoxford.web.rest.errors.BankServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +51,10 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
     SendRecordService sendRecordService;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    QuartzTaskService quartzTaskService;
+    @Autowired
+    SendRecordMapper sendRecordMapper;
 
     public AuthorizationRecordServiceImpl(AuthorizationRecordRepository authorizationRecordRepository, AuthorizationRecordMapper authorizationRecordMapper) {
         this.authorizationRecordRepository = authorizationRecordRepository;
@@ -168,10 +175,15 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
         }
 
         authorizationRecordRepository.save(authorizationRecordsForSave);
-        sendRecordService.sendEmailRecordToStranger(question,authorizationRecordsForSave);
+        List<AuthorizationRecordDTO> authorizationRecordDTOS = authorizationRecordMapper.authorizationRecordsToAuthorizationRecordDTOs(authorizationRecordsForSave);
+        List<SendRecordDTO> sendRecords = sendRecordService.sendEmailRecordToStranger(question,authorizationRecordsForSave);
         question.setStatus(Constants.QUESTION_ASKED);
         questionRepository.save(question);
-        return authorizationRecordMapper.authorizationRecordsToAuthorizationRecordDTOs(authorizationRecordsForSave);
+        //创建定时任务--到期提醒
+        quartzTaskService.createQuartzTaskForNotice(sendRecords);
+        //创建定时任务--过期检查
+        quartzTaskService.createQuartzTaskForDelayCheck(sendRecords);
+        return authorizationRecordDTOS;
     }
 
     @Override
