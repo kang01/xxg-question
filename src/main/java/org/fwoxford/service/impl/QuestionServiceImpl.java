@@ -227,18 +227,24 @@ public class QuestionServiceImpl implements QuestionService {
         QuestionDTO questionDTO = findQuestionAndItemsAndDetails(questionId);
 
         ReplyRecord replyRecord = replyRecordRepository.findBySendRecordId(id);
-        if(replyRecord == null){
-            throw new BankServiceException("未查询到回复记录！");
-        }
         //查询回复详情
-        List<ReplyDetails> replyDetailss = replyDetailsRepository.findByReplyRecordId(replyRecord.getId());
+        List<ReplyDetails> replyDetailss = new ArrayList<>();
+        if(replyRecord != null){
+            replyDetailss = replyDetailsRepository.findByReplyRecordId(replyRecord.getId());
+        }
         List<QuestionItemDTO> questionItemDTOS = questionDTO.getQuestionItemDTOList();
-
+        List<ReplyDetails> finalReplyDetailss = replyDetailss;
         questionItemDTOS.forEach(s->{
             List<QuestionItemDetailsDTO> questionItemDetailss = s.getQuestionItemDetailsDTOS();
-            List<ReplyDetailsDTO> replyDetailsDTOS = replyDetailsMapper.questionItemDetailsToReplyDetailsDTOs(questionItemDetailss,replyDetailss);
-            s.setReplyDetailsDTOS(replyDetailsDTOS);
-            s.setQuestionItemDetailsDTOS(null);
+            questionItemDetailss.forEach(q->{
+                ReplyDetails replyDetails = finalReplyDetailss.stream().filter(r->r.getQuestionItemDetails().getId().equals(q.getId())).findFirst().orElse(null);
+                if(replyDetails!=null){
+                    q.setHandleTypeCode(replyDetails.getHandleTypeCode());
+                    q.setReplyDetailsId(replyDetails.getId());
+                    q.setReplyContent(replyDetails.getReplyContent());
+                }
+            });
+
         });
         return questionDTO;
     }

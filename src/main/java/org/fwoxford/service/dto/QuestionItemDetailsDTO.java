@@ -25,6 +25,9 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
 
     private Long frozenTubeId;
 
+    private Long replyDetailsId;
+    private String handleTypeCode;
+    private String replyContent;
     public Long getId() {
         return id;
     }
@@ -61,6 +64,30 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
 
     public void setFrozenTubeId(Long frozenTubeId) {
         this.frozenTubeId = frozenTubeId;
+    }
+
+    public Long getReplyDetailsId() {
+        return replyDetailsId;
+    }
+
+    public void setReplyDetailsId(Long replyDetailsId) {
+        this.replyDetailsId = replyDetailsId;
+    }
+
+    public String getHandleTypeCode() {
+        return handleTypeCode;
+    }
+
+    public void setHandleTypeCode(String handleTypeCode) {
+        this.handleTypeCode = handleTypeCode;
+    }
+
+    public String getReplyContent() {
+        return replyContent;
+    }
+
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent;
     }
 
     @Override
