@@ -1,6 +1,7 @@
 package org.fwoxford.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.fwoxford.config.QuartzManager;
 import org.fwoxford.service.QuartzTaskService;
 import org.fwoxford.service.dto.QuartzTaskDTO;
 import org.fwoxford.web.rest.errors.BadRequestAlertException;
@@ -9,6 +10,7 @@ import org.fwoxford.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -94,5 +96,17 @@ public class QuartzTaskResource {
         log.debug("REST request to delete QuartzTask : {}", id);
         quartzTaskService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    @Autowired
+    QuartzManager quartzManager;
+
+    @PutMapping("/quarts-tasks/{jobName}/{jobGroup}/{triggerName}/{triggerGroup}")
+    @Timed
+    public Boolean cancelQuartsTask(@Valid @PathVariable String jobName,
+        @Valid @PathVariable String jobGroup, @Valid @PathVariable String triggerName,
+         @Valid @PathVariable String triggerGroup) throws URISyntaxException {
+
+        quartzManager.removeJob(jobName,jobGroup,triggerName,triggerGroup);
+        return true;
     }
 }

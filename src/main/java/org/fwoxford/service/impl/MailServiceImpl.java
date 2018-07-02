@@ -51,7 +51,7 @@ public class MailServiceImpl implements MailService {
         MimeMessageHelper helper = null;
         try {
             helper = new MimeMessageHelper(mimeMessage, true);
-//            helper.setFrom(messagerDTO.getFromUser());
+            helper.setFrom(messagerDTO.getFromUser());
             helper.setTo(InternetAddress.parse(messagerDTO.getToUser()));//发送给谁
             if (StringUtils.isEmpty(title)) {
                 title = "问题样本确认";

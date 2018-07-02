@@ -30,12 +30,13 @@
 <body>
 <div>
     <h2>${(params.strangerName)!""}，您好！</h2>
-        <p>您的授权码（<strong>${(params.authorizationCode)!""}</strong>）将于一小时后过期，如果您还未查看回复问题，请您尽快登录并回复！</p>
+        <p>样本库<strong>${(params.author)!""}</strong>，于 ${(params.occurDate)!""} 向您提出问题，问题类型：${(params.questionType)!""}</p>
+        <p>相关项目：${(params.projectCode)!""}(${(params.projectName)!""})</p>
+        <p>问题详情：${(params.questionDescription)!""}</p>
         <p>请点击此链接查看问题详情：</p>
         <p><a>http://10.24.200.21:8080</a></p>
-        <p> </p>
-        <p>注：1.请使用中心网络，或者使用VPN进行访问中心网络！</p>
-        <p>    2.请勿回复此邮件！</p>
+        <p>登录授权码为：（<strong>${(params.authorizationCode)!""}</strong>）。</p>
+        <p>注：请勿回复此邮件！</p>
 </div>
 </body>
 </html>

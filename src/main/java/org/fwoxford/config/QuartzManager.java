@@ -86,6 +86,7 @@ public class QuartzManager {
             if (!scheduler.isShutdown()) {
                 scheduler.start();
             }
+            LOGGER.info(jobName+"添加任务成功！");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

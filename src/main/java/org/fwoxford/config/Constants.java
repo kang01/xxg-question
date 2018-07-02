@@ -70,7 +70,7 @@ public final class Constants {
     public static final String QUESTION_SENT = "2401";
     public static final String QUESTION_SEND_REPLY_PENDING= "2402";
     public static final String QUESTION_SEND_REPLIED= "2403";
-    public static final String QUESTION_SEND_OVERDUE= "2403";
+    public static final String QUESTION_SEND_OVERDUE= "2404";
 
     /**
      * 问题回复状态：2501：进行中，2502：已回复，2503：已过期
