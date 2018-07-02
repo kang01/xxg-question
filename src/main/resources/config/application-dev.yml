@@ -72,6 +72,29 @@ spring:
         locator:
             discovery:
                 enabled: true
+    quartz:
+        enabled: true
+        #相关属性配置
+        properties:
+            org:
+                quartz:
+                    scheduler:
+                        instanceName: clusteredScheduler
+                        instanceId: AUTO
+                    #持久化 未来在这里配置数据库
+                    jobStore:
+                        class: org.quartz.impl.jdbcjobstore.JobStoreTX
+                        driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+                        tablePrefix: QRTZ_
+                        isClustered: true
+                        clusterCheckinInterval: 10000
+                        useProperties: false
+                    threadPool:
+                        class: org.quartz.simpl.SimpleThreadPool # 实例化ThreadPool时，使用的线程类为SimpleThreadPool
+                        threadCount: 10 # 并发个数
+                        threadPriority: 5 # 优先级
+                        threadsInheritContextClassLoaderOfInitializingThread: true
+
 
 liquibase:
     contexts: dev
