@@ -86,7 +86,6 @@ public final class Constants {
             put("2302", "其他问题");
         }};
 
-    public static ZonedDateTime EXPRIATIONTIME = ZonedDateTime.now().plusHours(2);
 
     //问题样本处理方式 ： 2601：销毁样本，2602：样本正常
     public static final String QUESTION_SAMPLE_DESTROY= "2701";

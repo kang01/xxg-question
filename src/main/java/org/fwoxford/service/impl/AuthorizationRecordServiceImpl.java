@@ -17,6 +17,7 @@ import org.fwoxford.service.dto.SendRecordDTO;
 import org.fwoxford.service.mapper.AuthorizationRecordMapper;
 import org.fwoxford.service.mapper.SendRecordMapper;
 import org.fwoxford.web.rest.errors.BankServiceException;
+import org.fwoxford.web.rest.util.BankUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,7 +170,7 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
             AuthorizationRecord authorizationRecord = authorizationRecordMapper.authorizationRecordDTOToAuthorizationRecord(dto);
 
             authorizationRecord.questionId(questionId).applyTimes(0).authorityName(Constants.AUTHORITY_ROLE_STRANGER+";")
-                .expirationTime(Constants.EXPRIATIONTIME).authorityPersonId(authorizationPersonId).questionCode(question.getQuestionCode())
+                .expirationTime(BankUtil.getExpriationTime()).authorityPersonId(authorizationPersonId).questionCode(question.getQuestionCode())
                 .status(Constants.VALID);
             authorizationRecordsForSave.add(authorizationRecord);
         }

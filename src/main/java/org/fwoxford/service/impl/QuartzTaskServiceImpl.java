@@ -117,7 +117,7 @@ public class QuartzTaskServiceImpl implements QuartzTaskService {
             //到期时间为已过期任务更改时间
             ZonedDateTime zonedDateTime = sendRecord.getExpirationTime();
             //到期提醒时间
-            ZonedDateTime noticeTime = zonedDateTime.minusHours(1L);
+            ZonedDateTime noticeTime = zonedDateTime.minusHours(1);
             Date date = Date.from(noticeTime.toInstant());
             String cronTime = BankUtil.getCron(date);
             QuartzTask quartzTask = new QuartzTask();

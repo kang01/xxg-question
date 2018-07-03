@@ -18,6 +18,7 @@ import org.fwoxford.service.dto.MessagerDTO;
 import org.fwoxford.service.dto.SendRecordDTO;
 import org.fwoxford.service.mapper.SendRecordMapper;
 import org.fwoxford.web.rest.errors.BankServiceException;
+import org.fwoxford.web.rest.util.BankUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,7 +207,7 @@ public class SendRecordServiceImpl implements SendRecordService {
             throw new BankServiceException("未查询到"+sendRecord.getStrangerEmail()+"的上一次授权信息！");
         }
 
-        authorizationRecord.setExpirationTime(Constants.EXPRIATIONTIME);
+        authorizationRecord.setExpirationTime(BankUtil.getExpriationTime());
         authorizationRecordRepository.save(authorizationRecord);
 
         EmailMessage emailMessage = new EmailMessage();
@@ -233,6 +234,9 @@ public class SendRecordServiceImpl implements SendRecordService {
         //重新创造定时任务
         quartzTaskService.createQuartzTaskForDelayCheck(new ArrayList<SendRecordDTO>(){{add(sendRecordDTO);}});
         quartzTaskService.createQuartzTaskForNotice(new ArrayList<SendRecordDTO>(){{add(sendRecordDTO);}});
+        //重发后,问题为已提问
+        question.status(Constants.QUESTION_ASKED);
+        questionRepository.save(question);
         return sendRecordDTO;
     }
 }

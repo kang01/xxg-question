@@ -222,4 +222,8 @@ public class BankUtil {
         String dateFormat="ss mm HH dd MM ? yyyy";
         return formatDateByPattern(date, dateFormat);
     }
+    public static ZonedDateTime  getExpriationTime(){
+        ZonedDateTime EXPRIATIONTIME = ZonedDateTime.now().plusHours(2);
+        return EXPRIATIONTIME;
+    }
 }
