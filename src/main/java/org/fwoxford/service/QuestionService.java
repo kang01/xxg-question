@@ -2,6 +2,7 @@ package org.fwoxford.service;
 
 import org.fwoxford.service.dto.QuestionDTO;
 import org.fwoxford.service.dto.response.QuestionForDataTableEntity;
+import org.fwoxford.service.dto.response.SendRecordForResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
@@ -69,5 +70,5 @@ public interface QuestionService {
      * @param id
      * @return
      */
-    QuestionDTO findReplyRecordAndQuestionDetails(Long id);
+    SendRecordForResponse findReplyRecordAndQuestionDetails(Long id);
 }

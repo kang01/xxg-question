@@ -191,9 +191,11 @@ public class SendRecordServiceImpl implements SendRecordService {
     @Override
     public SendRecordDTO saveSendRecordForReSend(Long id) {
         SendRecord sendRecord = sendRecordRepository.findOne(id);
-        if(sendRecord ==null || !sendRecord.equals(Constants.QUESTION_SEND_OVERDUE)){
+        if(sendRecord ==null || !sendRecord.getStatus().equals(Constants.QUESTION_SEND_OVERDUE)){
             throw new BankServiceException("上一次发送未过期，无法再次发送！");
         }
+        sendRecord.status(Constants.QUESTION_SEND_RESEND);
+        sendRecordRepository.save(sendRecord);
         Long questionId =  sendRecord.getQuestionId();
         Long authorizationId = sendRecord.getAuthorizationRecordId();
         //

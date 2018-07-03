@@ -8,14 +8,15 @@ import org.fwoxford.service.QuestionService;
 import org.fwoxford.service.dto.QuestionDTO;
 import org.fwoxford.service.dto.QuestionItemDTO;
 import org.fwoxford.service.dto.QuestionItemDetailsDTO;
-import org.fwoxford.service.dto.ReplyDetailsDTO;
 import org.fwoxford.service.dto.response.QuestionForDataTableEntity;
+import org.fwoxford.service.dto.response.SendRecordForResponse;
 import org.fwoxford.service.mapper.QuestionMapper;
 import org.fwoxford.service.mapper.ReplyDetailsMapper;
 import org.fwoxford.web.rest.errors.BankServiceException;
 import org.fwoxford.web.rest.util.BankUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,8 +63,13 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Autowired
     ReplyDetailsRepository replyDetailsRepository;
+
     @Autowired
     ReplyDetailsMapper replyDetailsMapper;
+
+    @Autowired
+    AuthorizationRecordRepository authorizationRecordRepository;
+
     public QuestionServiceImpl(QuestionRepository questionRepository, QuestionMapper questionMapper) {
         this.questionRepository = questionRepository;
         this.questionMapper = questionMapper;
@@ -218,14 +224,19 @@ public class QuestionServiceImpl implements QuestionService {
      * @return
      */
     @Override
-    public QuestionDTO findReplyRecordAndQuestionDetails(Long id) {
+    public SendRecordForResponse findReplyRecordAndQuestionDetails(Long id) {
         SendRecord sendRecord = sendRecordRepository.findOne(id);
         if(sendRecord == null){
             throw new BankServiceException("未查询到发送记录！");
         }
+        Long authId= sendRecord.getAuthorizationRecordId();
+        AuthorizationRecord authorizationRecord = authorizationRecordRepository.getOne(authId);
+        if(authorizationRecord ==null){
+            throw new BankServiceException("未查询到授权记录！");
+        }
         Long questionId = sendRecord.getQuestionId();
         QuestionDTO questionDTO = findQuestionAndItemsAndDetails(questionId);
-
+        SendRecordForResponse sendRecordForResponse = new SendRecordForResponse();
         ReplyRecord replyRecord = replyRecordRepository.findBySendRecordId(id);
         //查询回复详情
         List<ReplyDetails> replyDetailss = new ArrayList<>();
@@ -244,8 +255,24 @@ public class QuestionServiceImpl implements QuestionService {
                     q.setReplyContent(replyDetails.getReplyContent());
                 }
             });
-
         });
-        return questionDTO;
+        sendRecordForResponse.setId(sendRecord.getId());
+        sendRecordForResponse.setStatus(sendRecord.getStatus());
+        sendRecordForResponse.setProjectId(questionDTO.getProjectId());
+        sendRecordForResponse.setQuestionSummary(questionDTO.getQuestionSummary());
+        sendRecordForResponse.setAuthor(questionDTO.getAuthor());
+        sendRecordForResponse.setAuthorId(questionDTO.getAuthorId());
+        sendRecordForResponse.setMemo(sendRecord.getMemo());
+        sendRecordForResponse.setOccurDate(questionDTO.getOccurDate());
+        sendRecordForResponse.setProjectCode(questionDTO.getProjectCode());
+        sendRecordForResponse.setProjectName(questionDTO.getProjectName());
+        sendRecordForResponse.setQuestionCode(questionDTO.getQuestionCode());
+        sendRecordForResponse.setQuestionDescription(questionDTO.getQuestionDescription());
+        sendRecordForResponse.setReplyDate(questionDTO.getReplyDate());
+        sendRecordForResponse.setReplyPerson(questionDTO.getReplyPerson());
+        sendRecordForResponse.setQuestionTypeCode(questionDTO.getQuestionTypeCode());
+        sendRecordForResponse.setQuestionItemDTOList(questionItemDTOS);
+        sendRecordForResponse.setExpirationTime(authorizationRecord.getExpirationTime());
+        return sendRecordForResponse;
     }
 }

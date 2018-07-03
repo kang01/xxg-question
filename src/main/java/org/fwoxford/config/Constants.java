@@ -65,13 +65,13 @@ public final class Constants {
     public static final String QUESTION_TYPE_OTHER= "2302";
 
     /**
-     * 问题发送记录状态：2401：已发送，2402:回复中，2403: 已回复，2404:已过期
+     * 问题发送记录状态：2401：已发送，2402:回复中，2403: 已回复，2404:已过期,2405:已重发
      */
     public static final String QUESTION_SENT = "2401";
     public static final String QUESTION_SEND_REPLY_PENDING= "2402";
     public static final String QUESTION_SEND_REPLIED= "2403";
     public static final String QUESTION_SEND_OVERDUE= "2404";
-
+    public static final String QUESTION_SEND_RESEND= "2405";
     /**
      * 问题回复状态：2501：进行中，2502：已回复，2503：已过期
      */

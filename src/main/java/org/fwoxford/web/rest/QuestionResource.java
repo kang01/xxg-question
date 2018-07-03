@@ -9,6 +9,7 @@ import org.fwoxford.service.QuestionService;
 import org.fwoxford.service.dto.QuestionDTO;
 import org.fwoxford.service.dto.ReplyRecordDTO;
 import org.fwoxford.service.dto.response.QuestionForDataTableEntity;
+import org.fwoxford.service.dto.response.SendRecordForResponse;
 import org.fwoxford.web.rest.util.HeaderUtil;
 import org.fwoxford.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -213,9 +214,9 @@ public class QuestionResource {
      */
     @GetMapping("/question/reply-records/sendRecord/{id}")
     @Timed
-    public ResponseEntity<QuestionDTO> getReplyRecordAndQuestionDetails(@Valid @PathVariable Long id) {
+    public ResponseEntity<SendRecordForResponse> getReplyRecordAndQuestionDetails(@Valid @PathVariable Long id) {
         log.debug("REST request to get ReplyRecord : {}", id);
-        QuestionDTO questionDTO = questionService.findReplyRecordAndQuestionDetails(id);
+        SendRecordForResponse questionDTO = questionService.findReplyRecordAndQuestionDetails(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionDTO));
     }
 }

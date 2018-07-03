@@ -51,4 +51,12 @@ public class CustomParameterizedException extends AbstractThrowableProblem {
         parameters.put("params", paramMap);
         return parameters;
     }
+
+    public ParameterizedErrorVM getErrorVM() {
+        String[] params = new String[this.getParameters().size()];
+        String message = this.getParameters().get("message").toString();
+        params = ((HashMap<String, String>)this.getParameters().get("params")).values().toArray(params);
+//        params = this.getParameters().keySet().toArray(params);
+        return new ParameterizedErrorVM(message, params);
+    }
 }

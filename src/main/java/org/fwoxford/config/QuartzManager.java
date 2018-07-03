@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -50,11 +52,10 @@ public class QuartzManager {
             Date startDate = new Date();
             Date nextValidTime = cronExpression.getNextValidTimeAfter(startDate);
             if(nextValidTime==null || (nextValidTime!=null &&nextValidTime.before(startDate))){
-                LOGGER.info(jobName+"任务已结束！");
-                quartzTaskDTO.setEnableStatus(Constants.TASK_ENABLE_STATUS_NO);
-                quartzTaskDTO.setStatus(Constants.INVALID);
+                LOGGER.info(jobName+"任务在指定日期内未执行,现在开始执行！");
+                ZonedDateTime startTime = startDate.toInstant().atZone(ZoneId.systemDefault()).plusMinutes(2);
+                cron = BankUtil.getCron(Date.from(startTime.toInstant()));
                 quartzTaskRepository.save(quartzTaskMapper.toEntity(quartzTaskDTO));
-                return;
             }
             // 任务名，任务组，任务执行类
 //            MethodInvokingJobDetailFactoryBean jobDetail = new MethodInvokingJobDetailFactoryBean();
