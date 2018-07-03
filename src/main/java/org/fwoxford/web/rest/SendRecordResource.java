@@ -154,4 +154,20 @@ public class SendRecordResource {
             .body(result);
     }
 
+    /**
+     * 申请加时
+     * @param id
+     * @return
+     * @throws URISyntaxException
+     */
+    @PutMapping("/send-records/{id}/increase-time")
+    @Timed
+    public ResponseEntity<SendRecordDTO> increaseTimeSendRecord(@Valid @PathVariable Long id ) throws URISyntaxException {
+        log.debug("REST request to update SendRecord : {}", id);
+        SendRecordDTO result = sendRecordService.increaseTimeSendRecord(id);
+        return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, id.toString()))
+                .body(result);
+    }
+
 }

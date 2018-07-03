@@ -4,18 +4,13 @@ import org.fwoxford.config.Constants;
 import org.fwoxford.domain.AuthorizationRecord;
 import org.fwoxford.domain.QuartzTask;
 import org.fwoxford.domain.Question;
-import org.fwoxford.repository.AuthorizationRecordRepository;
-import org.fwoxford.repository.QuestionItemDetailsRepository;
-import org.fwoxford.repository.QuestionRepository;
+import org.fwoxford.repository.*;
 import org.fwoxford.service.MailService;
 import org.fwoxford.service.QuartzTaskService;
 import org.fwoxford.service.SendRecordService;
 import org.fwoxford.domain.SendRecord;
-import org.fwoxford.repository.SendRecordRepository;
-import org.fwoxford.service.dto.AuthorizationRecordDTO;
-import org.fwoxford.service.dto.EmailMessage;
-import org.fwoxford.service.dto.MessagerDTO;
-import org.fwoxford.service.dto.SendRecordDTO;
+import org.fwoxford.service.dto.*;
+import org.fwoxford.service.mapper.QuartzTaskMapper;
 import org.fwoxford.service.mapper.SendRecordMapper;
 import org.fwoxford.web.rest.errors.BankServiceException;
 import org.fwoxford.web.rest.util.BankUtil;
@@ -28,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -54,6 +51,10 @@ public class SendRecordServiceImpl implements SendRecordService {
     AuthorizationRecordRepository authorizationRecordRepository;
     @Autowired
     QuartzTaskService quartzTaskService;
+    @Autowired
+    QuartzTaskRepository quartzTaskRepository;
+    @Autowired
+    QuartzTaskMapper quartzTaskMapper;
 
     public SendRecordServiceImpl(SendRecordRepository sendRecordRepository, SendRecordMapper sendRecordMapper) {
         this.sendRecordRepository = sendRecordRepository;
@@ -240,5 +241,56 @@ public class SendRecordServiceImpl implements SendRecordService {
         question.status(Constants.QUESTION_ASKED);
         questionRepository.save(question);
         return sendRecordDTO;
+    }
+
+    /**
+     * 申请加时
+     * @param id  发送ID
+     * @return
+     */
+    @Override
+    public SendRecordDTO increaseTimeSendRecord(Long id) {
+        //根据发送ID获取授权ID,更改授权过期时间
+        //找到当前发送记录的定时任务,更改触发时间
+        SendRecord sendRecord = sendRecordRepository.findOne(id);
+        //什么时候可以申请加时,已发送,回复中可以
+        if(sendRecord == null || (sendRecord!=null
+                && !sendRecord.getStatus().equals(Constants.QUESTION_SENT)
+                && !sendRecord.getStatus().equals(Constants.QUESTION_SEND_REPLY_PENDING)
+        )){
+            throw new BankServiceException("此次发送不在进行中,不能申请加时！");
+        }
+        Long authId = sendRecord.getAuthorizationRecordId();
+        AuthorizationRecord authorizationRecord = authorizationRecordRepository.findOne(authId);
+        if(authorizationRecord == null){
+            throw new BankServiceException("授权信息查询失败,不能申请加时！");
+        }
+        ZonedDateTime expriationTime = authorizationRecord.getExpirationTime().plusHours(2);
+        authorizationRecord.expirationTime(expriationTime);
+        authorizationRecordRepository.save(authorizationRecord);
+        //找到该授权的定时任务
+        QuartzTask quartzTaskDelay = quartzTaskRepository.findByBusinessIdAndJobGroup(id,Constants.QUARTZ_GROUP_DELAY);
+        if(quartzTaskDelay ==null){
+            throw new BankServiceException("查询定时任务失败!");
+        }
+        Date date  = Date.from(expriationTime.toInstant());
+        String triggerName = BankUtil.getCron(date);
+        quartzTaskDelay.triggerTime(triggerName);
+        quartzTaskRepository.save(quartzTaskDelay);
+        QuartzTaskDTO quartzTaskDTOForDelayCheck = quartzTaskMapper.toDto(quartzTaskDelay);
+        quartzTaskService.modifyTriggerTime(quartzTaskDTOForDelayCheck);
+        //找到该发送记录的消息提醒的定时任务
+        QuartzTask quartzTaskNotice = quartzTaskRepository.findByBusinessIdAndJobGroup(authId,Constants.QUARTZ_GROUP_MESSAGE);
+        if(quartzTaskNotice ==null){
+            throw new BankServiceException("查询定时任务失败!");
+        }
+        ZonedDateTime noticeTime = expriationTime.minusHours(1);
+        Date dateNotice  = Date.from(noticeTime.toInstant());
+        String triggerNameForNotice = BankUtil.getCron(dateNotice);
+        quartzTaskNotice.triggerTime(triggerNameForNotice);
+        quartzTaskRepository.save(quartzTaskNotice);
+        QuartzTaskDTO quartzTaskDTOForNotice= quartzTaskMapper.toDto(quartzTaskNotice);
+        quartzTaskService.modifyTriggerTime(quartzTaskDTOForNotice);
+        return sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
     }
 }

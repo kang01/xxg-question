@@ -65,4 +65,11 @@ public interface SendRecordService {
      * @return
      */
     SendRecordDTO saveSendRecordForReSend(Long id);
+
+    /**
+     * 申请加时
+     * @param id
+     * @return
+     */
+    SendRecordDTO increaseTimeSendRecord(Long id);
 }

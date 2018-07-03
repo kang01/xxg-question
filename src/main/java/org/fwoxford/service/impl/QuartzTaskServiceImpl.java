@@ -151,4 +151,9 @@ public class QuartzTaskServiceImpl implements QuartzTaskService {
         }
         quartzTaskRepository.save(quartzTasks);
     }
+
+    @Override
+    public void modifyTriggerTime(QuartzTaskDTO quartzTaskDTO) {
+        quartzManager.modifyJobTime(quartzTaskDTO.getTriggerName(),quartzTaskDTO.getTriggerGroup(),quartzTaskDTO.getTriggerTime());
+    }
 }

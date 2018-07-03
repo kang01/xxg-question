@@ -56,4 +56,10 @@ public interface QuartzTaskService {
     void createQuartzTaskForNotice(List<SendRecordDTO> sendRecords);
 
     void createQuartzTaskForDelayCheck(List<SendRecordDTO> sendRecords);
+
+    /**
+     * 修改触发时间
+     * @param quartzTaskDTO
+     */
+    void modifyTriggerTime(QuartzTaskDTO quartzTaskDTO);
 }
