@@ -45,11 +45,10 @@ public interface ReplyRecordService {
 
     /**
      * 回复问题
-     * @param id
-     * @param replyDetailsDTOS
+     * @param replyRecordDTO
      * @return
      */
-    List<ReplyDetailsDTO> saveReplyQuestionList(Long id, List<ReplyDetailsDTO> replyDetailsDTOS);
+    ReplyRecordDTO saveReplyQuestionList(ReplyRecordDTO replyRecordDTO);
 
     /**
      * 回复完成

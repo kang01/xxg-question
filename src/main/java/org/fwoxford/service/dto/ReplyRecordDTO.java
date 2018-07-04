@@ -4,6 +4,7 @@ package org.fwoxford.service.dto;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -14,7 +15,6 @@ public class ReplyRecordDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
     @Size(max = 255)
     private String strangerEmail;
 
@@ -33,9 +33,13 @@ public class ReplyRecordDTO implements Serializable {
     private String memo;
 
     @Size(max = 1024)
+    @NotNull
     private String replyContent;
 
+    @NotNull
     private Long sendRecordId;
+
+    private List<ReplyDetailsDTO> replyDetailsDTOList;
 
     public Long getId() {
         return id;
@@ -107,6 +111,14 @@ public class ReplyRecordDTO implements Serializable {
 
     public void setSendRecordId(Long sendRecordId) {
         this.sendRecordId = sendRecordId;
+    }
+
+    public List<ReplyDetailsDTO> getReplyDetailsDTOList() {
+        return replyDetailsDTOList;
+    }
+
+    public void setReplyDetailsDTOList(List<ReplyDetailsDTO> replyDetailsDTOList) {
+        this.replyDetailsDTOList = replyDetailsDTOList;
     }
 
     @Override

@@ -44,16 +44,16 @@ public class ReplyRecordResource {
     /**
      * POST  /reply-records : Create a new replyRecord.
      * 回复问题
-     * @param replyDetailsDTOS the replyRecordDTO to create
+     * @param replyRecordDTO the replyRecordDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new replyRecordDTO, or with status 400 (Bad Request) if the replyRecord has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/reply-records/sendRecord/{id}")
+    @PostMapping("/reply-records/sendRecord")
     @Timed
-    public ResponseEntity<List<ReplyDetailsDTO>> createReplyRecordList(@Valid @PathVariable Long id , @Valid @RequestBody List<ReplyDetailsDTO> replyDetailsDTOS) throws URISyntaxException {
-        log.debug("REST request to save ReplyRecordList For One Question : {}", replyDetailsDTOS);
+    public ResponseEntity<ReplyRecordDTO> createReplyRecordList(@Valid @RequestBody ReplyRecordDTO replyRecordDTO) throws URISyntaxException {
+        log.debug("REST request to save ReplyRecordList For One Question : {}", replyRecordDTO);
 
-        List<ReplyDetailsDTO> result = replyRecordService.saveReplyQuestionList(id , replyDetailsDTOS);
+        ReplyRecordDTO result = replyRecordService.saveReplyQuestionList(replyRecordDTO);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 

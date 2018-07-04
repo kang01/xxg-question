@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -114,18 +115,17 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
 
     /**
      * 回复问题
-     * @param sendRecordId
-     * @param replyDetailsDTOS
+     * @param replyRecordDTO
      * @return
      */
     @Override
-    public List<ReplyDetailsDTO> saveReplyQuestionList(Long sendRecordId, List<ReplyDetailsDTO> replyDetailsDTOS) {
-        //验证传递参数中是否重复的问题样本ID
-        Map<Long,List<ReplyDetailsDTO>> mapGroupByQuestionItemDetailsId = replyDetailsDTOS.stream().collect(Collectors.groupingBy(s->s.getQuestionItemDetailsId()));
-        for(List<ReplyDetailsDTO> s :mapGroupByQuestionItemDetailsId.values()){
-            if(s.size()>1){
-                throw new BankServiceException("请勿提交重复的问题样本ID！");
-            }
+    public ReplyRecordDTO saveReplyQuestionList(ReplyRecordDTO  replyRecordDTO) {
+        Long sendRecordId = replyRecordDTO.getSendRecordId();
+        if(sendRecordId == null){
+            throw new BankServiceException("发送记录ID不能为空！");
+        }
+        if(StringUtils.isEmpty(replyRecordDTO.getReplyContent())){
+            throw new BankServiceException("回复内容不能为空！");
         }
         //获取发送记录
         SendRecord sendRecord = sendRecordRepository.findOne(sendRecordId);
@@ -148,14 +148,28 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
         if(question.getStatus().equals(Constants.QUESTION_FINISHED)){
             throw new BankServiceException("问题已结束，不能再回复！");
         }
+
         //先找到回复记录，没有则创建，状态回复中
         ReplyRecord replyRecord = replyRecordRepository.findBySendRecordId(sendRecordId);
         if(replyRecord == null){
             replyRecord = new ReplyRecord();
         }
         replyRecord.status(Constants.QUESTION_REPLY_PENDING).strangerEmail(sendRecord.getStrangerEmail()).sendRecord(sendRecord)
-            .strangerName(sendRecord.getStrangerName()).questionId(questionId).questionCode(question.getQuestionCode());
+                .strangerName(sendRecord.getStrangerName()).questionId(questionId).questionCode(question.getQuestionCode()).replyContent(replyRecordDTO.getReplyContent());
         replyRecordRepository.save(replyRecord);
+        replyRecordDTO = replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);
+        //验证传递参数中是否重复的问题样本ID
+        List<ReplyDetailsDTO> replyDetailsDTOS = replyRecordDTO.getReplyDetailsDTOList();
+
+        if(replyDetailsDTOS==null){
+            return  replyRecordDTO;
+        }
+        Map<Long,List<ReplyDetailsDTO>> mapGroupByQuestionItemDetailsId = replyDetailsDTOS.stream().collect(Collectors.groupingBy(s->s.getQuestionItemDetailsId()));
+        for(List<ReplyDetailsDTO> s :mapGroupByQuestionItemDetailsId.values()){
+            if(s.size()>1){
+                throw new BankServiceException("请勿提交重复的问题样本ID！");
+            }
+        }
         //每个问题样本在一次回复中只能有一个回复记录
         List<Long> questionItemDetailsIds = replyDetailsDTOS.stream().map(s->s.getQuestionItemDetailsId()).collect(Collectors.toList());
         //历史回复消息
@@ -178,8 +192,8 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
             replyDetailss.add(replyDetails);
         }
         replyDetailsRepository.save(replyDetailss);
-
-        return replyDetailsMapper.toDto(replyDetailss);
+        replyRecordDTO.setReplyDetailsDTOList(replyDetailsMapper.toDto(replyDetailss));
+        return replyRecordDTO;
     }
 
     /**

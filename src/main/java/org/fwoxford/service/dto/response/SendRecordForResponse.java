@@ -50,7 +50,11 @@ public class SendRecordForResponse {
     private String memo;
 
     private Long projectId;
+
     private ZonedDateTime expirationTime;
+
+    private Integer applyTimes;
+
     private List<QuestionItemDTO> questionItemDTOList;
 
     public Long getId() {
@@ -179,6 +183,14 @@ public class SendRecordForResponse {
 
     public void setExpirationTime(ZonedDateTime expirationTime) {
         this.expirationTime = expirationTime;
+    }
+
+    public Integer getApplyTimes() {
+        return applyTimes;
+    }
+
+    public void setApplyTimes(Integer applyTimes) {
+        this.applyTimes = applyTimes;
     }
 
     public List<QuestionItemDTO> getQuestionItemDTOList() {
