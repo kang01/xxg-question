@@ -65,5 +65,10 @@
         </createTable>
 
     </changeSet>
+    <changeSet id="20180619031112-2" author="jhipster">
+        <addColumn tableName="reply_record">
+            <column name="reply_content" type="nvarchar(1024)" remarks="回复内容"/>
+        </addColumn>
+    </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

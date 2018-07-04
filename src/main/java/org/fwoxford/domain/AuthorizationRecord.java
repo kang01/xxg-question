@@ -70,6 +70,13 @@ public class AuthorizationRecord extends AbstractAuditingEntity implements Seria
     @Column(name = "memo", length = 1024)
     private String memo;
 
+    @Column(name = "increase_seconds")
+    private Integer increaseSeconds;
+
+    @Size(max = 1024)
+    @Column(name = "http_url", length = 1024)
+    private String httpUrl;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -216,6 +223,28 @@ public class AuthorizationRecord extends AbstractAuditingEntity implements Seria
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public Integer getIncreaseSeconds() {
+        return increaseSeconds;
+    }
+    public AuthorizationRecord increaseSeconds(Integer increaseSeconds) {
+        this.increaseSeconds = increaseSeconds;
+        return this;
+    }
+    public void setIncreaseSeconds(Integer increaseSeconds) {
+        this.increaseSeconds = increaseSeconds;
+    }
+
+    public String getHttpUrl() {
+        return httpUrl;
+    }
+    public AuthorizationRecord httpUrl(String httpUrl) {
+        this.httpUrl = httpUrl;
+        return this;
+    }
+    public void setHttpUrl(String httpUrl) {
+        this.httpUrl = httpUrl;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

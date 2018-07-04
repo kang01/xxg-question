@@ -25,7 +25,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,8 +171,10 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
 
         for(AuthorizationRecordDTO dto : authorizationRecordDTOs ){
             AuthorizationRecord authorizationRecord = authorizationRecordMapper.authorizationRecordDTOToAuthorizationRecord(dto);
-
-            authorizationRecord.questionId(questionId).applyTimes(0).authorityName(Constants.AUTHORITY_ROLE_STRANGER+";")
+            String addr = question.getQuestionCode()+"|"+dto.getStrangerEmail();
+            String encryptAddr =(new BASE64Encoder()).encode(addr.getBytes()).replace("=","");
+            String httpUrl = Constants.STRANGER_HTTP_URL+encryptAddr;
+            authorizationRecord.questionId(questionId).applyTimes(0).authorityName(Constants.AUTHORITY_ROLE_STRANGER+";").httpUrl(httpUrl)
                 .expirationTime(BankUtil.getExpriationTime()).authorityPersonId(authorizationPersonId).questionCode(question.getQuestionCode())
                 .status(Constants.VALID);
             authorizationRecordsForSave.add(authorizationRecord);

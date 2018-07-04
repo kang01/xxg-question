@@ -15,6 +15,7 @@ public class EmailMessage {
     private String questionDescription;
     private String projectCode;
     private String projectName;
+    private String httpUrl;
 
     public String getAuthor() {
         return author;
@@ -86,5 +87,13 @@ public class EmailMessage {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getHttpUrl() {
+        return httpUrl;
+    }
+
+    public void setHttpUrl(String httpUrl) {
+        this.httpUrl = httpUrl;
     }
 }

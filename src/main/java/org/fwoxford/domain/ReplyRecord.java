@@ -55,6 +55,10 @@ public class ReplyRecord extends AbstractAuditingEntity implements Serializable 
     @Column(name = "memo", length = 1024)
     private String memo;
 
+    @Size(max = 1024)
+    @Column(name = "reply_content", length = 1024)
+    private String replyContent;
+
     @ManyToOne(optional = false)
     @NotNull
     private SendRecord sendRecord;
@@ -144,6 +148,17 @@ public class ReplyRecord extends AbstractAuditingEntity implements Serializable 
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getReplyContent() {
+        return replyContent;
+    }
+    public ReplyRecord replyContent(String replyContent) {
+        this.replyContent = replyContent;
+        return this;
+    }
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent;
     }
 
     public SendRecord getSendRecord() {

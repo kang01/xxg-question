@@ -32,6 +32,9 @@ public class ReplyRecordDTO implements Serializable {
     @Size(max = 1024)
     private String memo;
 
+    @Size(max = 1024)
+    private String replyContent;
+
     private Long sendRecordId;
 
     public Long getId() {
@@ -88,6 +91,14 @@ public class ReplyRecordDTO implements Serializable {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public String getReplyContent() {
+        return replyContent;
+    }
+
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent;
     }
 
     public Long getSendRecordId() {

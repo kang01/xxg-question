@@ -45,6 +45,11 @@ public class AuthorizationRecordDTO implements Serializable {
     @Size(max = 1024)
     private String memo;
 
+    private Integer increaseSeconds;
+
+    @Size(max = 1024)
+    private String httpUrl;
+
     public Long getId() {
         return id;
     }
@@ -139,6 +144,22 @@ public class AuthorizationRecordDTO implements Serializable {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public Integer getIncreaseSeconds() {
+        return increaseSeconds;
+    }
+
+    public void setIncreaseSeconds(Integer increaseSeconds) {
+        this.increaseSeconds = increaseSeconds;
+    }
+
+    public String getHttpUrl() {
+        return httpUrl;
+    }
+
+    public void setHttpUrl(String httpUrl) {
+        this.httpUrl = httpUrl;
     }
 
     @Override

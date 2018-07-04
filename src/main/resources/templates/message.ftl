@@ -34,7 +34,7 @@
         <p>相关项目：${(params.projectCode)!""}(${(params.projectName)!""})</p>
         <p>问题详情：${(params.questionDescription)!""}</p>
         <p>请点击此链接查看问题详情：</p>
-        <p><a>http://10.24.200.21:8080</a></p>
+        <p><a>${(params.httpUrl)!""}</a></p>
         <p>登录授权码为：（<strong>${(params.authorizationCode)!""}</strong>）。</p>
         <p>注：请勿回复此邮件！</p>
 </div>

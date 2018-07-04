@@ -80,4 +80,10 @@
             <column name="question_code" type="nvarchar(255)" remarks="问题编码"> </column>
         </addColumn>
     </changeSet>
+    <changeSet id="20180619015938-3" author="jhipster">
+        <addColumn tableName="authorization_record">
+            <column name="increase_seconds" type="bigint" remarks="增加秒数"></column>
+            <column name="http_url" type="nvarchar(255)" remarks="问题链接"> </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

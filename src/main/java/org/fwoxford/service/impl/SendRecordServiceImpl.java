@@ -136,6 +136,7 @@ public class SendRecordServiceImpl implements SendRecordService {
             emailMessage.setProjectName(question.getProjectName());
             emailMessage.setQuestionDescription(question.getQuestionDescription());
             emailMessage.setQuestionSummary(question.getQuestionSummary());
+            emailMessage.setHttpUrl(authorizationRecord.getHttpUrl());
             MessagerDTO messagerDTO = new MessagerDTO();
             messagerDTO.setFromUser("gengluy@163.com");
             messagerDTO.setToUser(authorizationRecord.getStrangerEmail());
@@ -223,6 +224,7 @@ public class SendRecordServiceImpl implements SendRecordService {
         emailMessage.setProjectName(question.getProjectName());
         emailMessage.setQuestionDescription(question.getQuestionDescription());
         emailMessage.setQuestionSummary(question.getQuestionSummary());
+        emailMessage.setHttpUrl(authorizationRecord.getHttpUrl());
         MessagerDTO messagerDTO = new MessagerDTO();
         messagerDTO.setFromUser("gengluy@163.com");
         messagerDTO.setToUser(authorizationRecord.getStrangerEmail());
@@ -265,8 +267,13 @@ public class SendRecordServiceImpl implements SendRecordService {
         if(authorizationRecord == null){
             throw new BankServiceException("授权信息查询失败,不能申请加时！");
         }
-        ZonedDateTime expriationTime = authorizationRecord.getExpirationTime().plusHours(2);
+        if(authorizationRecord.getApplyTimes().equals(Constants.APPLY_TIMES_MAX)){
+            throw new BankServiceException("此次申请加时已达到最大上限("+Constants.APPLY_TIMES_MAX+"次)！");
+        }
+        ZonedDateTime expriationTime = authorizationRecord.getExpirationTime().plusSeconds(Constants.INCREASE_SECONDS);
         authorizationRecord.expirationTime(expriationTime);
+        authorizationRecord.applyTimes(authorizationRecord.getApplyTimes()!=null?authorizationRecord.getApplyTimes()+1:1);
+        authorizationRecord.increaseSeconds(authorizationRecord.getIncreaseSeconds()!=null?authorizationRecord.getIncreaseSeconds()+Constants.INCREASE_SECONDS:Constants.INCREASE_SECONDS);
         authorizationRecordRepository.save(authorizationRecord);
         //找到该授权的定时任务
         QuartzTask quartzTaskDelay = quartzTaskRepository.findByBusinessIdAndJobGroup(id,Constants.QUARTZ_GROUP_DELAY);
