@@ -70,7 +70,7 @@ public class ScheduleTaskReply implements Job {
         //已回复记录
         Long countOfReplyed = sendRecordRepository.countByQuestionIdAndStatus(questionId,Constants.QUESTION_SEND_REPLIED);
         if(countOfReplyed == 0 && countOfUnCount!=0){
-            question.status(Constants.QUESTION_SEND_OVERDUE);
+            question.status(Constants.QUESTION_OVERDUE);
             questionRepository.save(question);
         }
         LOGGER.info("问题在有效期内尚未回复，回复已过期!");

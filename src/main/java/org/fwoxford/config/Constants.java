@@ -65,7 +65,7 @@ public final class Constants {
     public static final String QUESTION_TYPE_OTHER= "2302";
 
     /**
-     * 问题发送记录状态：2401：已发送，2402:回复中，2403: 已回复，2404:已过期,2405:已重发
+     * 问题发送记录状态：2401：已发送，2402:回复中，2403: 已回复，2404:已过期2405:已重发
      */
     public static final String QUESTION_SENT = "2401";
     public static final String QUESTION_SEND_REPLY_PENDING= "2402";
