@@ -55,6 +55,12 @@ public class SendRecordForResponse {
 
     private Integer applyTimes;
 
+    private String replyContent;
+
+    private String relatedAgency;
+
+    private Long relatedAgencyId;
+
     private List<QuestionItemDTO> questionItemDTOList;
 
     public Long getId() {
@@ -191,6 +197,30 @@ public class SendRecordForResponse {
 
     public void setApplyTimes(Integer applyTimes) {
         this.applyTimes = applyTimes;
+    }
+
+    public String getRelatedAgency() {
+        return relatedAgency;
+    }
+
+    public void setRelatedAgency(String relatedAgency) {
+        this.relatedAgency = relatedAgency;
+    }
+
+    public Long getRelatedAgencyId() {
+        return relatedAgencyId;
+    }
+
+    public void setRelatedAgencyId(Long relatedAgencyId) {
+        this.relatedAgencyId = relatedAgencyId;
+    }
+
+    public String getReplyContent() {
+        return replyContent;
+    }
+
+    public void setReplyContent(String replyContent) {
+        this.replyContent = replyContent;
     }
 
     public List<QuestionItemDTO> getQuestionItemDTOList() {

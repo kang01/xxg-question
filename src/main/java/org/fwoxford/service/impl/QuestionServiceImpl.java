@@ -274,6 +274,9 @@ public class QuestionServiceImpl implements QuestionService {
         sendRecordForResponse.setQuestionItemDTOList(questionItemDTOS);
         sendRecordForResponse.setExpirationTime(authorizationRecord.getExpirationTime());
         sendRecordForResponse.setApplyTimes(authorizationRecord.getApplyTimes());
+        sendRecordForResponse.setReplyContent(replyRecord!=null?replyRecord.getReplyContent():null);
+        sendRecordForResponse.setRelatedAgencyId(questionDTO.getRelatedAgencyId());
+        sendRecordForResponse.setRelatedAgency(questionDTO.getRelatedAgency());
         return sendRecordForResponse;
     }
 }

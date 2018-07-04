@@ -270,10 +270,10 @@ public class SendRecordServiceImpl implements SendRecordService {
         if(authorizationRecord.getApplyTimes().equals(Constants.APPLY_TIMES_MAX)){
             throw new BankServiceException("此次申请加时已达到最大上限("+Constants.APPLY_TIMES_MAX+"次)！");
         }
-        ZonedDateTime expriationTime = authorizationRecord.getExpirationTime().plusSeconds(Constants.INCREASE_SECONDS);
+        ZonedDateTime expriationTime = authorizationRecord.getExpirationTime().plusMinutes(Constants.INCREASE_MINUTES);
         authorizationRecord.expirationTime(expriationTime);
         authorizationRecord.applyTimes(authorizationRecord.getApplyTimes()!=null?authorizationRecord.getApplyTimes()+1:1);
-        authorizationRecord.increaseSeconds(authorizationRecord.getIncreaseSeconds()!=null?authorizationRecord.getIncreaseSeconds()+Constants.INCREASE_SECONDS:Constants.INCREASE_SECONDS);
+        authorizationRecord.increaseSeconds(authorizationRecord.getIncreaseSeconds()!=null?authorizationRecord.getIncreaseSeconds()+Constants.INCREASE_MINUTES:Constants.INCREASE_MINUTES);
         authorizationRecordRepository.save(authorizationRecord);
         //找到该授权的定时任务
         QuartzTask quartzTaskDelay = quartzTaskRepository.findByBusinessIdAndJobGroup(id,Constants.QUARTZ_GROUP_DELAY);
@@ -298,6 +298,8 @@ public class SendRecordServiceImpl implements SendRecordService {
         quartzTaskRepository.save(quartzTaskNotice);
         QuartzTaskDTO quartzTaskDTOForNotice= quartzTaskMapper.toDto(quartzTaskNotice);
         quartzTaskService.modifyTriggerTime(quartzTaskDTOForNotice);
-        return sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
+        SendRecordDTO sendRecordDTO = sendRecordMapper.sendRecordToSendRecordDTO(sendRecord);
+        sendRecordDTO.setExpirationTime(expriationTime);
+        return sendRecordDTO;
     }
 }
