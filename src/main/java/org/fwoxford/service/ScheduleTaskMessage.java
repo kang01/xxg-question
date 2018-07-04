@@ -59,6 +59,7 @@ public class ScheduleTaskMessage implements Job {
         messagerDTO.setToUser(authorizationRecord.getStrangerEmail());
         emailMessage.setAuthorizationCode(authorizationRecord.getAuthorizationCode());
         emailMessage.setStrangerName(authorizationRecord.getStrangerName());
+        emailMessage.setHttpUrl(authorizationRecord.getHttpUrl());
         mailService.sendMessageMail(emailMessage, "授权码到期提醒", "messageNotice.ftl",messagerDTO);
         LOGGER.info("授权码还有一小时到期提醒成功！");
     }
