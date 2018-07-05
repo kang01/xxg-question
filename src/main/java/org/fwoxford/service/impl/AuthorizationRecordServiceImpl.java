@@ -171,7 +171,7 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
 
         for(AuthorizationRecordDTO dto : authorizationRecordDTOs ){
             AuthorizationRecord authorizationRecord = authorizationRecordMapper.authorizationRecordDTOToAuthorizationRecord(dto);
-            String addr = question.getQuestionCode()+"|"+dto.getStrangerEmail();
+            String addr = question.getAuthor()+"|"+question.getQuestionCode()+"|"+dto.getStrangerEmail()+"|"+dto.getStrangerName();
             String encryptAddr =(new BASE64Encoder()).encode(addr.getBytes()).replace("=","");
             String httpUrl = Constants.STRANGER_HTTP_URL+encryptAddr;
             authorizationRecord.questionId(questionId).applyTimes(0).authorityName(Constants.AUTHORITY_ROLE_STRANGER+";").httpUrl(httpUrl)

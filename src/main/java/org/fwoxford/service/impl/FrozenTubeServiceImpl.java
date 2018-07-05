@@ -66,7 +66,7 @@ public class FrozenTubeServiceImpl implements FrozenTubeService {
             {
                 sql.append("LEFT JOIN FROZEN_BOX b ON b.ID = t.FROZEN_BOX_ID");
             }
-            sql.append(" WHERE rownum <=500 and t.STATUS != '"+ Constants.INVALID+"'");
+            sql.append(" WHERE rownum <=500 and t.STATUS != '"+ Constants.INVALID+"' and (t.frozen_tube_state = '2011' or t.frozen_tube_state='2004') ");
             //一维码
         if(!StringUtils.isEmpty(questionItemDetailsDTO.getFrozenBoxCode1D()))
         {
@@ -84,11 +84,15 @@ public class FrozenTubeServiceImpl implements FrozenTubeService {
         if(questionItemDetailsDTO.getSampleTypeId()!=null){
             sql.append(" and t.SAMPLE_TYPE_ID = "+questionItemDetailsDTO.getSampleTypeId()+"");
         }
+        //样本分类
+        if(questionItemDetailsDTO.getSampleClassificationId()!=null){
+            sql.append(" and t.SAMPLE_CLASSIFICATION_ID = "+questionItemDetailsDTO.getSampleClassificationId()+"");
+        }
         //样本状态
         if(!StringUtils.isEmpty(questionItemDetailsDTO.getStatus())){
             sql.append(" and t.STATUS = '"+questionItemDetailsDTO.getStatus()+"'");
         }
-        //冻存盒编码
+        //冻存盒Id
         if(questionItemDetailsDTO.getFrozenBoxId()!=null){
             sql.append(" and t.FROZEN_BOX_ID = "+questionItemDetailsDTO.getFrozenBoxId()+"");
         }
