@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import net.sf.json.JSONObject;
 import org.fwoxford.service.FrozenTubeService;
 import org.fwoxford.service.dto.QuestionItemDetailsDTO;
+import org.fwoxford.service.dto.QuestionSampleData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +33,16 @@ public class FrozenTubeResource {
      */
     @GetMapping("/frozen-tubes/question")
     @Timed
-    public List<QuestionItemDetailsDTO> getQuestionFrozenTube(
+    public QuestionSampleData getQuestionFrozenTube(
         @RequestParam(value = "searchForm",required = false) String searchForm) throws URISyntaxException {
         log.debug("REST request to getQuestionFrozenTube : {}", searchForm);
         JSONObject jsonObject = JSONObject.fromObject(searchForm);
         QuestionItemDetailsDTO questionItemDetailsDTO = (QuestionItemDetailsDTO) JSONObject.toBean(jsonObject, QuestionItemDetailsDTO.class);
-
+        QuestionSampleData questionSampleData = new QuestionSampleData();
+        Long total = frozenTubeService.countQuestionFrozenTube(questionItemDetailsDTO);
         List<QuestionItemDetailsDTO> result = frozenTubeService.findQuestionFrozenTube(questionItemDetailsDTO);
-        return  result;
+        questionSampleData.setTotal(total);
+        questionSampleData.setQuestionItemDetailsDTOS(result);
+        return  questionSampleData;
     }
 }

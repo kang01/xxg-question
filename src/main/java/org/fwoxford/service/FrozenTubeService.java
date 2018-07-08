@@ -9,4 +9,6 @@ import java.util.List;
 public interface FrozenTubeService {
 
     List<QuestionItemDetailsDTO> findQuestionFrozenTube(QuestionItemDetailsDTO questionItemDetailsDTO);
+
+    Long countQuestionFrozenTube(QuestionItemDetailsDTO questionItemDetailsDTO);
 }

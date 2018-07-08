@@ -178,4 +178,67 @@ public class FrozenTubeServiceImpl implements FrozenTubeService {
         });
         return result;
     }
+
+    @Override
+    public Long countQuestionFrozenTube(QuestionItemDetailsDTO questionItemDetailsDTO) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT count(1) FROM FROZEN_TUBE t " );
+        if(!StringUtils.isEmpty(questionItemDetailsDTO.getFrozenBoxCode1D()))
+        {
+            sql.append("LEFT JOIN FROZEN_BOX b ON b.ID = t.FROZEN_BOX_ID");
+        }
+        sql.append(" WHERE t.STATUS != '"+ Constants.INVALID+"' and (t.frozen_tube_state = '2011' or t.frozen_tube_state='2004') ");
+        //一维码
+        if(!StringUtils.isEmpty(questionItemDetailsDTO.getFrozenBoxCode1D()))
+        {
+            sql.append(" and b.FROZEN_BOX_CODE_1D = '"+questionItemDetailsDTO.getFrozenBoxCode1D()+"'");
+        }
+        //项目编码不为空
+        if(!StringUtils.isEmpty(questionItemDetailsDTO.getProjectCode())){
+            sql.append(" and t.PROJECT_CODE = '"+questionItemDetailsDTO.getProjectCode()+"'");
+        }
+        //项目ID
+        if(!StringUtils.isEmpty(questionItemDetailsDTO.getProjectId())){
+            sql.append(" and t.PROJECT_ID = "+questionItemDetailsDTO.getProjectId()+"");
+        }
+        //样本类型
+        if(questionItemDetailsDTO.getSampleTypeId()!=null){
+            sql.append(" and t.SAMPLE_TYPE_ID = "+questionItemDetailsDTO.getSampleTypeId()+"");
+        }
+        //样本分类
+        if(questionItemDetailsDTO.getSampleClassificationId()!=null){
+            sql.append(" and t.SAMPLE_CLASSIFICATION_ID = "+questionItemDetailsDTO.getSampleClassificationId()+"");
+        }
+        //样本状态
+        if(!StringUtils.isEmpty(questionItemDetailsDTO.getStatus())){
+            sql.append(" and t.STATUS = '"+questionItemDetailsDTO.getStatus()+"'");
+        }
+        //冻存盒Id
+        if(questionItemDetailsDTO.getFrozenBoxId()!=null){
+            sql.append(" and t.FROZEN_BOX_ID = "+questionItemDetailsDTO.getFrozenBoxId()+"");
+        }
+        //冻存盒编码
+        if(!StringUtils.isEmpty(questionItemDetailsDTO.getFrozenBoxCode())){
+            sql.append(" and t.FROZEN_BOX_CODE = '"+questionItemDetailsDTO.getFrozenBoxCode()+"'");
+        }
+        //样本编码
+        if(!StringUtils.isEmpty(questionItemDetailsDTO.getSampleCode())){
+            sql.append(" and t.SAMPLE_CODE = '"+questionItemDetailsDTO.getSampleCode()+"'");
+        }
+        //标签
+        if(questionItemDetailsDTO.getTags()!=null && questionItemDetailsDTO.getTags().length>0){
+            for(String tag :questionItemDetailsDTO.getTags()){
+                sql.append(" and (");
+                sql.append("  t.TAG1 like '%"+tag+"%'");
+                sql.append("  or t.TAG2 like '%"+tag+"%'");
+                sql.append("  or t.TAG3 like '%"+tag+"%'");
+                sql.append("  or t.TAG4 like '%"+tag+"%'");
+                sql.append("  or t.MEMO like '%"+tag+"%'");
+                sql.append(" )" );
+            }
+        }
+        Query query = entityManager.createNativeQuery(sql.toString());
+        Long count = query.getSingleResult()!=null?Long.valueOf(query.getSingleResult().toString()):null;
+        return count;
+    }
 }
