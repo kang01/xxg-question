@@ -16,4 +16,6 @@ import java.util.List;
 public interface AuthorizationRecordRepository extends JpaRepository<AuthorizationRecord, Long> {
 
     List<AuthorizationRecord> findByQuestionIdAndStatusNot(Long questionId, String invalid);
+
+    AuthorizationRecord findByAuthorizationCodeAndHttpUrlAndStrangerEmailAndQuestionCodeAndStatusNot(String authorizationCode, String httpUrl, String strangerMail, String questionCode, String invalid);
 }

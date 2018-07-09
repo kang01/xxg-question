@@ -150,6 +150,7 @@ public class QuartzTaskServiceImpl implements QuartzTaskService {
             quartzTasks.add(quartzTask);
         }
         quartzTaskRepository.save(quartzTasks);
+        quartzManager.createJob(quartzTaskMapper.toDto(quartzTasks));
     }
 
     @Override

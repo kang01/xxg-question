@@ -198,4 +198,13 @@ public class AuthorizationRecordDTO implements Serializable {
             ", memo='" + getMemo() + "'" +
             "}";
     }
+    private Long sendRecordId;
+
+    public Long getSendRecordId() {
+        return sendRecordId;
+    }
+
+    public void setSendRecordId(Long sendRecordId) {
+        this.sendRecordId = sendRecordId;
+    }
 }

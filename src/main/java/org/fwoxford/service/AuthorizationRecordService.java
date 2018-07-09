@@ -51,9 +51,16 @@ public interface AuthorizationRecordService {
     List<AuthorizationRecordDTO> saveAuthorizationRecords(Long questionId, List<AuthorizationRecordDTO> authorizationRecordDTOs);
 
     /**
-     *
+     * 根据问题ID查询授权信息
      * @param id
      * @return
      */
     List<AuthorizationRecordDTO> findAllAuthorizationRecordsByQuestionId(Long id);
+
+    /**
+     * 根据DTO查询 AuthorizationRecord
+     * @param authorizationRecordDTO
+     * @return
+     */
+    AuthorizationRecordDTO findAuthorizationRecordByDTO(AuthorizationRecordDTO authorizationRecordDTO);
 }

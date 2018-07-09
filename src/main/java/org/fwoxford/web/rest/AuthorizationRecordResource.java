@@ -118,4 +118,18 @@ public class AuthorizationRecordResource {
         authorizationRecordService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+    /**
+     * 验证门户登陆的邮箱，问题编码，url，授权码
+     * @param authorizationRecordDTO
+     * @return
+     */
+    @PostMapping("/authorization-records/entity")
+    @Timed
+    public ResponseEntity<AuthorizationRecordDTO> getAuthorizationRecordByDTO(@Valid @RequestBody AuthorizationRecordDTO authorizationRecordDTO) {
+        log.debug("REST request to get all AuthorizationRecords of one question");
+        AuthorizationRecordDTO result = authorizationRecordService.findAuthorizationRecordByDTO(authorizationRecordDTO);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
+    }
+
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,4 +24,6 @@ public interface SendRecordRepository extends JpaRepository<SendRecord, Long> {
     List<SendRecord> findByQuestionId(Long questionId);
 
     Long countByQuestionIdAndStatus(Long questionId, String questionSendOverdue);
+
+    SendRecord findByAuthorizationRecordIdAndStatusNotIn(Long id,  ArrayList<String> statusList);
 }

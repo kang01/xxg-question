@@ -5,6 +5,7 @@ import org.fwoxford.domain.Question;
 import org.fwoxford.domain.SendRecord;
 import org.fwoxford.domain.User;
 import org.fwoxford.repository.QuestionRepository;
+import org.fwoxford.repository.SendRecordRepository;
 import org.fwoxford.repository.UserRepository;
 import org.fwoxford.security.SecurityUtils;
 import org.fwoxford.service.AuthorizationRecordService;
@@ -59,6 +60,8 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
     QuartzTaskService quartzTaskService;
     @Autowired
     SendRecordMapper sendRecordMapper;
+    @Autowired
+    SendRecordRepository sendRecordRepository;
 
     public AuthorizationRecordServiceImpl(AuthorizationRecordRepository authorizationRecordRepository, AuthorizationRecordMapper authorizationRecordMapper) {
         this.authorizationRecordRepository = authorizationRecordRepository;
@@ -196,5 +199,35 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
     public List<AuthorizationRecordDTO> findAllAuthorizationRecordsByQuestionId(Long id) {
         List<AuthorizationRecord> authorizationRecords = authorizationRecordRepository.findByQuestionIdAndStatusNot(id, Constants.INVALID);
         return  authorizationRecordMapper.authorizationRecordsToAuthorizationRecordDTOs(authorizationRecords);
+    }
+
+    /**
+     * 根据DTO查询 AuthorizationRecord
+     * @param authorizationRecordDTO
+     * @return
+     */
+    @Override
+    public AuthorizationRecordDTO findAuthorizationRecordByDTO(AuthorizationRecordDTO authorizationRecordDTO) {
+        String strangerMail = authorizationRecordDTO.getStrangerEmail();
+        String httpUrl = authorizationRecordDTO.getHttpUrl();
+        String questionCode = authorizationRecordDTO.getQuestionCode();
+        String authorizationCode = authorizationRecordDTO.getAuthorizationCode();
+        if(StringUtils.isEmpty(strangerMail) || StringUtils.isEmpty(httpUrl) || StringUtils.isEmpty(authorizationCode) || StringUtils.isEmpty(questionCode)){
+            throw new BankServiceException("查询信息不完整！");
+        }
+        AuthorizationRecord authorizationRecord = authorizationRecordRepository.findByAuthorizationCodeAndHttpUrlAndStrangerEmailAndQuestionCodeAndStatusNot(authorizationCode,httpUrl,strangerMail,questionCode,Constants.INVALID);
+       if(authorizationRecord == null){
+           throw new BankServiceException("授权信息查询失败！");
+       }
+        //某一个授权信息在一定时间内只有一条数据是进行中的
+        SendRecord sendRecord = sendRecordRepository.findByAuthorizationRecordIdAndStatusNotIn(authorizationRecord.getId(),
+            new ArrayList<String>(){{add(Constants.INVALID);add(Constants.QUESTION_SEND_RESEND);}});
+        if(sendRecord == null){
+            throw new BankServiceException("发送记录查询失败！");
+        }
+        //找到发送ID 返回
+        authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);
+        authorizationRecordDTO.setSendRecordId(sendRecord.getId());
+        return authorizationRecordDTO;
     }
 }
