@@ -79,7 +79,7 @@ public final class Constants {
     public static final String QUESTION_REPLY_FINISHED= "2502";
     public static final String QUESTION_REPLY_OVERDUE= "2503";
 
-    public static final String AUTHORITY_ROLE_STRANGER = "ROLE_STRANGER";
+    public static final String AUTHORITY_ROLE_STRANGER = "ROLE_ANSWER";
     public static final Map<String,String> QUESTION_TYPE_MAP = new HashMap<String,String>(){
         {
             put("2301", "样本类型");
