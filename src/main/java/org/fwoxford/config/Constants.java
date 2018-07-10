@@ -106,7 +106,7 @@ public final class Constants {
     public static final String QUARTZ_GROUP_DELAY = "DELAY";
     public static final String QUARTZ_GROUP_MESSAGE = "MESSAGE";
 
-    public static final String STRANGER_HTTP_URL =  "http://localhost:8082/#/question-management/?a=";
+    public static final String STRANGER_HTTP_URL =  "http://localhost:8082/#/question-management/question-accredit?q=";
     public static final Integer APPLY_TIMES_MAX = 2;
     //测试时候为 60 正式的为 24*60
     public static final Integer INCREASE_SECONDS = 2*60;
