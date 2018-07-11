@@ -31,6 +31,8 @@ import org.springframework.util.StringUtils;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -128,7 +130,7 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
      * @return
      */
     @Override
-    public List<AuthorizationRecordDTO> saveAuthorizationRecords(Long questionId, List<AuthorizationRecordDTO> authorizationRecordDTOs) {
+    public List<AuthorizationRecordDTO> saveAuthorizationRecords(Long questionId, List<AuthorizationRecordDTO> authorizationRecordDTOs) throws UnsupportedEncodingException {
         //验证传递参数中邮箱是否有重复项
         Map<String,List<AuthorizationRecordDTO>> mapGroupByEmail = authorizationRecordDTOs.stream().collect(Collectors.groupingBy(s->s.getStrangerEmail()));
         for(List<AuthorizationRecordDTO> values :mapGroupByEmail.values()){
@@ -175,7 +177,10 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
         for(AuthorizationRecordDTO dto : authorizationRecordDTOs ){
             AuthorizationRecord authorizationRecord = authorizationRecordMapper.authorizationRecordDTOToAuthorizationRecord(dto);
             String addr = question.getAuthor()+"|"+question.getQuestionCode()+"|"+dto.getStrangerEmail()+"|"+dto.getStrangerName();
-            String encryptAddr =(new BASE64Encoder()).encode(addr.getBytes()).replace("=","");
+//            String encryptAddr = BankUtil.string2Unicode((new BASE64Encoder()).encode(addr.getBytes()));
+//            String encryptAddr = (new BASE64Encoder()).encode(addr.getBytes())
+//                .replace("+","%").replace("=","%").replace("/","%").replace("&","%").replace("?","%").replace("#","%");
+            String encryptAddr =  URLEncoder.encode((new BASE64Encoder()).encode(addr.getBytes()),"UTF-8");
             String httpUrl = Constants.STRANGER_HTTP_URL+encryptAddr;
             authorizationRecord.questionId(questionId).applyTimes(0).authorityName(Constants.AUTHORITY_ROLE_STRANGER+";").httpUrl(httpUrl)
                 .expirationTime(BankUtil.getExpriationTime()).authorityPersonId(authorizationPersonId).questionCode(question.getQuestionCode())
@@ -213,17 +218,17 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
         String questionCode = authorizationRecordDTO.getQuestionCode();
         String authorizationCode = authorizationRecordDTO.getAuthorizationCode();
         if(StringUtils.isEmpty(strangerMail) || StringUtils.isEmpty(httpUrl) || StringUtils.isEmpty(authorizationCode) || StringUtils.isEmpty(questionCode)){
-            throw new BankServiceException("查询信息不完整！");
+            return new AuthorizationRecordDTO();
         }
         AuthorizationRecord authorizationRecord = authorizationRecordRepository.findByAuthorizationCodeAndHttpUrlAndStrangerEmailAndQuestionCodeAndStatusNot(authorizationCode,httpUrl,strangerMail,questionCode,Constants.INVALID);
        if(authorizationRecord == null){
-           throw new BankServiceException("授权信息查询失败！");
+            return new AuthorizationRecordDTO();
        }
         //某一个授权信息在一定时间内只有一条数据是进行中的
         SendRecord sendRecord = sendRecordRepository.findByAuthorizationRecordIdAndStatusNotIn(authorizationRecord.getId(),
             new ArrayList<String>(){{add(Constants.INVALID);add(Constants.QUESTION_SEND_RESEND);}});
         if(sendRecord == null){
-            throw new BankServiceException("发送记录查询失败！");
+            return new AuthorizationRecordDTO();
         }
         //找到发送ID 返回
         authorizationRecordDTO = authorizationRecordMapper.authorizationRecordToAuthorizationRecordDTO(authorizationRecord);

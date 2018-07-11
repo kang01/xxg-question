@@ -86,4 +86,9 @@
             <column name="http_url" type="nvarchar(255)" remarks="问题链接"> </column>
         </addColumn>
     </changeSet>
+    <changeSet id="20180619015938-4" author="jhipster">
+        <sql>
+            ALTER TABLE authorization_record modify(http_url nvarchar2(1024));
+        </sql>
+    </changeSet>
 </databaseChangeLog>

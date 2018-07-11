@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class AuthorizationRecordResource {
      */
     @PostMapping("/authorization-records/questionId/{id}/send")
     @Timed
-    public ResponseEntity<List<AuthorizationRecordDTO>> createAuthorizationRecords(@Valid @PathVariable Long id ,@Valid @RequestBody List<AuthorizationRecordDTO> authorizationRecordDTOs) throws URISyntaxException {
+    public ResponseEntity<List<AuthorizationRecordDTO>> createAuthorizationRecords(@Valid @PathVariable Long id ,@Valid @RequestBody List<AuthorizationRecordDTO> authorizationRecordDTOs) throws URISyntaxException, UnsupportedEncodingException {
         log.debug("REST request to save AuthorizationRecord List : {}", authorizationRecordDTOs);
         for(AuthorizationRecordDTO authorizationRecordDTO : authorizationRecordDTOs){
             if (authorizationRecordDTO.getId() != null) {
@@ -65,7 +66,7 @@ public class AuthorizationRecordResource {
      */
     @PutMapping("/authorization-records/questionId/{id}/send")
     @Timed
-    public ResponseEntity<List<AuthorizationRecordDTO>> updateAuthorizationRecord(@Valid @PathVariable Long id ,@Valid @RequestBody List<AuthorizationRecordDTO> authorizationRecordDTOs) throws URISyntaxException {
+    public ResponseEntity<List<AuthorizationRecordDTO>> updateAuthorizationRecord(@Valid @PathVariable Long id ,@Valid @RequestBody List<AuthorizationRecordDTO> authorizationRecordDTOs) throws URISyntaxException, UnsupportedEncodingException {
         log.debug("REST request to update AuthorizationRecord List : {}", authorizationRecordDTOs);
 //        for(AuthorizationRecordDTO authorizationRecordDTO :authorizationRecordDTOs){
 //            if (authorizationRecordDTO.getId() == null) {
