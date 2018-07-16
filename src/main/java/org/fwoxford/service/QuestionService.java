@@ -71,4 +71,11 @@ public interface QuestionService {
      * @return
      */
     SendRecordForResponse findReplyRecordAndQuestionDetails(Long id);
+
+    /**
+     * 完成问题
+     * @param id 问题ID
+     * @return
+     */
+    QuestionDTO completedQuestion(Long id);
 }

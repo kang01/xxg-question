@@ -279,4 +279,20 @@ public class QuestionServiceImpl implements QuestionService {
         sendRecordForResponse.setRelatedAgency(questionDTO.getRelatedAgency());
         return sendRecordForResponse;
     }
+
+    /**
+     * 问题完成
+     * @param id 问题ID
+     * @return
+     */
+    @Override
+    public QuestionDTO completedQuestion(Long id) {
+        Question question = questionRepository.findOne(id);
+        if(question == null ){
+            throw new BankServiceException("问题不存在！");
+        }
+        question.status(Constants.QUESTION_FINISHED);
+        questionRepository.save(question);
+        return questionMapper.questionToQuestionDTO(question);
+    }
 }

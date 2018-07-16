@@ -219,4 +219,15 @@ public class QuestionResource {
         SendRecordForResponse questionDTO = questionService.findReplyRecordAndQuestionDetails(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionDTO));
     }
+
+    @PutMapping("/question/{id}/completed")
+    @Timed
+    public ResponseEntity<QuestionDTO> completedQuestion(@PathVariable Long id) throws URISyntaxException {
+        log.debug("REST request to update QuestionDTO : {}", id);
+        QuestionDTO result = questionService.completedQuestion(id);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
 }
