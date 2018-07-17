@@ -220,6 +220,12 @@ public class QuestionResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionDTO));
     }
 
+    /**
+     * 问题完成
+     * @param id
+     * @return
+     * @throws URISyntaxException
+     */
     @PutMapping("/question/{id}/completed")
     @Timed
     public ResponseEntity<QuestionDTO> completedQuestion(@PathVariable Long id) throws URISyntaxException {

@@ -1,16 +1,24 @@
 package org.fwoxford.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import io.github.jhipster.web.util.ResponseUtil;
 import net.sf.json.JSONObject;
 import org.fwoxford.service.FrozenTubeService;
 import org.fwoxford.service.dto.QuestionItemDetailsDTO;
 import org.fwoxford.service.dto.QuestionSampleData;
+import org.fwoxford.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing FrozenTube.
@@ -44,5 +52,21 @@ public class FrozenTubeResource {
         questionSampleData.setTotal(total);
         questionSampleData.setQuestionItemDetailsDTOS(result);
         return  questionSampleData;
+    }
+
+    /**
+     * 上传问题样本
+     * @param file
+     * @param request
+     * @return
+     * @throws URISyntaxException
+     */
+    @RequestMapping(value = "/frozen-tubes/question/upload",method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<List<QuestionItemDetailsDTO>> getQuestionSampleByExcel(@RequestParam(value = "file",required = false) MultipartFile file,
+                                                                                        HttpServletRequest request) throws URISyntaxException {
+        List<QuestionItemDetailsDTO> result = frozenTubeService.findQuestionSampleByExcel(file,request);
+
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
 }

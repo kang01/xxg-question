@@ -72,7 +72,11 @@ public class ScheduleTaskReply implements Job {
         if(countOfReplyed == 0 && countOfUnCount!=0){
             question.status(Constants.QUESTION_OVERDUE);
             questionRepository.save(question);
+        }else if(countOfReplyed!=0){
+            question.status(Constants.QUESTION_REPLY);
+            questionRepository.save(question);
         }
+
         LOGGER.info("问题在有效期内尚未回复，回复已过期!");
     }
 }

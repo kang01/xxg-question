@@ -2,6 +2,7 @@ package org.fwoxford.service.mapper;
 
 import org.fwoxford.domain.*;
 import org.fwoxford.service.dto.FrozenTubeDTO;
+import org.fwoxford.service.dto.QuestionItemDetailsDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -120,4 +121,43 @@ public interface FrozenTubeMapper{
         return frozenTubeDTOS;
     }
 
-   }
+    default List<QuestionItemDetailsDTO> frozenTubesToQuestionSamples(List<FrozenTube> sampleList){
+        if ( sampleList == null ) {
+            return null;
+        }
+
+        List<QuestionItemDetailsDTO> list = new ArrayList<QuestionItemDetailsDTO>( sampleList.size() );
+        for ( FrozenTube frozenTube : sampleList ) {
+            list.add( frozenTubeDTOToQuestionSample( frozenTube ) );
+        }
+
+        return list;
+    }
+
+    default QuestionItemDetailsDTO frozenTubeDTOToQuestionSample(FrozenTube frozenTube){
+        if(frozenTube == null){
+            return null;
+        }
+        QuestionItemDetailsDTO resultDTO = new QuestionItemDetailsDTO();
+        resultDTO.setId(frozenTube.getId());
+        resultDTO.setSampleCode(frozenTube.getSampleCode());
+        resultDTO.setSampleTypeName(frozenTube.getSampleTypeName());
+        resultDTO.setSampleClassificationName(frozenTube.getSampleClassificationName());
+        resultDTO.setProjectCode(frozenTube.getProjectCode());
+        resultDTO.setFrozenBoxId(frozenTube.getFrozenBox().getId());
+        resultDTO.setFrozenBoxCode(frozenTube.getFrozenBoxCode());
+        resultDTO.setTubeRows(frozenTube.getTubeRows());
+        resultDTO.setTubeColumns(frozenTube.getTubeColumns());
+        resultDTO.setTag1(frozenTube.getTag1());
+        resultDTO.setTag2(frozenTube.getTag2());
+        resultDTO.setTag3(frozenTube.getTag3());
+        resultDTO.setTag4(frozenTube.getTag4());
+        resultDTO.setStatus(frozenTube.getStatus());
+        resultDTO.setSampleTypeId(frozenTube.getSampleType()!=null?frozenTube.getSampleType().getId():null);
+        resultDTO.setSampleTypeCode(frozenTube.getSampleTypeCode());
+        resultDTO.setSampleClassificationId(frozenTube.getSampleClassification()!=null?frozenTube.getSampleClassification().getId():null);
+        resultDTO.setSampleClassificationCode(frozenTube.getSampleClassificationCode());
+        resultDTO.setMemo(frozenTube.getMemo());
+        return resultDTO;
+    }
+}

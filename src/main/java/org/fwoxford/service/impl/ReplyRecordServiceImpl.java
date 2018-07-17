@@ -157,10 +157,9 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
         replyRecord.status(Constants.QUESTION_REPLY_PENDING).strangerEmail(sendRecord.getStrangerEmail()).sendRecord(sendRecord)
                 .strangerName(sendRecord.getStrangerName()).questionId(questionId).questionCode(question.getQuestionCode()).replyContent(replyRecordDTO.getReplyContent());
         replyRecordRepository.save(replyRecord);
-        replyRecordDTO = replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);
         //验证传递参数中是否重复的问题样本ID
         List<ReplyDetailsDTO> replyDetailsDTOS = replyRecordDTO.getReplyDetailsDTOList();
-
+        replyRecordDTO = replyRecordMapper.replyRecordToReplyRecordDTO(replyRecord);
         if(replyDetailsDTOS==null){
             return  replyRecordDTO;
         }
@@ -169,6 +168,11 @@ public class ReplyRecordServiceImpl implements ReplyRecordService {
             if(s.size()>1){
                 throw new BankServiceException("请勿提交重复的问题样本ID！");
             }
+            s.forEach(sd->{
+                if(StringUtils.isEmpty(sd.getHandleTypeCode()) || StringUtils.isEmpty(sd.getReplyContent())){
+                    throw new BankServiceException("处理方式不能为空！",sd.toString());
+                }
+            });
         }
         //每个问题样本在一次回复中只能有一个回复记录
         List<Long> questionItemDetailsIds = replyDetailsDTOS.stream().map(s->s.getQuestionItemDetailsId()).collect(Collectors.toList());

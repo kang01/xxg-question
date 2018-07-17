@@ -242,7 +242,7 @@ public interface FrozenBoxRepository extends JpaRepository<FrozenBox,Long> {
     List<Object[]> findFrozenBoxStockInAndOutRecordByBoxCodeIn(List<String> frozenBoxCodeStr100);
 
     @Query(value = "SELECT B.ID FROM FROZEN_BOX B WHERE B.FROZEN_BOX_CODE = ?1 OR B.FROZEN_BOX_CODE_1D = ?1 " +
-        "AND B.SAMPLE_TYPE_CODE = ?2  AND B.STATUS = '"+ Constants.FROZEN_BOX_STOCKED+"'",nativeQuery = true)
+        "AND B.SAMPLE_TYPE_CODE = ?2  AND ( B.STATUS = '"+ Constants.FROZEN_BOX_STOCKED+"' or B.STATUS = '"+ Constants.FROZEN_BOX_TRANSHIP_COMPLETE+"') ",nativeQuery = true)
     Object findIdByFrozenBoxCodeAndSampleType(String boxCode1D, String sampleType);
 
     @Query("select box from FrozenBox box where box.supportRack.id = ?1 " +

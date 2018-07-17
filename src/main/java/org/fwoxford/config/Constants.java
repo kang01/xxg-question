@@ -87,7 +87,7 @@ public final class Constants {
         }};
 
 
-    //问题样本处理方式 ： 2601：销毁样本，2602：样本正常
+    //问题样本处理方式 ： 2701：销毁样本，2702：样本正常 2703 ：延迟处理
     public static final String QUESTION_SAMPLE_DESTROY= "2701";
     public static final String QUESTION_SAMPLE_NORMAL= "2702";
     public static final String QUESTION_SAMPLE_DELAY= "2703";

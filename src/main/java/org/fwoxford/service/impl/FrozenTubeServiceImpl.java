@@ -1,25 +1,34 @@
 package org.fwoxford.service.impl;
 
 import com.google.common.collect.Lists;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.fwoxford.config.Constants;
 import org.fwoxford.domain.FrozenBox;
+import org.fwoxford.domain.FrozenTube;
 import org.fwoxford.repository.FrozenBoxRepository;
 import org.fwoxford.repository.FrozenTubeRepository;
 import org.fwoxford.service.FrozenTubeService;
 import org.fwoxford.service.dto.QuestionItemDetailsDTO;
+import org.fwoxford.service.dto.QuestionSampleData;
 import org.fwoxford.service.mapper.FrozenTubeMapper;
+import org.fwoxford.web.rest.errors.BankServiceException;
+import org.fwoxford.web.rest.util.ExcelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -240,5 +249,203 @@ public class FrozenTubeServiceImpl implements FrozenTubeService {
         Query query = entityManager.createNativeQuery(sql.toString());
         Long count = query.getSingleResult()!=null?Long.valueOf(query.getSingleResult().toString()):null;
         return count;
+    }
+
+    /**
+     * 上传问题样本表格
+     * @param file
+     * @param request
+     * @return
+     */
+    @Override
+    public List<QuestionItemDetailsDTO> findQuestionSampleByExcel(MultipartFile file, HttpServletRequest request) {
+        List<QuestionItemDetailsDTO> result = new ArrayList<QuestionItemDetailsDTO>();
+        List<JSONObject> notExistResult = new ArrayList<JSONObject>();
+        List<JSONObject> jsonArray = getExcelValues(file);
+        //获取整盒样本(指定冻存盒编码，未指定样本编码)
+        List<JSONObject> appointBoxList = new ArrayList<>();
+        //指定样本编码
+        List<JSONObject> appointSampleList = new ArrayList<>();
+        jsonArray.forEach(s->{
+            String boxCode = s.getString("boxCode");
+            String type = s.getString("type");
+            String sampleCode = s.getString("sampleCode");
+            String classCode = s.getString("classCode");
+            if(!StringUtils.isEmpty(boxCode) && StringUtils.isEmpty(sampleCode)){
+                appointBoxList.add(s);
+            }else{
+                Long boxId = 0L;
+                if(!StringUtils.isEmpty(boxCode)){
+                    Object frozenBoxId = frozenBoxRepository.findIdByFrozenBoxCodeAndSampleType(boxCode,type);
+                    boxId = frozenBoxId!=null?Long.valueOf(frozenBoxId.toString()):0L;
+                }
+                s.put("boxId",boxId);
+                appointSampleList.add(s);
+            }
+        });
+        //查询整盒样本
+        Map<String, List<JSONObject>> boxListGroupByType =
+            appointBoxList.stream().collect(Collectors.groupingBy(w -> w.getString("type")+"&"+w.getString("classCode")));
+        for(String key :boxListGroupByType.keySet()) {
+            List<JSONObject> boxCodeListGroupByType = boxListGroupByType.get(key);
+            int i = key.split("&").length;
+            String type = key.split("&")[0];
+            String classCode = i == 2 ? key.split("&")[1] : null;
+            List<String> codeList = new ArrayList<>();
+            boxCodeListGroupByType.forEach(s -> codeList.add(s.getString("boxCode")));
+            List<List<String>> boxCodeListEach1000 = Lists.partition(codeList, 1000);
+            for (List<String> code : boxCodeListEach1000) {
+                //整盒出库可以指定到某一个冻存盒，所以可以获取指定冻存盒的Id
+                List<FrozenTube> sampleList = frozenTubeRepository.findByFrozenBoxCode1DInOrFrozenBoxCodeInAndSampleTypeAndSampleClassification(code, type, classCode);
+                List<QuestionItemDetailsDTO> questionItemDetailsDTOS = frozenTubeMapper.frozenTubesToQuestionSamples(sampleList);
+                result.addAll(questionItemDetailsDTOS);
+                boxCodeListGroupByType.forEach(s -> {
+                    Boolean isExists = sampleList.stream().anyMatch(t ->
+                        t.getFrozenBoxCode().equals(s.getString("boxCode")) ||
+                            (t.getFrozenBox().getFrozenBoxCode1D()!=null && t.getFrozenBox().getFrozenBoxCode1D().equals(s.getString("boxCode"))));
+                    if(isExists == false){
+                        notExistResult.add(s);
+                    }
+                });
+            }
+        }
+        //指定样本
+        Map<String,List<JSONObject>> requirementGroupBySampleType =
+            appointSampleList.stream().collect(Collectors.groupingBy(w -> w.getString("type")+"&"+w.getString("classCode")+"&"+w.getString("boxId")));
+        for(String key:requirementGroupBySampleType.keySet()){
+            String sampleType = key.split("&")[0];
+            String classCode = key.split("&")[1];
+            Long frozenBoxId = !key.split("&")[2].equals("null")&&!key.split("&")[2].equals(null)?Long.valueOf(key.split("&")[2]):0L;
+
+            List<JSONObject> stockOutRequiredSampleListEachSampleType = requirementGroupBySampleType.get(key);
+            //每次取1000支
+            List<List<JSONObject>> arrReqSamples = Lists.partition(stockOutRequiredSampleListEachSampleType, 1000);
+            for(int index = 0; index < arrReqSamples.size(); index += 10){
+                int start = index;
+                String[] s1 = arrReqSamples.size() <= start ? new String[]{"N/A"} : arrReqSamples.get(start++).stream().map(d->d.getString("sampleCode")).toArray(s->new String[s]);
+                String[] s2 = arrReqSamples.size() <= start ? new String[]{"N/A"} : arrReqSamples.get(start++).stream().map(d->d.getString("sampleCode")).toArray(s->new String[s]);
+                String[] s3 = arrReqSamples.size() <= start ? new String[]{"N/A"} : arrReqSamples.get(start++).stream().map(d->d.getString("sampleCode")).toArray(s->new String[s]);
+                String[] s4 = arrReqSamples.size() <= start ? new String[]{"N/A"} : arrReqSamples.get(start++).stream().map(d->d.getString("sampleCode")).toArray(s->new String[s]);
+                String[] s5 = arrReqSamples.size() <= start ? new String[]{"N/A"} : arrReqSamples.get(start++).stream().map(d->d.getString("sampleCode")).toArray(s->new String[s]);
+                String[] s6 = arrReqSamples.size() <= start ? new String[]{"N/A"} : arrReqSamples.get(start++).stream().map(d->d.getString("sampleCode")).toArray(s->new String[s]);
+                String[] s7 = arrReqSamples.size() <= start ? new String[]{"N/A"} : arrReqSamples.get(start++).stream().map(d->d.getString("sampleCode")).toArray(s->new String[s]);
+                String[] s8 = arrReqSamples.size() <= start ? new String[]{"N/A"} : arrReqSamples.get(start++).stream().map(d->d.getString("sampleCode")).toArray(s->new String[s]);
+                String[] s9 = arrReqSamples.size() <= start ? new String[]{"N/A"} : arrReqSamples.get(start++).stream().map(d->d.getString("sampleCode")).toArray(s->new String[s]);
+                String[] s10 = arrReqSamples.size() <= start ? new String[]{"N/A"} : arrReqSamples.get(start++).stream().map(d->d.getString("sampleCode")).toArray(s->new String[s]);
+                List<FrozenTube> frozenTubeList = frozenTubeRepository.
+                    findBySampleTypeCodeAndSampleCodeInAndFrozenBoxIdAndSampleClassificationCode(
+                        sampleType
+                        , Arrays.asList(s1)
+                        , Arrays.asList(s2)
+                        , Arrays.asList(s3)
+                        , Arrays.asList(s4)
+                        , Arrays.asList(s5)
+                        , Arrays.asList(s6)
+                        , Arrays.asList(s7)
+                        , Arrays.asList(s8)
+                        , Arrays.asList(s9)
+                        , Arrays.asList(s10)
+                        , frozenBoxId,classCode
+                    );
+                int countOfAppointSampleSize = 0;
+                if(!Arrays.asList(s1).contains("N/A")){
+                    countOfAppointSampleSize+=Arrays.asList(s1).size();
+                }
+                if(!Arrays.asList(s2).contains("N/A")){
+                    countOfAppointSampleSize+=Arrays.asList(s2).size();
+                }
+                if(!Arrays.asList(s3).contains("N/A")){
+                    countOfAppointSampleSize+=Arrays.asList(s3).size();
+                }
+                if(!Arrays.asList(s4).contains("N/A")){
+                    countOfAppointSampleSize+=Arrays.asList(s4).size();
+                }
+                if(!Arrays.asList(s5).contains("N/A")){
+                    countOfAppointSampleSize+=Arrays.asList(s5).size();
+                }
+                if(!Arrays.asList(s6).contains("N/A")){
+                    countOfAppointSampleSize+=Arrays.asList(s6).size();
+                }
+                if(!Arrays.asList(s7).contains("N/A")){
+                    countOfAppointSampleSize+=Arrays.asList(s7).size();
+                }
+                if(!Arrays.asList(s8).contains("N/A")){
+                    countOfAppointSampleSize+=Arrays.asList(s8).size();
+                }
+                if(!Arrays.asList(s9).contains("N/A")){
+                    countOfAppointSampleSize+=Arrays.asList(s9).size();
+                }
+                if(!Arrays.asList(s10).contains("N/A")){
+                    countOfAppointSampleSize+=Arrays.asList(s10).size();
+                }
+                if(frozenTubeList.size()>countOfAppointSampleSize){
+                    frozenTubeList = frozenTubeList.subList(0,countOfAppointSampleSize);
+                }
+
+                result.addAll(frozenTubeMapper.frozenTubesToQuestionSamples(frozenTubeList));
+                final List<FrozenTube> frozenTubes = frozenTubeList;
+                arrReqSamples.forEach(sampleEach1000->{
+                    sampleEach1000.forEach(sp->{
+                        Boolean isExists= null;
+                        if(!StringUtils.isEmpty(sp.getString("boxCode"))){
+                            isExists= frozenTubes.stream().anyMatch(t->
+                                (sp.getString("boxCode")).equals(t.getFrozenBoxCode())
+                                    || (t.getFrozenBox().getFrozenBoxCode1D()!=null && t.getFrozenBox().getFrozenBoxCode1D().equals(sp.getString("boxCode")))
+                                    && t.getSampleCode().equals(sp.getString("sampleCode")));
+                        }else{
+                            isExists= frozenTubes.stream().anyMatch(t->t.getSampleCode().equals(sp.getString("sampleCode")));
+                        }
+                        if(isExists == false){
+                            notExistResult.add(sp);
+                        }
+                    });
+
+                });
+            }
+        }
+        if(notExistResult.size()>0){
+            throw new BankServiceException("上传数据中有不存在于库存中的样本，请确认后重新上传！",notExistResult.toString());
+        }
+        return result;
+    }
+
+    private List<JSONObject> getExcelValues(MultipartFile file) {
+        List<JSONObject> jsonArray = new ArrayList<>();
+        try {
+            InputStream input =  new ByteArrayInputStream(file.getBytes());
+            ArrayList<ArrayList<Object>> arrayLists = ExcelUtils.readExcel("xlsx",input);
+            List<ArrayList<Object>>  arrayListArrayList = arrayLists.subList(1,arrayLists.size());
+            for(List arrayList :arrayListArrayList){
+                int i = arrayList.size();
+                if(arrayList.size()<3){
+                    continue;
+                }
+                Object boxCode =  arrayList.get(0);
+                Object sampleCode =  arrayList.get(1);
+                Object sampleType =  arrayList.get(2);
+                Object sampleClass = null;
+                if(StringUtils.isEmpty(boxCode) &&StringUtils.isEmpty(sampleCode) ){
+                    continue;
+                }
+                if(i>3){
+                    sampleClass = arrayList.get(3);
+                }
+                if(StringUtils.isEmpty(sampleType)){
+                    throw new BankServiceException("冻存盒编码为："+boxCode+"，样本编码为："+sampleCode+"。未指定样本类型！不能上传！");
+                }
+                if(! StringUtils.isEmpty(sampleCode) && StringUtils.isEmpty(sampleClass)){
+                    throw new BankServiceException("冻存盒编码为："+boxCode+"，样本编码为："+sampleCode+"。未指定样本分类！不能上传！");
+                }
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("boxCode",boxCode);
+                jsonObject.put("sampleCode",sampleCode);
+                jsonObject.put("type",sampleType);
+                jsonObject.put("classCode",sampleClass);
+                jsonArray.add(jsonObject);
+            }
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
+        return jsonArray;
     }
 }
