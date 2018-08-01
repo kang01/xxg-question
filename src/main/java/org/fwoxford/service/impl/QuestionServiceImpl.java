@@ -277,6 +277,7 @@ public class QuestionServiceImpl implements QuestionService {
         sendRecordForResponse.setReplyContent(replyRecord!=null?replyRecord.getReplyContent():null);
         sendRecordForResponse.setRelatedAgencyId(questionDTO.getRelatedAgencyId());
         sendRecordForResponse.setRelatedAgency(questionDTO.getRelatedAgency());
+        sendRecordForResponse.setReplyId(replyRecord!=null?replyRecord.getId():null);
         return sendRecordForResponse;
     }
 

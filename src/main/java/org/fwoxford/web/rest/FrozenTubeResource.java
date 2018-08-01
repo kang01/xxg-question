@@ -63,10 +63,11 @@ public class FrozenTubeResource {
      */
     @RequestMapping(value = "/frozen-tubes/question/upload",method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<List<QuestionItemDetailsDTO>> getQuestionSampleByExcel(@RequestParam(value = "file",required = false) MultipartFile file,
+    public ResponseEntity<List<QuestionItemDetailsDTO>> getQuestionSampleByExcel(@RequestParam(value = "file",required = true) MultipartFile file,
                                                                                         HttpServletRequest request) throws URISyntaxException {
         List<QuestionItemDetailsDTO> result = frozenTubeService.findQuestionSampleByExcel(file,request);
 
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
+
 }

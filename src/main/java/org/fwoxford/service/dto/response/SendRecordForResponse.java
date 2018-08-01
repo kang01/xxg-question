@@ -61,6 +61,8 @@ public class SendRecordForResponse {
 
     private Long relatedAgencyId;
 
+    private Long replyId;
+
     private List<QuestionItemDTO> questionItemDTOList;
 
     public Long getId() {
@@ -221,6 +223,14 @@ public class SendRecordForResponse {
 
     public void setReplyContent(String replyContent) {
         this.replyContent = replyContent;
+    }
+
+    public Long getReplyId() {
+        return replyId;
+    }
+
+    public void setReplyId(Long replyId) {
+        this.replyId = replyId;
     }
 
     public List<QuestionItemDTO> getQuestionItemDTOList() {

@@ -406,11 +406,15 @@ public class FrozenTubeServiceImpl implements FrozenTubeService {
         if(notExistResult.size()>0){
             throw new BankServiceException("上传数据中有不存在于库存中的样本，请确认后重新上传！",notExistResult.toString());
         }
+
         return result;
     }
 
     private List<JSONObject> getExcelValues(MultipartFile file) {
         List<JSONObject> jsonArray = new ArrayList<>();
+        if(file == null){
+            return jsonArray;
+        }
         try {
             InputStream input =  new ByteArrayInputStream(file.getBytes());
             ArrayList<ArrayList<Object>> arrayLists = ExcelUtils.readExcel("xlsx",input);

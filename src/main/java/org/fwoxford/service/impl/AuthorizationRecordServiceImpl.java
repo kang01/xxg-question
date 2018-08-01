@@ -161,25 +161,28 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
                 return id;
             }
         ).collect(Collectors.toList());
+        //每次都是发送新数据，不传入原来的邮箱等数据，即只新增，不编辑
         List<AuthorizationRecord> authorizationRecords = authorizationRecordRepository.findByQuestionIdAndStatusNot(questionId, Constants.INVALID);
-        List<AuthorizationRecord> authorizationRecordsForDelete = new ArrayList<>();
-        authorizationRecords.forEach(s->{
-            if(s.getId()!=null && !oldIds.contains(s.getId())){
-                s.status(Constants.INVALID);
-                authorizationRecordsForDelete.add(s);
-            }
-        });
-        //删除无效的
-        authorizationRecordRepository.save(authorizationRecordsForDelete);
+//        List<AuthorizationRecord> authorizationRecordsForDelete = new ArrayList<>();
+//        authorizationRecords.forEach(s->{
+//            if(s.getId()!=null && !oldIds.contains(s.getId())){
+//                s.status(Constants.INVALID);
+//                authorizationRecordsForDelete.add(s);
+//            }
+//        });
+//        //删除无效的
+//        authorizationRecordRepository.save(authorizationRecordsForDelete);
         //保存有效的
         List<AuthorizationRecord> authorizationRecordsForSave = new ArrayList<>();
 
         for(AuthorizationRecordDTO dto : authorizationRecordDTOs ){
             AuthorizationRecord authorizationRecord = authorizationRecordMapper.authorizationRecordDTOToAuthorizationRecord(dto);
             String addr = question.getAuthor()+"|"+question.getQuestionCode()+"|"+dto.getStrangerEmail()+"|"+dto.getStrangerName();
-//            String encryptAddr = BankUtil.string2Unicode((new BASE64Encoder()).encode(addr.getBytes()));
-//            String encryptAddr = (new BASE64Encoder()).encode(addr.getBytes())
-//                .replace("+","%").replace("=","%").replace("/","%").replace("&","%").replace("?","%").replace("#","%");
+            AuthorizationRecord old = authorizationRecords.stream().filter(s->s.getStrangerEmail().equals(dto.getStrangerEmail())).findFirst().orElse(null);
+            if(old!=null){
+                throw new BankServiceException("问题"+question.getQuestionCode()+"已发送至邮箱"+dto.getStrangerEmail()+",请勿重复发送！");
+            }
+
             String encryptAddr =  URLEncoder.encode((new BASE64Encoder()).encode(addr.getBytes()),"UTF-8");
             String httpUrl = Constants.STRANGER_HTTP_URL+encryptAddr;
             authorizationRecord.questionId(questionId).applyTimes(0).authorityName(Constants.AUTHORITY_ROLE_STRANGER+";").httpUrl(httpUrl)
@@ -219,8 +222,7 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
         String authorizationCode = authorizationRecordDTO.getAuthorizationCode();
         if(StringUtils.isEmpty(strangerMail) || StringUtils.isEmpty(httpUrl) || StringUtils.isEmpty(authorizationCode) || StringUtils.isEmpty(questionCode)){
             return new AuthorizationRecordDTO();
-        }
-        AuthorizationRecord authorizationRecord = authorizationRecordRepository.findByAuthorizationCodeAndHttpUrlAndStrangerEmailAndQuestionCodeAndStatusNot(authorizationCode,httpUrl,strangerMail,questionCode,Constants.INVALID);
+        }AuthorizationRecord authorizationRecord = authorizationRecordRepository.findByAuthorizationCodeAndHttpUrlAndStrangerEmailAndQuestionCodeAndStatusNot(authorizationCode,httpUrl,strangerMail,questionCode,Constants.INVALID);
        if(authorizationRecord == null){
             return new AuthorizationRecordDTO();
        }
