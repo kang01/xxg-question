@@ -11,6 +11,7 @@ import org.fwoxford.security.SecurityUtils;
 import org.fwoxford.service.AuthorizationRecordService;
 import org.fwoxford.domain.AuthorizationRecord;
 import org.fwoxford.repository.AuthorizationRecordRepository;
+import org.fwoxford.service.EurekaApiService;
 import org.fwoxford.service.QuartzTaskService;
 import org.fwoxford.service.SendRecordService;
 import org.fwoxford.service.dto.AuthorizationRecordDTO;
@@ -32,6 +33,7 @@ import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,8 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
     SendRecordMapper sendRecordMapper;
     @Autowired
     SendRecordRepository sendRecordRepository;
+    @Autowired
+    EurekaApiService eurekaApiService;
 
     public AuthorizationRecordServiceImpl(AuthorizationRecordRepository authorizationRecordRepository, AuthorizationRecordMapper authorizationRecordMapper) {
         this.authorizationRecordRepository = authorizationRecordRepository;
@@ -184,7 +188,8 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
             }
 
             String encryptAddr =  URLEncoder.encode((new BASE64Encoder()).encode(addr.getBytes()),"UTF-8");
-            String httpUrl = Constants.STRANGER_HTTP_URL+encryptAddr;
+            String homeURL = eurekaApiService.queryInstanceHomePageUrl("GWBBISSTRANGERPORTAL");
+            String httpUrl = String.format("%s%s%s", homeURL, Constants.STRANGER_HTTP_URL_4_QA, encryptAddr);
             authorizationRecord.questionId(questionId).applyTimes(0).authorityName(Constants.AUTHORITY_ROLE_STRANGER+";").httpUrl(httpUrl)
                 .expirationTime(BankUtil.getExpriationTime()).authorityPersonId(authorizationPersonId).questionCode(question.getQuestionCode())
                 .status(Constants.VALID);
