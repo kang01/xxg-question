@@ -187,7 +187,7 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
                 throw new BankServiceException("问题"+question.getQuestionCode()+"已发送至邮箱"+dto.getStrangerEmail()+",请勿重复发送！");
             }
 
-            String encryptAddr =  URLEncoder.encode((new BASE64Encoder()).encode(addr.getBytes()),"UTF-8");
+            String encryptAddr =  URLEncoder.encode((new BASE64Encoder()).encode(addr.getBytes("UTF-8")),"UTF-8");
             String homeURL = eurekaApiService.queryInstanceHomePageUrl("GWBBISSTRANGERPORTAL");
             String httpUrl = String.format("%s%s%s", homeURL, Constants.STRANGER_HTTP_URL_4_QA, encryptAddr);
             authorizationRecord.questionId(questionId).applyTimes(0).authorityName(Constants.AUTHORITY_ROLE_STRANGER+";").httpUrl(httpUrl)
