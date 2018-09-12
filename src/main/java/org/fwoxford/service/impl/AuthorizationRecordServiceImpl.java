@@ -181,7 +181,7 @@ public class AuthorizationRecordServiceImpl implements AuthorizationRecordServic
 
         for(AuthorizationRecordDTO dto : authorizationRecordDTOs ){
             AuthorizationRecord authorizationRecord = authorizationRecordMapper.authorizationRecordDTOToAuthorizationRecord(dto);
-            String addr = question.getAuthor()+"|"+question.getQuestionCode()+"|"+dto.getStrangerEmail()+"|"+dto.getStrangerName();
+            String addr = question.getAuthor().trim()+"|"+question.getQuestionCode()+"|"+dto.getStrangerEmail()+"|"+dto.getStrangerName().trim();
             AuthorizationRecord old = authorizationRecords.stream().filter(s->s.getStrangerEmail().equals(dto.getStrangerEmail())).findFirst().orElse(null);
             if(old!=null){
                 throw new BankServiceException("问题"+question.getQuestionCode()+"已发送至邮箱"+dto.getStrangerEmail()+",请勿重复发送！");

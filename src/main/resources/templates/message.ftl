@@ -34,9 +34,11 @@
         <p>相关项目：${(params.projectCode)!""}(${(params.projectName)!""})</p>
         <p>问题详情：${(params.questionDescription)!""}</p>
         <p>请点击此链接查看问题详情：</p>
-        <p><a>${(params.httpUrl)!""}</a></p>
+        <p><a href='${(params.httpUrl)!"#"}' target="_blank">${(params.httpUrl)!""}</a></p>
         <p>登录授权码为：（<strong>${(params.authorizationCode)!""}</strong>）。</p>
-        <p>注：请勿回复此邮件！</p>
+        <br><br>
+        <p>注：1.请使用中心网络，或者使用VPN进行访问中心网络！</p>
+        <p>    2.请勿回复此邮件！</p>
 </div>
 </body>
 </html>
