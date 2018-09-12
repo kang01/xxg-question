@@ -194,10 +194,13 @@ public class QuestionServiceImpl implements QuestionService {
         if(questionItemDTOS==null){
             return questionDTO;
         }
+        List<QuestionItemDTO> questionItemDTOList = new ArrayList<>();
         for(QuestionItemDTO questionItemDTO : questionDTO.getQuestionItemDTOList()){
             questionItemDTO.setQuestionId(questionDTO.getId());
             questionItemDTO = questionItemService.save(questionItemDTO);
+            questionItemDTOList.add(questionItemDTO);
         }
+        questionDTO.setQuestionItemDTOList(questionItemDTOS);
         return questionDTO;
     }
 

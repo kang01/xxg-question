@@ -102,6 +102,7 @@ public class QuestionItemServiceImpl implements QuestionItemService {
         }
         questionItemDetailsRepository.save(questionItemDetailssForSave);
         questionItemDetailsRepository.save(questionItemDetailssForDel);
+        questionItemDTO.setQuestionItemDetailsDTOS(questionItemDetailsMapper.questionItemDetailsToQuestionItemDetailsDTOs(questionItemDetailssForSave));
         return questionItemDTO;
     }
 
