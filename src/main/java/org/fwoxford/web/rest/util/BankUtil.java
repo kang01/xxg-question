@@ -223,7 +223,7 @@ public class BankUtil {
         return formatDateByPattern(date, dateFormat);
     }
     public static ZonedDateTime  getExpriationTime(){
-        ZonedDateTime EXPRIATIONTIME = ZonedDateTime.now().plusHours(2);
+        ZonedDateTime EXPRIATIONTIME = ZonedDateTime.now().plusHours(Constants.EXPRIATIONTIME_HOURS);
         return EXPRIATIONTIME;
     }
 }

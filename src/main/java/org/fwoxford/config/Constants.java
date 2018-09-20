@@ -110,7 +110,9 @@ public final class Constants {
     public static final String STRANGER_HTTP_URL_4_QA =  "#/question-management/question-accredit?q=";
     public static final Integer APPLY_TIMES_MAX = 2;
     //测试时候为 60 正式的为 24*60
-    public static final Integer INCREASE_MINUTES = 2*60;
+    public static final Integer INCREASE_MINUTES = 24*60;
+    //过期时间，单位是小时
+    public static final Integer EXPRIATIONTIME_HOURS = 24*14;
 
     private Constants() {
     }
