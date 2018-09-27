@@ -9,7 +9,7 @@ import org.ehcache.jsr107.Eh107Configuration;
 
 import java.util.concurrent.TimeUnit;
 
-import org.fwoxford.service.dto.response.QuestionForDataTableEntity;
+import org.fwoxford.domain.EquipmentModel;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
@@ -49,7 +49,7 @@ public class CacheConfiguration {
             cm.createCache(org.fwoxford.domain.ProjectSite.class.getName() + ".projectRelates", jcacheConfiguration);
             cm.createCache(org.fwoxford.domain.ProjectRelate.class.getName(), jcacheConfiguration);
             cm.createCache(org.fwoxford.domain.EquipmentGroup.class.getName(), jcacheConfiguration);
-            cm.createCache(org.fwoxford.domain.EquipmentModle.class.getName(), jcacheConfiguration);
+            cm.createCache(EquipmentModel.class.getName(), jcacheConfiguration);
             cm.createCache(org.fwoxford.domain.Equipment.class.getName(), jcacheConfiguration);
             cm.createCache(org.fwoxford.domain.Area.class.getName(), jcacheConfiguration);
             cm.createCache(org.fwoxford.domain.SupportRackType.class.getName(), jcacheConfiguration);

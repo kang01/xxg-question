@@ -11,12 +11,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A EquipmentModle.
+ * A EquipmentModel.
  */
 @Entity
-@Table(name = "equipment_modle")
+@Table(name = "equipment_model")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class EquipmentModle extends AbstractAuditingEntity implements Serializable {
+public class EquipmentModel extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -53,13 +53,6 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
     @Column(name = "area_number", nullable = false)
     private Integer areaNumber;
     /**
-     * 区域内架子数量
-     */
-    @NotNull
-    @Max(value = 500)
-    @Column(name = "shelve_number_in_area", nullable = false)
-    private Integer shelveNumberInArea;
-    /**
      * 备注
      */
     @Column(name = "memo")
@@ -83,6 +76,25 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
     @Max(value = 100)
     @Column(name = "temperature_min")
     private Integer temperatureMin;
+    /**
+     * 缩写
+     */
+    @NotNull
+    @Size(max = 50)
+    @Column(name = "abbr")
+    private String abbr;
+    /**
+     * 报废年限 单位按照年，月，日选择，提交数据时统一单位为日
+     */
+    @Max(value = 2191)
+    @Column(name = "discarded")
+    private Integer discarded;
+    /**
+     * 保养周期 单位按照年，月，日选择，提交数据时统一单位为日
+     */
+    @Max(value = 2191)
+    @Column(name = "maintenance_period")
+    private Integer maintenancePeriod;
 
     public Long getId() {
         return id;
@@ -96,7 +108,7 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
         return equipmentModelCode;
     }
 
-    public EquipmentModle equipmentModelCode(String equipmentModelCode) {
+    public EquipmentModel equipmentModelCode(String equipmentModelCode) {
         this.equipmentModelCode = equipmentModelCode;
         return this;
     }
@@ -109,7 +121,7 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
         return equipmentModelName;
     }
 
-    public EquipmentModle equipmentModelName(String equipmentModelName) {
+    public EquipmentModel equipmentModelName(String equipmentModelName) {
         this.equipmentModelName = equipmentModelName;
         return this;
     }
@@ -122,7 +134,7 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
         return equipmentType;
     }
 
-    public EquipmentModle equipmentType(String equipmentType) {
+    public EquipmentModel equipmentType(String equipmentType) {
         this.equipmentType = equipmentType;
         return this;
     }
@@ -135,7 +147,7 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
         return areaNumber;
     }
 
-    public EquipmentModle areaNumber(Integer areaNumber) {
+    public EquipmentModel areaNumber(Integer areaNumber) {
         this.areaNumber = areaNumber;
         return this;
     }
@@ -144,24 +156,11 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
         this.areaNumber = areaNumber;
     }
 
-    public Integer getShelveNumberInArea() {
-        return shelveNumberInArea;
-    }
-
-    public EquipmentModle shelveNumberInArea(Integer shelveNumberInArea) {
-        this.shelveNumberInArea = shelveNumberInArea;
-        return this;
-    }
-
-    public void setShelveNumberInArea(Integer shelveNumberInArea) {
-        this.shelveNumberInArea = shelveNumberInArea;
-    }
-
     public String getMemo() {
         return memo;
     }
 
-    public EquipmentModle memo(String memo) {
+    public EquipmentModel memo(String memo) {
         this.memo = memo;
         return this;
     }
@@ -174,7 +173,7 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
         return status;
     }
 
-    public EquipmentModle status(String status) {
+    public EquipmentModel status(String status) {
         this.status = status;
         return this;
     }
@@ -187,7 +186,7 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
         return temperatureMax;
     }
 
-    public EquipmentModle temperatureMax(Integer temperatureMax) {
+    public EquipmentModel temperatureMax(Integer temperatureMax) {
         this.temperatureMax = temperatureMax;
         return this;
     }
@@ -200,13 +199,44 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
         return temperatureMin;
     }
 
-    public EquipmentModle temperatureMin(Integer temperatureMin) {
+    public EquipmentModel temperatureMin(Integer temperatureMin) {
         this.temperatureMin = temperatureMin;
         return this;
     }
 
     public void setTemperatureMin(Integer temperatureMin) {
         this.temperatureMin = temperatureMin;
+    }
+
+    public String getAbbr() {
+        return abbr;
+    }
+
+    public void setAbbr(String abbr) {
+        this.abbr = abbr;
+    }
+
+    public Integer getDiscarded() {
+        return discarded;
+    }
+    public EquipmentModel discarded(Integer discarded) {
+        this.discarded = discarded;
+        return this;
+    }
+
+    public void setDiscarded(Integer discarded) {
+        this.discarded = discarded;
+    }
+
+    public Integer getMaintenancePeriod() {
+        return maintenancePeriod;
+    }
+    public EquipmentModel maintenancePeriod(Integer maintenancePeriod) {
+        this.maintenancePeriod = maintenancePeriod;
+        return this;
+    }
+    public void setMaintenancePeriod(Integer maintenancePeriod) {
+        this.maintenancePeriod = maintenancePeriod;
     }
 
     @Override
@@ -217,11 +247,11 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        EquipmentModle equipmentModle = (EquipmentModle) o;
-        if (equipmentModle.id == null || id == null) {
+        EquipmentModel equipmentModel = (EquipmentModel) o;
+        if (equipmentModel.id == null || id == null) {
             return false;
         }
-        return Objects.equals(id, equipmentModle.id);
+        return Objects.equals(id, equipmentModel.id);
     }
 
     @Override
@@ -231,13 +261,12 @@ public class EquipmentModle extends AbstractAuditingEntity implements Serializab
 
     @Override
     public String toString() {
-        return "EquipmentModle{" +
+        return "EquipmentModel{" +
             "id=" + id +
             ", equipmentModelCode='" + equipmentModelCode + "'" +
             ", equipmentModelName='" + equipmentModelName + "'" +
             ", equipmentType='" + equipmentType + "'" +
             ", areaNumber='" + areaNumber + "'" +
-            ", shelveNumberInArea='" + shelveNumberInArea + "'" +
             ", memo='" + memo + "'" +
             ", status='" + status + "'" +
             ", temperatureMax='" + temperatureMax + "'" +

@@ -106,8 +106,8 @@ public class Equipment extends AbstractAuditingEntity implements Serializable {
      */
     @ManyToOne(optional = false)
     @NotNull
-    @JoinColumn(name = "equipment_modle_id")
-    private EquipmentModle equipmentModle;
+    @JoinColumn(name = "equipment_model_id")
+    private EquipmentModel equipmentModel;
 
     public Long getId() {
         return id;
@@ -273,17 +273,17 @@ public class Equipment extends AbstractAuditingEntity implements Serializable {
         this.equipmentGroup = equipmentGroup;
     }
 
-    public EquipmentModle getEquipmentModle() {
-        return equipmentModle;
+    public EquipmentModel getEquipmentModel() {
+        return equipmentModel;
     }
 
-    public Equipment equipmentModle(EquipmentModle equipmentModle) {
-        this.equipmentModle = equipmentModle;
+    public Equipment equipmentModel(EquipmentModel equipmentModel) {
+        this.equipmentModel = equipmentModel;
         return this;
     }
 
-    public void setEquipmentModle(EquipmentModle equipmentModle) {
-        this.equipmentModle = equipmentModle;
+    public void setEquipmentModel(EquipmentModel equipmentModel) {
+        this.equipmentModel = equipmentModel;
     }
 
     @Override
