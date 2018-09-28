@@ -28,6 +28,15 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
     private Long replyDetailsId;
     private String handleTypeCode;
     private String replyContent;
+
+    private Long projectSiteId;
+
+    private String projectSiteCode;
+
+    private String projectSiteName;
+
+    private String receiveBoxCode;
+
     public Long getId() {
         return id;
     }
@@ -88,6 +97,38 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
 
     public void setReplyContent(String replyContent) {
         this.replyContent = replyContent;
+    }
+
+    public Long getProjectSiteId() {
+        return projectSiteId;
+    }
+
+    public void setProjectSiteId(Long projectSiteId) {
+        this.projectSiteId = projectSiteId;
+    }
+
+    public String getProjectSiteCode() {
+        return projectSiteCode;
+    }
+
+    public void setProjectSiteCode(String projectSiteCode) {
+        this.projectSiteCode = projectSiteCode;
+    }
+
+    public String getProjectSiteName() {
+        return projectSiteName;
+    }
+
+    public void setProjectSiteName(String projectSiteName) {
+        this.projectSiteName = projectSiteName;
+    }
+
+    public String getReceiveBoxCode() {
+        return receiveBoxCode;
+    }
+
+    public void setReceiveBoxCode(String receiveBoxCode) {
+        this.receiveBoxCode = receiveBoxCode;
     }
 
     @Override

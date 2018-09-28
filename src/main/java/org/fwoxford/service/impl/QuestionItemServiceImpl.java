@@ -1,5 +1,6 @@
 package org.fwoxford.service.impl;
 
+import com.google.common.collect.Lists;
 import org.fwoxford.config.Constants;
 import org.fwoxford.domain.FrozenTube;
 import org.fwoxford.web.rest.errors.BankServiceException;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing QuestionItem.
@@ -186,6 +188,22 @@ public class QuestionItemServiceImpl implements QuestionItemService {
         for(QuestionItemDTO questionItemDTO :questionItemDTOS){
             List<QuestionItemDetails> questionItemDetailss = questionItemDetailsRepository.findByQuestionItemIdAndStatusNot(questionItemDTO.getId(), Constants.INVALID);
             List<QuestionItemDetailsDTO> questionItemDetailsDTOS = questionItemDetailsMapper.questionItemDetailsToQuestionItemDetailsDTOs(questionItemDetailss);
+            //查询样本的来源
+            List<Long> frozenTubeIds = questionItemDetailsDTOS.stream().map(s->s.getFrozenTubeId()).collect(Collectors.toList());
+            List<List<Long>> frozenTubeIdEach1000 = Lists.partition(frozenTubeIds,1000);
+            List<Object[]> samplesMsg = new ArrayList<>();
+            for(List<Long> ids :frozenTubeIdEach1000){
+                //查询样本首次接收记录
+                List<Object[]> transhipTubesMsg = questionItemDetailsRepository.findByFrozenTubeIdsIn(ids);
+                samplesMsg.addAll(transhipTubesMsg);
+            }
+            questionItemDetailsDTOS.forEach(s->{
+                Object[] obj = samplesMsg.stream().filter(t->t[0]!=null && Long.valueOf(t[0].toString()).equals(s.getFrozenTubeId())).findFirst().orElse(null);
+                if(obj!=null){
+                    s.setReceiveBoxCode(obj[1]!=null?obj[1].toString():null);
+                    s.setFrozenBoxCode1D(obj[2]!=null?obj[2].toString():null);
+                }
+            });
             questionItemDTO.setQuestionItemDetailsDTOS(questionItemDetailsDTOS);
         }
         return questionItemDTOS;
