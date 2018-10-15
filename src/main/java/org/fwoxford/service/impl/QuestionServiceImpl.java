@@ -262,6 +262,7 @@ public class QuestionServiceImpl implements QuestionService {
         sendRecordForResponse.setId(sendRecord.getId());
         sendRecordForResponse.setStatus(sendRecord.getStatus());
         sendRecordForResponse.setProjectId(questionDTO.getProjectId());
+        sendRecordForResponse.setQuestionId(questionDTO.getId());
         sendRecordForResponse.setQuestionSummary(questionDTO.getQuestionSummary());
         sendRecordForResponse.setAuthor(questionDTO.getAuthor());
         sendRecordForResponse.setAuthorId(questionDTO.getAuthorId());
