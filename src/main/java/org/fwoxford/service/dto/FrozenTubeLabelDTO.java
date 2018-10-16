@@ -1,9 +1,11 @@
 package org.fwoxford.service.dto;
 
+import org.fwoxford.service.dto.response.CommonEntity;
+
 /**
  * Created by gengluying on 2017/12/29.
  */
-public abstract class FrozenTubeLabelDTO {
+public abstract class FrozenTubeLabelDTO extends CommonEntity {
     private String tag1;
     private String tag2;
     private String tag3;

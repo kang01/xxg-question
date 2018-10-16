@@ -3,6 +3,7 @@ package org.fwoxford.service.impl;
 import com.google.common.collect.Lists;
 import org.fwoxford.config.Constants;
 import org.fwoxford.domain.FrozenTube;
+import org.fwoxford.repository.FrozenTubeRepository;
 import org.fwoxford.web.rest.errors.BankServiceException;
 import org.fwoxford.domain.Question;
 import org.fwoxford.domain.QuestionItem;
@@ -46,6 +47,8 @@ public class QuestionItemServiceImpl implements QuestionItemService {
     QuestionRepository questionRepository;
     @Autowired
     QuestionItemDetailsMapper questionItemDetailsMapper;
+    @Autowired
+    FrozenTubeRepository frozenTubeRepository;
 
     public QuestionItemServiceImpl(QuestionItemRepository questionItemRepository, QuestionItemMapper questionItemMapper) {
         this.questionItemRepository = questionItemRepository;
@@ -77,8 +80,10 @@ public class QuestionItemServiceImpl implements QuestionItemService {
         questionItem = questionItemRepository.save(questionItem);
         questionItemDTO.setId(questionItem.getId());
         questionItemDTO.setStatus(questionItem.getStatus());
+
         List<QuestionItemDetails> questionItemDetailssForDel = new ArrayList<>();
         List<QuestionItemDetails> questionItemDetailssForSave = new ArrayList<>();
+        List<FrozenTube> frozenTubeListForUnLock = new ArrayList<>();
         if(questionItemDTO.getId()!=null){
             List<QuestionItemDetails> questionItemDetailssOld = questionItemDetailsRepository.findByQuestionItemIdAndStatusNot(
                 questionItemDTO.getId(), Constants.INVALID);
@@ -86,24 +91,40 @@ public class QuestionItemServiceImpl implements QuestionItemService {
                 if(!questionItemDTO.getFrozenTubeIds().contains(s.getFrozenTube().getId())){
                     s.setStatus(Constants.INVALID);
                     questionItemDetailssForDel.add(s);
+                    FrozenTube frozenTube= s.getFrozenTube();
+                    frozenTube.lockFlag(Constants.LOCK_FLAG_NO).bussinessType(null).bussinessId(null);
+                    frozenTubeListForUnLock.add(frozenTube);
                 }else{
                     questionItemDetailssForSave.add(s);
                 }
             });
         }
+        frozenTubeRepository.save(frozenTubeListForUnLock);
+        questionItemDetailsRepository.save(questionItemDetailssForDel);
 
-
+        //需要验证样本是否被锁住以及样本的状态：条件是，样本未被锁住，且状态为已入库或者接收完成
+        List<Long> frozenTubeIds = questionItemDTO.getFrozenTubeIds();
+        List<FrozenTube> frozenTubeList = frozenTubeRepository.findByIdIn(frozenTubeIds);
         for(Long frozenTubeId :questionItemDTO.getFrozenTubeIds()){
-            FrozenTube frozenTube = new FrozenTube();
-            frozenTube.setId(frozenTubeId);
+            FrozenTube frozenTube = frozenTubeList.stream().filter(s->s.getId().equals(frozenTubeId)).findFirst().orElse(null);
+            if(frozenTube == null){
+                throw new BankServiceException("ID为"+frozenTubeId+"的样本不存在！");
+            }
             QuestionItemDetails questionItemDetails = questionItemDetailssForSave.stream().filter(s->s.getFrozenTube().getId().equals(frozenTubeId)).findFirst().orElse(null);
             if(questionItemDetails == null){
+                if(!frozenTube.getFrozenTubeState().equals(Constants.FROZEN_BOX_STOCKED)&& !frozenTube.getFrozenTubeState().equals(Constants.FROZEN_BOX_TRANSHIP_COMPLETE)){
+                    throw new BankServiceException("样本未入库或未接收完成，不能创建问题！");
+                }
+                if(frozenTube.getLockFlag()!=null && frozenTube.getLockFlag().equals(Constants.LOCK_FLAG_YES)){
+                    throw new BankServiceException("样本被锁于其他业务中，不能创建问题！");
+                }
+                frozenTube.lockFlag(Constants.LOCK_FLAG_YES).bussinessId(questionItem.getId()).bussinessType(Constants.BUSSINESS_TYPE_QUESTION);
                 questionItemDetails = new QuestionItemDetails().questionItem(questionItem).frozenTube(frozenTube).status(Constants.VALID);
             }
             questionItemDetailssForSave.add(questionItemDetails);
         }
         questionItemDetailsRepository.save(questionItemDetailssForSave);
-        questionItemDetailsRepository.save(questionItemDetailssForDel);
+        frozenTubeRepository.save(frozenTubeList);
         questionItemDTO.setQuestionItemDetailsDTOS(questionItemDetailsMapper.questionItemDetailsToQuestionItemDetailsDTOs(questionItemDetailssForSave));
         return questionItemDTO;
     }
@@ -160,8 +181,18 @@ public class QuestionItemServiceImpl implements QuestionItemService {
             throw new BankServiceException("问题"+question.getQuestionCode()+"已不再草拟中，不能删除ITEM！");
         }
         questionItem.setStatus(Constants.INVALID);
+        List<QuestionItemDetails> questionItemDetailss = questionItemDetailsRepository.findByQuestionItemIdAndStatusNot(id,Constants.INVALID);
+        List<FrozenTube> frozenTubeListUnLock = new ArrayList<>();
+        questionItemDetailss.forEach(s->{
+            s.status(Constants.INVALID);
+            FrozenTube frozenTube = s.getFrozenTube();
+            frozenTube.bussinessType(null).bussinessId(null).lockFlag(Constants.LOCK_FLAG_NO);
+            frozenTubeListUnLock.add(frozenTube);
+        });
+        frozenTubeRepository.save(frozenTubeListUnLock);
+        questionItemDetailsRepository.save(questionItemDetailss);
         questionItemRepository.save(questionItem);
-        questionItemDetailsRepository.updateStatusByQuestionItemquestionItemId(id);
+//        questionItemDetailsRepository.updateStatusByQuestionItemquestionItemId(id);
     }
 
     /**

@@ -837,6 +837,24 @@ public class FrozenTube extends FrozenTubeLabel implements Serializable {
     @Column(name = "project_name", length = 255)
     private String projectName;
 
+    @Size(max = 100)
+    @Column(name = "danger_coefficient", length = 100)
+    private String dangerCoefficient;
+
+    //锁定标识
+    @Column(name = "lock_flag")
+    private Integer lockFlag;
+    /**
+     * 锁业务类型 2：申请销毁，3：创建问题
+     */
+    @Column(name = "bussiness_type")
+    private Integer bussinessType;
+    /**
+     * 锁于业务的ID
+     */
+    @Column(name = "bussiness_id")
+    private Long bussinessId;
+
     public String getSampleClassificationCode() {
         return sampleClassificationCode;
     }
@@ -869,9 +887,6 @@ public class FrozenTube extends FrozenTubeLabel implements Serializable {
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }
-    @Size(max = 100)
-    @Column(name = "danger_coefficient", length = 100)
-    private String dangerCoefficient;
 
     public String getDangerCoefficient() {
         return dangerCoefficient;
@@ -882,5 +897,38 @@ public class FrozenTube extends FrozenTubeLabel implements Serializable {
     }
     public void setDangerCoefficient(String dangerCoefficient) {
         this.dangerCoefficient = dangerCoefficient;
+    }
+
+    public Integer getLockFlag() {
+        return lockFlag;
+    }
+    public FrozenTube lockFlag(Integer lockFlag) {
+        this.lockFlag = lockFlag;
+        return this;
+    }
+    public void setLockFlag(Integer lockFlag) {
+        this.lockFlag = lockFlag;
+    }
+
+    public Integer getBussinessType() {
+        return bussinessType;
+    }
+    public FrozenTube bussinessType(Integer bussinessType) {
+        this.bussinessType = bussinessType;
+        return this;
+    }
+    public void setBussinessType(Integer bussinessType) {
+        this.bussinessType = bussinessType;
+    }
+
+    public Long getBussinessId() {
+        return bussinessId;
+    }
+    public FrozenTube bussinessId(Long bussinessId) {
+        this.bussinessId = bussinessId;
+        return this;
+    }
+    public void setBussinessId(Long bussinessId) {
+        this.bussinessId = bussinessId;
     }
 }

@@ -37,6 +37,8 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
 
     private String receiveBoxCode;
 
+    private Long businessId;
+
     public Long getId() {
         return id;
     }
@@ -129,6 +131,14 @@ public class QuestionItemDetailsDTO extends FrozenTubeForQuestion implements Ser
 
     public void setReceiveBoxCode(String receiveBoxCode) {
         this.receiveBoxCode = receiveBoxCode;
+    }
+
+    public Long getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(Long businessId) {
+        this.businessId = businessId;
     }
 
     @Override

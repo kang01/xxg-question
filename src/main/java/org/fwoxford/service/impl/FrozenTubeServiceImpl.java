@@ -125,6 +125,15 @@ public class FrozenTubeServiceImpl implements FrozenTubeService {
                 sql.append(" )" );
             }
         }
+        //业务ID
+        if(questionItemDetailsDTO.getBusinessId()!=null){
+
+            sql.append(" and (t.bussiness_id IS NULL  and (t.LOCK_FLAG IS NULL OR t.LOCK_FLAG = 0)");
+
+            sql.append(" or t.bussiness_id = "+questionItemDetailsDTO.getBusinessId()+"");
+            sql.append(" and t.bussiness_type = "+Constants.BUSSINESS_TYPE_QUESTION+")");
+
+        }
         Query query = entityManager.createNativeQuery(sql.toString());
         List resultList = query.getResultList();
         if (resultList!=null){
@@ -196,7 +205,7 @@ public class FrozenTubeServiceImpl implements FrozenTubeService {
         {
             sql.append("LEFT JOIN FROZEN_BOX b ON b.ID = t.FROZEN_BOX_ID");
         }
-        sql.append(" WHERE t.STATUS != '"+ Constants.INVALID+"' and (t.frozen_tube_state = '2011' or t.frozen_tube_state='2004') ");
+        sql.append(" WHERE (t.LOCK_FLAG IS NULL OR t.LOCK_FLAG = 0) and t.STATUS != '"+ Constants.INVALID+"' and (t.frozen_tube_state = '2011' or t.frozen_tube_state='2004') ");
         //一维码
         if(!StringUtils.isEmpty(questionItemDetailsDTO.getFrozenBoxCode1D()))
         {

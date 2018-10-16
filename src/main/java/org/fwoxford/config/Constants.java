@@ -113,7 +113,18 @@ public final class Constants {
     public static final Integer INCREASE_MINUTES = 24*60;
     //过期时间，单位是小时
     public static final Integer EXPRIATIONTIME_HOURS = 24*14;
+    /**
+     * 锁的标识：1：是，0：否
+     */
+    public static final Integer LOCK_FLAG_YES = 1;
+    public static final Integer LOCK_FLAG_NO = 0;
 
+    /**
+     * 业务类型：1：分装，2：销毁申请，3：创建问题
+     */
+    public static final Integer BUSSINESS_TYPE_SPLIT=1;
+    public static final Integer BUSSINESS_TYPE_DESTROY_APPLY=2;
+    public static final Integer BUSSINESS_TYPE_QUESTION=3;
     private Constants() {
     }
 }

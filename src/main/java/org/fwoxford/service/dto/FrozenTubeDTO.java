@@ -5,21 +5,14 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
  * A DTO for the FrozenTube entity.
  */
-public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
+public class FrozenTubeDTO extends FrozenTubeLabelDTO implements Serializable {
 
     private Long id;
-    /**
-     * 项目编码
-     */
-    @NotNull
-    @Size(max = 100)
-    private String projectCode;
     /**
      * 冻存管编码
      */
@@ -46,18 +39,6 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
     @NotNull
     @Size(max = 255)
     private String frozenTubeTypeName;
-    /**
-     * 样本类型编码
-     */
-    @NotNull
-    @Size(max = 100)
-    private String sampleTypeCode;
-    /**
-     * 样本类型名称
-     */
-    @NotNull
-    @Size(max = 255)
-    private String sampleTypeName;
     /**
      * 样本最多使用次数
      */
@@ -118,102 +99,46 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
      */
     @Size(max = 100)
     private String frozenBoxCode;
-    /**
-     * 项目组中患者ID
-     */
-    private String patientId;
-    /**
-     * 患者出生日期
-     */
-    private ZonedDateTime dob;
-    /**
-     * 患者性别
-     */
-    @Size(max = 255)
-    private String gender;
-    /**
-     * 疾病类型
-     */
-    @Size(max = 255)
-    private String diseaseType;
 
-    private Boolean isHemolysis;
-
-    private Boolean isBloodLipid;
-    /**
-     * 就诊类型
-     */
-    @Size(max = 255)
-    private String visitType;
-    /**
-     * 就诊日期
-     */
-    private ZonedDateTime visitDate;
-    /**
-     * 年龄
-     */
-    private Integer age;
     /**
      * 冻存管类型ID
      */
     private Long frozenTubeTypeId;
-    /**
-     * 样本类型ID
-     */
-    private Long sampleTypeId;
-    /**
-     *样本分类ID
-     */
-    private Long sampleClassificationId;
-    private String sampleClassificationCode;
-    /**
-     * 项目ID
-     */
-    private Long projectId;
+
     /**
      * 冻存盒ID
      */
     private Long frozenBoxId;
 
-    /**
-     * 样本分类前景色
-     */
-    private String frontColorForClass;
-    /**
-     * 样本分类背景色
-     */
-    private String backColorForClass;
-    /**
-     * 样本类型是否混合
-     */
-    private Integer isMixed;
-
-    /**
-     * 样本类型前景色
-     */
-    private String frontColor;
-    /**
-     * 样本类型背景色
-     */
-    private String backColor;
-    /**
-     * 样本分类名称
-     */
-    private String sampleClassificationName;
-    /**
-     * 项目点ID
-     */
-    private Long projectSiteId;
-    /**
-     * 项目点编码
-     */
-    private String projectSiteCode;
 
     private String position;
+
     /**
-     * 样本分期
+     * 管子标识，2：原盒原库存，1：盒内新加入的冻存管
      */
-    private String sampleStage;
+    private String flag;
+    /**
+     * 出库标识:1:出库,2:取消出库
+     */
+    private Integer stockOutFlag;
+    /**
+     * 取消出库的原因
+     */
+    private String repealReason;
+
+    private Long parentSampleId;
+    private String parentSampleCode;
+    private String frozenBoxCode1D;
+    private String dangerCoefficient;
+    private Integer lockFlag;
+    /**
+     * 锁业务类型 2：申请销毁，3：创建问题
+     */
+    private Integer bussinessType;
+    /**
+     * 锁于业务的ID
+     */
+    private Long bussinessId;
 
     public Long getId() {
         return id;
@@ -221,13 +146,6 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
     }
     public String getFrozenTubeCode() {
         return frozenTubeCode;
@@ -264,20 +182,7 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
     public void setFrozenTubeTypeName(String frozenTubeTypeName) {
         this.frozenTubeTypeName = frozenTubeTypeName;
     }
-    public String getSampleTypeCode() {
-        return sampleTypeCode;
-    }
 
-    public void setSampleTypeCode(String sampleTypeCode) {
-        this.sampleTypeCode = sampleTypeCode;
-    }
-    public String getSampleTypeName() {
-        return sampleTypeName;
-    }
-
-    public void setSampleTypeName(String sampleTypeName) {
-        this.sampleTypeName = sampleTypeName;
-    }
     public Integer getSampleUsedTimesMost() {
         return sampleUsedTimesMost;
     }
@@ -366,66 +271,6 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
     public void setFrozenBoxCode(String frozenBoxCode) {
         this.frozenBoxCode = frozenBoxCode;
     }
-    public String getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(String patientId) {
-        this.patientId = patientId;
-    }
-    public ZonedDateTime getDob() {
-        return dob;
-    }
-
-    public void setDob(ZonedDateTime dob) {
-        this.dob = dob;
-    }
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-    public String getDiseaseType() {
-        return diseaseType;
-    }
-
-    public void setDiseaseType(String diseaseType) {
-        this.diseaseType = diseaseType;
-    }
-    public void setIsHemolysis(Boolean isHemolysis) {
-        this.isHemolysis = isHemolysis;
-    }
-    public Boolean getIsBloodLipid() {
-        return isBloodLipid;
-    }
-
-    public void setIsBloodLipid(Boolean isBloodLipid) {
-        this.isBloodLipid = isBloodLipid;
-    }
-    public String getVisitType() {
-        return visitType;
-    }
-
-    public void setVisitType(String visitType) {
-        this.visitType = visitType;
-    }
-    public ZonedDateTime getVisitDate() {
-        return visitDate;
-    }
-
-    public void setVisitDate(ZonedDateTime visitDate) {
-        this.visitDate = visitDate;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 
     public Long getFrozenTubeTypeId() {
         return frozenTubeTypeId;
@@ -435,37 +280,6 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
         this.frozenTubeTypeId = frozenTubeTypeId;
     }
 
-    public Long getSampleTypeId() {
-        return sampleTypeId;
-    }
-
-    public void setSampleTypeId(Long sampleTypeId) {
-        this.sampleTypeId = sampleTypeId;
-    }
-
-    public Long getSampleClassificationId() {
-        return sampleClassificationId;
-    }
-
-    public void setSampleClassificationId(Long sampleClassificationId) {
-        this.sampleClassificationId = sampleClassificationId;
-    }
-
-    public String getSampleClassificationCode() {
-        return sampleClassificationCode;
-    }
-
-    public void setSampleClassificationCode(String sampleClassificationCode) {
-        this.sampleClassificationCode = sampleClassificationCode;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
 
     public Long getFrozenBoxId() {
         return frozenBoxId;
@@ -475,100 +289,12 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
         this.frozenBoxId = frozenBoxId;
     }
 
-    public Boolean getHemolysis() {
-        return isHemolysis;
-    }
-
-    public void setHemolysis(Boolean hemolysis) {
-        this.isHemolysis = hemolysis;
-    }
-
-    public Boolean getBloodLipid() {
-        return isBloodLipid;
-    }
-
-    public void setBloodLipid(Boolean bloodLipid) {
-        this.isBloodLipid = bloodLipid;
-    }
-
-    public String getFrontColorForClass() {
-        return frontColorForClass;
-    }
-
-    public void setFrontColorForClass(String frontColorForClass) {
-        this.frontColorForClass = frontColorForClass;
-    }
-
-    public String getBackColorForClass() {
-        return backColorForClass;
-    }
-
-    public void setBackColorForClass(String backColorForClass) {
-        this.backColorForClass = backColorForClass;
-    }
-
-    public Integer getIsMixed() {
-        return isMixed;
-    }
-
-    public void setIsMixed(Integer isMixed) {
-        this.isMixed = isMixed;
-    }
-
-    public String getFrontColor() {
-        return frontColor;
-    }
-
-    public void setFrontColor(String frontColor) {
-        this.frontColor = frontColor;
-    }
-
-    public String getBackColor() {
-        return backColor;
-    }
-
-    public void setBackColor(String backColor) {
-        this.backColor = backColor;
-    }
-
-    public String getSampleClassificationName() {
-        return sampleClassificationName;
-    }
-
-    public void setSampleClassificationName(String sampleClassificationName) {
-        this.sampleClassificationName = sampleClassificationName;
-    }
-
-    public Long getProjectSiteId() {
-        return projectSiteId;
-    }
-
-    public void setProjectSiteId(Long projectSiteId) {
-        this.projectSiteId = projectSiteId;
-    }
-
-    public String getProjectSiteCode() {
-        return projectSiteCode;
-    }
-
-    public void setProjectSiteCode(String projectSiteCode) {
-        this.projectSiteCode = projectSiteCode;
-    }
-
     public String getPosition() {
         return position;
     }
 
     public void setPosition(String position) {
         this.position = position;
-    }
-
-    public String getSampleStage() {
-        return sampleStage;
-    }
-
-    public void setSampleStage(String sampleStage) {
-        this.sampleStage = sampleStage;
     }
 
     @Override
@@ -596,14 +322,11 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
     public String toString() {
         return "FrozenTubeDTO{" +
             "id=" + id +
-            ", projectCode='" + projectCode + "'" +
             ", frozenTubeCode='" + frozenTubeCode + "'" +
             ", sampleTempCode='" + sampleTempCode + "'" +
             ", sampleCode='" + sampleCode + "'" +
             ", frozenTubeTypeCode='" + frozenTubeTypeCode + "'" +
             ", frozenTubeTypeName='" + frozenTubeTypeName + "'" +
-            ", sampleTypeCode='" + sampleTypeCode + "'" +
-            ", sampleTypeName='" + sampleTypeName + "'" +
             ", sampleUsedTimesMost='" + sampleUsedTimesMost + "'" +
             ", sampleUsedTimes='" + sampleUsedTimes + "'" +
             ", frozenTubeVolumns='" + frozenTubeVolumns + "'" +
@@ -616,25 +339,9 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
             ", frozenTubeState ='"+ frozenTubeState + "'" +
             ", status='" + status + "'" +
             ", frozenBoxCode='" + frozenBoxCode + "'" +
-            ", patientId='" + patientId + "'" +
-            ", dob='" + dob + "'" +
-            ", gender='" + gender + "'" +
-            ", diseaseType='" + diseaseType + "'" +
-            ", isHemolysis='" + isHemolysis + "'" +
-            ", isBloodLipid='" + isBloodLipid + "'" +
-            ", visitType='" + visitType + "'" +
-            ", visitDate='" + visitDate + "'" +
-            ", age='" + age + "'" +
-            ", projectSiteCode='" + projectSiteCode + "'" +
             ", position='" + position + "'" +
-            ", sampleStage='" + sampleStage + "'" +
             '}';
     }
-
-    /**
-     * 管子标识，2：原盒原库存，1：盒内新加入的冻存管
-     */
-    private String flag;
 
     public String getFlag() {
         return flag;
@@ -643,15 +350,6 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
     public void setFlag(String flag) {
         this.flag = flag;
     }
-
-    /**
-     * 出库标识:1:出库,2:取消出库
-     */
-    private Integer stockOutFlag;
-    /**
-     * 取消出库的原因
-     */
-    private String repealReason;
 
     public Integer getStockOutFlag() {
         return stockOutFlag;
@@ -669,9 +367,6 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
         this.repealReason = repealReason;
     }
 
-    private Long parentSampleId;
-    private String parentSampleCode;
-
     public Long getParentSampleId() {
         return parentSampleId;
     }
@@ -688,16 +383,6 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
         this.parentSampleCode = parentSampleCode;
     }
 
-    private String projectName;
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-    private String dangerCoefficient;
 
     public String getDangerCoefficient() {
         return dangerCoefficient;
@@ -705,5 +390,37 @@ public class FrozenTubeDTO extends FrozenTubeLabelDTO  implements Serializable {
 
     public void setDangerCoefficient(String dangerCoefficient) {
         this.dangerCoefficient = dangerCoefficient;
+    }
+
+    public String getFrozenBoxCode1D() {
+        return frozenBoxCode1D;
+    }
+
+    public void setFrozenBoxCode1D(String frozenBoxCode1D) {
+        this.frozenBoxCode1D = frozenBoxCode1D;
+    }
+
+    public Integer getLockFlag() {
+        return lockFlag;
+    }
+
+    public void setLockFlag(Integer lockFlag) {
+        this.lockFlag = lockFlag;
+    }
+
+    public Integer getBussinessType() {
+        return bussinessType;
+    }
+
+    public void setBussinessType(Integer bussinessType) {
+        this.bussinessType = bussinessType;
+    }
+
+    public Long getBussinessId() {
+        return bussinessId;
+    }
+
+    public void setBussinessId(Long bussinessId) {
+        this.bussinessId = bussinessId;
     }
 }
