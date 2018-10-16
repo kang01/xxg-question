@@ -8,6 +8,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -32,13 +33,6 @@ public class Equipment extends AbstractAuditingEntity implements Serializable {
     @Column(name = "equipment_code", length = 100, nullable = false ,unique = true)
     private String equipmentCode;
     /**
-     * 工作温度
-     */
-    @NotNull
-    @Max(value = 100)
-    @Column(name = "temperature", nullable = false)
-    private Integer temperature;
-    /**
      * 设备地址
      */
     @NotNull
@@ -58,29 +52,83 @@ public class Equipment extends AbstractAuditingEntity implements Serializable {
     @Column(name = "ampoules_min", nullable = false)
     private Integer ampoulesMin;
     /**
-     * 标签1
+     * 工作最大温度
      */
-    @Size(max = 100)
-    @Column(name = "label_1", length = 100)
-    private String label1;
+    @Max(value = 100)
+    @Column(name = "working_max_t")
+    private Integer workingMaxT;
     /**
-     * 标签2
+     * 工作最小温度
      */
     @Size(max = 100)
-    @Column(name = "label_2", length = 100)
-    private String label2;
+    @Column(name = "working_min_t", length = 100)
+    private Integer workingMinT;
     /**
-     * 标签3
+     * 报警最大温度
      */
     @Size(max = 100)
-    @Column(name = "label_3", length = 100)
-    private String label3;
+    @Column(name = "warning_max_t", length = 100)
+    private Integer warningMaxT;
     /**
-     * 标签4
+     * 报警最小温度
      */
     @Size(max = 100)
-    @Column(name = "label_4", length = 100)
-    private String label4;
+    @Column(name = "warning_min_t", length = 100)
+    private Integer warningMinT;
+    /**
+     * 设备归属
+     */
+    @Column(name = "equipment_affiliation", length = 100)
+    private String equipmentAffiliation;
+    /**
+     * 采购日期
+      */
+    @Column(name = "date_of_decision")
+    private LocalDate dateOfDecision;
+    /**
+     * 出厂日期
+     */
+    @Column(name = "date_of_production")
+    private LocalDate dateOfProduction;
+    /**
+     * 启用日期
+     */
+    @Column(name = "date_of_opening")
+    private LocalDate dateOfOpening;
+    /**
+     * 报废年限 单位按照年，月，日选择，提交数据时统一单位为日
+     */
+    @Max(value = 2191)
+    @Column(name = "end_of_life")
+    private Integer endOfLife;
+    /**
+     * 保养周期 单位按照年，月，日选择，提交数据时统一单位为日
+     */
+    @Max(value = 2191)
+    @Column(name = "maintenance_period")
+    private Integer maintenancePeriod;
+    /**
+     * 分区数
+     */
+    @NotNull
+    @Max(value = 255)
+    @Column(name = "count_of_area", nullable = false)
+    private Integer countOfArea;
+    /**
+     * 生产厂家
+     */
+    @Column(name = "manufacturer", length = 255)
+    private String manufacturer;
+    /**
+     * 联系地址
+     */
+    @Column(name = "contact_address", length = 255)
+    private String contactAddress;
+    /**
+     * 联系电话
+     */
+    @Column(name = "contact_phone", length = 255)
+    private String contactPhone;
     /**
      * 备注
      */
@@ -130,18 +178,6 @@ public class Equipment extends AbstractAuditingEntity implements Serializable {
         this.equipmentCode = equipmentCode;
     }
 
-    public Integer getTemperature() {
-        return temperature;
-    }
-
-    public Equipment temperature(Integer temperature) {
-        this.temperature = temperature;
-        return this;
-    }
-
-    public void setTemperature(Integer temperature) {
-        this.temperature = temperature;
-    }
 
     public String getEquipmentAddress() {
         return equipmentAddress;
@@ -182,43 +218,158 @@ public class Equipment extends AbstractAuditingEntity implements Serializable {
         this.ampoulesMin = ampoulesMin;
     }
 
-    public String getLabel1() {
-        return label1;
+    public Integer getWorkingMaxT() {
+        return workingMaxT;
     }
-
-    public Equipment label1(String label1) {
-        this.label1 = label1;
+    public Equipment workingMaxT(Integer workingMaxT) {
+        this.workingMaxT = workingMaxT;
         return this;
     }
-
-    public void setLabel1(String label1) {
-        this.label1 = label1;
+    public void setWorkingMaxT(Integer workingMaxT) {
+        this.workingMaxT = workingMaxT;
     }
 
-    public String getLabel2() {
-        return label2;
+    public Integer getWorkingMinT() {
+        return workingMinT;
     }
-
-    public Equipment label2(String label2) {
-        this.label2 = label2;
+    public Equipment workingMinT(Integer workingMinT) {
+        this.workingMinT = workingMinT;
         return this;
     }
-
-    public void setLabel2(String label2) {
-        this.label2 = label2;
+    public void setWorkingMinT(Integer workingMinT) {
+        this.workingMinT = workingMinT;
     }
 
-    public String getLabel4() {
-        return label4;
+    public Integer getWarningMaxT() {
+        return warningMaxT;
     }
-
-    public Equipment label4(String label4) {
-        this.label4 = label4;
+    public Equipment warningMaxT(Integer warningMaxT) {
+        this.warningMaxT = warningMaxT;
         return this;
     }
+    public void setWarningMaxT(Integer warningMaxT) {
+        this.warningMaxT = warningMaxT;
+    }
 
-    public void setLabel4(String label4) {
-        this.label4 = label4;
+    public Integer getWarningMinT() {
+        return warningMinT;
+    }
+    public Equipment warningMinT(Integer warningMinT) {
+        this.warningMinT = warningMinT;
+        return this;
+    }
+    public void setWarningMinT(Integer warningMinT) {
+        this.warningMinT = warningMinT;
+    }
+
+    public String getEquipmentAffiliation() {
+        return equipmentAffiliation;
+    }
+    public Equipment equipmentAffiliation(String equipmentAffiliation) {
+        this.equipmentAffiliation = equipmentAffiliation;
+        return this;
+    }
+    public void setEquipmentAffiliation(String equipmentAffiliation) {
+        this.equipmentAffiliation = equipmentAffiliation;
+    }
+
+    public LocalDate getDateOfDecision() {
+        return dateOfDecision;
+    }
+    public Equipment dateOfDecision(LocalDate dateOfDecision) {
+        this.dateOfDecision = dateOfDecision;
+        return this;
+    }
+    public void setDateOfDecision(LocalDate dateOfDecision) {
+        this.dateOfDecision = dateOfDecision;
+    }
+
+    public LocalDate getDateOfProduction() {
+        return dateOfProduction;
+    }
+    public Equipment dateOfProduction(LocalDate dateOfProduction) {
+        this.dateOfProduction = dateOfProduction;
+        return this;
+    }
+    public void setDateOfProduction(LocalDate dateOfProduction) {
+        this.dateOfProduction = dateOfProduction;
+    }
+
+    public LocalDate getDateOfOpening() {
+        return dateOfOpening;
+    }
+    public Equipment dateOfOpening(LocalDate dateOfOpening) {
+        this.dateOfOpening = dateOfOpening;
+        return this;
+    }
+    public void setDateOfOpening(LocalDate dateOfOpening) {
+        this.dateOfOpening = dateOfOpening;
+    }
+
+    public Integer getEndOfLife() {
+        return endOfLife;
+    }
+    public Equipment endOfLife(Integer endOfLife) {
+        this.endOfLife = endOfLife;
+        return this;
+    }
+    public void setEndOfLife(Integer endOfLife) {
+        this.endOfLife = endOfLife;
+    }
+
+    public Integer getMaintenancePeriod() {
+        return maintenancePeriod;
+    }
+    public Equipment maintenancePeriod(Integer maintenancePeriod) {
+        this.maintenancePeriod = maintenancePeriod;
+        return this;
+    }
+    public void setMaintenancePeriod(Integer maintenancePeriod) {
+        this.maintenancePeriod = maintenancePeriod;
+    }
+
+    public Integer getCountOfArea() {
+        return countOfArea;
+    }
+    public Equipment countOfArea(Integer countOfArea) {
+        this.countOfArea = countOfArea;
+        return this;
+    }
+    public void setCountOfArea(Integer countOfArea) {
+        this.countOfArea = countOfArea;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+    public Equipment manufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+        return this;
+    }
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public String getContactAddress() {
+        return contactAddress;
+    }
+    public Equipment contactAddress(String contactAddress) {
+        this.contactAddress = contactAddress;
+        return this;
+    }
+    public void setContactAddress(String contactAddress) {
+        this.contactAddress = contactAddress;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+    public Equipment contactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+        return this;
+    }
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
     }
 
     public String getMemo() {
@@ -247,19 +398,6 @@ public class Equipment extends AbstractAuditingEntity implements Serializable {
         this.status = status;
     }
 
-    public String getLabel3() {
-        return label3;
-    }
-
-    public Equipment label3(String label3) {
-        this.label3 = label3;
-        return this;
-    }
-
-    public void setLabel3(String label3) {
-        this.label3 = label3;
-    }
-
     public EquipmentGroup getEquipmentGroup() {
         return equipmentGroup;
     }
@@ -277,7 +415,7 @@ public class Equipment extends AbstractAuditingEntity implements Serializable {
         return equipmentModel;
     }
 
-    public Equipment equipmentModel(EquipmentModel equipmentModel) {
+    public Equipment equipmentModle(EquipmentModel equipmentModel) {
         this.equipmentModel = equipmentModel;
         return this;
     }
@@ -311,16 +449,11 @@ public class Equipment extends AbstractAuditingEntity implements Serializable {
         return "Equipment{" +
             "id=" + id +
             ", equipmentCode='" + equipmentCode + "'" +
-            ", temperature='" + temperature + "'" +
             ", equipmentAddress='" + equipmentAddress + "'" +
             ", ampoulesMax='" + ampoulesMax + "'" +
             ", ampoulesMin='" + ampoulesMin + "'" +
-            ", label1='" + label1 + "'" +
-            ", label2='" + label2 + "'" +
-            ", label4='" + label4 + "'" +
             ", memo='" + memo + "'" +
             ", status='" + status + "'" +
-            ", label3='" + label3 + "'" +
             '}';
     }
 }
