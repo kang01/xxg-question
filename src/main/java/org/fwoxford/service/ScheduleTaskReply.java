@@ -34,6 +34,8 @@ public class ScheduleTaskReply implements Job {
     QuestionRepository questionRepository;
     @Autowired
     ReplyRecordRepository replyRecordRepository;
+    @Autowired
+    SendRecordService sendRecordService;
 
     /**
      * 若需要停止此任务,需要调用QuartzManager中的 removeJob()方法,参数: jobName,jobGroupName,triggerName,triggerGroupName
@@ -51,7 +53,7 @@ public class ScheduleTaskReply implements Job {
         SendRecord sendRecord = sendRecordRepository.findOne(sendId);
         //判断是否已回复完成,如果未完成,则状态未已过期
         ReplyRecord replyRecord = replyRecordRepository.findBySendRecordId(sendId);
-        //判断发送记录是否过期
+        //判断发送记录是否过期 如果到了过期时间，看发送过多少次，如果没到5次，重新发送
         if(replyRecord ==null||!replyRecord.getStatus().equals(Constants.QUESTION_REPLY_FINISHED)){
             sendRecord.status(Constants.QUESTION_SEND_OVERDUE);
             sendRecordRepository.save(sendRecord);
@@ -63,20 +65,26 @@ public class ScheduleTaskReply implements Job {
         }
         //获取问题ID 判断问题是否过期
         Long questionId = sendRecord.getQuestionId();
-        Question question = questionRepository.findOne(questionId);
-        //判断这个问题下的发送记录是否都是已过期,如果是,问题则为已过期
-        //已过期记录
-        Long countOfUnCount = sendRecordRepository.countByQuestionIdAndStatus(questionId,Constants.QUESTION_SEND_OVERDUE);
-        //已回复记录
-        Long countOfReplyed = sendRecordRepository.countByQuestionIdAndStatus(questionId,Constants.QUESTION_SEND_REPLIED);
-        if(countOfReplyed == 0 && countOfUnCount!=0){
-            question.status(Constants.QUESTION_OVERDUE);
-            questionRepository.save(question);
-        }else if(countOfReplyed!=0){
-            question.status(Constants.QUESTION_REPLY);
-            questionRepository.save(question);
+        //看发送过多少次，如果没到5次，重新发送
+        Long countOfSendTimes = sendRecordRepository.countByQuestionIdAndStatusNot(questionId,Constants.INVALID);
+        if(countOfSendTimes!=null && countOfSendTimes.intValue()<5){
+            sendRecordService.saveSendRecordForReSend(sendId);
+            LOGGER.info("问题在有效期内尚未回复，回复已过期并重新发送!");
+        }else{
+            Question question = questionRepository.findOne(questionId);
+            //判断这个问题下的发送记录是否都是已过期,如果是,问题则为已过期
+            //已过期记录
+            Long countOfUnCount = sendRecordRepository.countByQuestionIdAndStatus(questionId,Constants.QUESTION_SEND_OVERDUE);
+            //已回复记录
+            Long countOfReplyed = sendRecordRepository.countByQuestionIdAndStatus(questionId,Constants.QUESTION_SEND_REPLIED);
+            if(countOfReplyed == 0 && countOfUnCount!=0){
+                question.status(Constants.QUESTION_OVERDUE);
+                questionRepository.save(question);
+            }else if(countOfReplyed!=0){
+                question.status(Constants.QUESTION_REPLY);
+                questionRepository.save(question);
+            }
+            LOGGER.info("问题在有效期内尚未回复，回复已过期!");
         }
-
-        LOGGER.info("问题在有效期内尚未回复，回复已过期!");
     }
 }

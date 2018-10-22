@@ -112,7 +112,8 @@ public class QuestionItemServiceImpl implements QuestionItemService {
             }
             QuestionItemDetails questionItemDetails = questionItemDetailssForSave.stream().filter(s->s.getFrozenTube().getId().equals(frozenTubeId)).findFirst().orElse(null);
             if(questionItemDetails == null){
-                if(!frozenTube.getFrozenTubeState().equals(Constants.FROZEN_BOX_STOCKED)&& !frozenTube.getFrozenTubeState().equals(Constants.FROZEN_BOX_TRANSHIP_COMPLETE)){
+                if(!frozenTube.getFrozenTubeState().equals(Constants.FROZEN_BOX_STOCKED)&& !frozenTube.getFrozenTubeState().equals(Constants.FROZEN_BOX_TRANSHIP_COMPLETE)
+                    && !frozenTube.getFrozenTubeState().equals(Constants.FROZEN_BOX_STOCKING)){
                     throw new BankServiceException("样本未入库或未接收完成，不能创建问题！");
                 }
                 if(frozenTube.getLockFlag()!=null && frozenTube.getLockFlag().equals(Constants.LOCK_FLAG_YES)){

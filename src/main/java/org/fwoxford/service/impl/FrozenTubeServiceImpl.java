@@ -75,7 +75,7 @@ public class FrozenTubeServiceImpl implements FrozenTubeService {
             {
                 sql.append("LEFT JOIN FROZEN_BOX b ON b.ID = t.FROZEN_BOX_ID");
             }
-            sql.append(" WHERE rownum <=500 and t.STATUS != '"+ Constants.INVALID+"' and (t.frozen_tube_state = '2011' or t.frozen_tube_state='2004') ");
+            sql.append(" WHERE rownum <=500 and t.STATUS != '"+ Constants.INVALID+"' and (t.frozen_tube_state = '2011' or t.frozen_tube_state='2004' or t.frozen_tube_state='2002') ");
             //一维码
         if(!StringUtils.isEmpty(questionItemDetailsDTO.getFrozenBoxCode1D()))
         {

@@ -51,24 +51,22 @@ public class QuestionServiceImpl implements QuestionService {
     DelegateRepository delegateRepository;
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     QuestionItemService questionItemService;
-
     @Autowired
     SendRecordRepository sendRecordRepository;
-
     @Autowired
     ReplyRecordRepository replyRecordRepository;
-
     @Autowired
     ReplyDetailsRepository replyDetailsRepository;
-
     @Autowired
     ReplyDetailsMapper replyDetailsMapper;
-
     @Autowired
     AuthorizationRecordRepository authorizationRecordRepository;
+    @Autowired
+    QuestionItemRepository questionItemRepository;
+    @Autowired
+    FrozenTubeRepository frozenTubeRepository;
 
     public QuestionServiceImpl(QuestionRepository questionRepository, QuestionMapper questionMapper) {
         this.questionRepository = questionRepository;
@@ -298,6 +296,9 @@ public class QuestionServiceImpl implements QuestionService {
         }
         question.status(Constants.QUESTION_FINISHED);
         questionRepository.save(question);
+        //所有样本去掉业务锁
+        List<Long> bussinessIds = questionItemRepository.findIdByQuestionId(id);
+        frozenTubeRepository.updateBussinessMsgByBussinessId(bussinessIds);
         return questionMapper.questionToQuestionDTO(question);
     }
 }

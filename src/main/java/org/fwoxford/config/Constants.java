@@ -113,6 +113,10 @@ public final class Constants {
     public static final Integer INCREASE_MINUTES = 24*60;
     //过期时间，单位是小时
     public static final Integer EXPRIATIONTIME_HOURS = 24*14;
+//    //测试时候为 60 正式的为 24*60
+//    public static final Integer INCREASE_MINUTES = 24*60;
+//    //过期时间，单位是小时
+//    public static final Integer EXPRIATIONTIME_HOURS = 1;
     /**
      * 锁的标识：1：是，0：否
      */

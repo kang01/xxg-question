@@ -19,11 +19,13 @@ public interface SendRecordRepository extends JpaRepository<SendRecord, Long> {
     @Query("SELECT count(t.id) FROM SendRecord t WHERE t.questionId = ?1 and t.status != '"+ Constants.QUESTION_SEND_REPLIED+"'")
     Long countUnReplyRecordByQuestionId(Long questionId);
 
-    List<SendRecord> findByQuestionIdAndStatusNot(Long id, String questionSendOverdue);
+    List<SendRecord> findByQuestionIdAndStatusNot(Long id, String status);
 
     List<SendRecord> findByQuestionId(Long questionId);
 
-    Long countByQuestionIdAndStatus(Long questionId, String questionSendOverdue);
+    Long countByQuestionIdAndStatus(Long questionId, String status);
+
+    Long countByQuestionIdAndStatusNot(Long id, String status);
 
     SendRecord findByAuthorizationRecordIdAndStatusNotIn(Long id,  ArrayList<String> statusList);
 }

@@ -262,7 +262,6 @@ public interface FrozenTubeRepository extends JpaRepository<FrozenTube,Long> {
     @Query( value = "select t.id from frozen_tube t where t.status != '0000' and t.frozen_box_id = ?1 and rownum = 1" ,nativeQuery = true)
     Long findByFrozenBoxId(Long id);
 
-
     @Query( value = "select t.* from frozen_tube t where t.frozen_box_code = ?1 and t.frozen_tube_state = ?2 and t.sample_classification_code = ?3 and rownum = 1" ,nativeQuery = true)
     FrozenTube findByFrozenBoxCodeAndFrozenTubeStateAndSampleClassificationCodeTopOne(String boxCode2, String frozenBoxStocked, String classCode);
 
@@ -276,4 +275,8 @@ public interface FrozenTubeRepository extends JpaRepository<FrozenTube,Long> {
     FrozenTube findBySampleCodeAndSampleClassificationCode(String sampleCode, String sampleClassificationCode);
 
     List<FrozenTube> findBySampleCode(String sampleCode);
+
+    @Modifying
+    @Query("update FrozenTube t set t.bussinessId = null,t.bussinessType = null,t.lockFlag = 0  where t.bussinessId in ?1 and t.status!='"+Constants.INVALID+"'")
+    void updateBussinessMsgByBussinessId(List<Long> bussinessIds);
 }
