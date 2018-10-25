@@ -75,7 +75,8 @@ public class FrozenTubeServiceImpl implements FrozenTubeService {
             {
                 sql.append("LEFT JOIN FROZEN_BOX b ON b.ID = t.FROZEN_BOX_ID");
             }
-            sql.append(" WHERE rownum <=500 and t.STATUS != '"+ Constants.INVALID+"' and (t.frozen_tube_state = '2011' or t.frozen_tube_state='2004' or t.frozen_tube_state='2002') ");
+            sql.append(" WHERE rownum <=500 and t.STATUS != '"+ Constants.INVALID+"' " +
+                "and t.FROZEN_TUBE_STATE in ( '2011','2004','2002','2006') ");
             //一维码
         if(!StringUtils.isEmpty(questionItemDetailsDTO.getFrozenBoxCode1D()))
         {
@@ -133,6 +134,8 @@ public class FrozenTubeServiceImpl implements FrozenTubeService {
             sql.append(" or t.bussiness_id = "+questionItemDetailsDTO.getBusinessId()+"");
             sql.append(" and t.bussiness_type = "+Constants.BUSSINESS_TYPE_QUESTION+")");
 
+        }else{
+            sql.append(" and (t.LOCK_FLAG IS NULL OR t.LOCK_FLAG = 0)");
         }
         Query query = entityManager.createNativeQuery(sql.toString());
         List resultList = query.getResultList();
@@ -205,7 +208,8 @@ public class FrozenTubeServiceImpl implements FrozenTubeService {
         {
             sql.append("LEFT JOIN FROZEN_BOX b ON b.ID = t.FROZEN_BOX_ID");
         }
-        sql.append(" WHERE (t.LOCK_FLAG IS NULL OR t.LOCK_FLAG = 0) and t.STATUS != '"+ Constants.INVALID+"' and (t.frozen_tube_state = '2011' or t.frozen_tube_state='2004') ");
+        sql.append(" WHERE (t.LOCK_FLAG IS NULL OR t.LOCK_FLAG = 0) and t.STATUS != '"+ Constants.INVALID+"' and " +
+            " t.frozen_tube_state in ( '2011','2004','2002','2006')");
         //一维码
         if(!StringUtils.isEmpty(questionItemDetailsDTO.getFrozenBoxCode1D()))
         {
