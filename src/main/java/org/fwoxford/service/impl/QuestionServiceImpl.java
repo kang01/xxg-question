@@ -298,7 +298,9 @@ public class QuestionServiceImpl implements QuestionService {
         questionRepository.save(question);
         //所有样本去掉业务锁
         List<Long> bussinessIds = questionItemRepository.findIdByQuestionId(id);
-        frozenTubeRepository.updateBussinessMsgByBussinessId(bussinessIds);
+        if(question.getQuestionTypeCode().equals(Constants.QUESTION_TYPE_SAMPLE)){
+            frozenTubeRepository.updateBussinessMsgByBussinessId(bussinessIds);
+        }
         return questionMapper.questionToQuestionDTO(question);
     }
 }

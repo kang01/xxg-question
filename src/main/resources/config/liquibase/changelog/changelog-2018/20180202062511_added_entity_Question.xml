@@ -98,4 +98,7 @@
             <column name="author_id" type="bigint" remarks="提问人ID"></column>
         </addColumn>
     </changeSet>
+    <changeSet id="20181112094511-2" author="jhipster">
+        <modifyDataType tableName="question" columnName="question_description" newDataType="nvarchar(2000)"></modifyDataType>
+    </changeSet>
 </databaseChangeLog>

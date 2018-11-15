@@ -39,11 +39,11 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-#        url: jdbc:oracle:thin:@10.24.10.247:1521:xe
-#        username: biobank_p_20171020
+#        url: jdbc:oracle:thin:@10.24.15.151:1521/orcl
+#        username: C##biobank_p_20181101
 #        password: eyuXotN6
         url: jdbc:oracle:thin:@10.24.10.56:1521/orcl
-        username: C##biobank_t_20180912
+        username: C##biobank_t_20181112
         password: root123
     jpa:
         database-platform: org.fwoxford.config.database.BBISOracle12cDialect
@@ -60,9 +60,9 @@ spring:
             hibernate.jdbc.batch_versioned_data: true
     mail:
         enable: true
-        host: smtp.163.com  # 发送邮件的smtp服务器
-        username: gengluy@163.com  # 用户名
-        password: gengluying000 # 登陆smtp服务器的密码
+        host: smtp.qiye.163.com  # 发送邮件的smtp服务器
+        username: yu.zhu@fwoxford.org  # 用户名
+        password: 9WTbppaV5Xf7k14f # 登陆smtp服务器的密码
         default-encoding: UTF-8
         port: 25
     messages:

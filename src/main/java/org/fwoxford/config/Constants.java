@@ -129,6 +129,8 @@ public final class Constants {
     public static final Integer BUSSINESS_TYPE_SPLIT=1;
     public static final Integer BUSSINESS_TYPE_DESTROY_APPLY=2;
     public static final Integer BUSSINESS_TYPE_QUESTION=3;
+    public static final String EMAIL_SENDER = "yu.zhu@fwoxford.org";
+
     private Constants() {
     }
 }

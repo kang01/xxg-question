@@ -138,13 +138,13 @@ public class SendRecordServiceImpl implements SendRecordService {
             emailMessage.setQuestionSummary(question.getQuestionSummary());
             emailMessage.setHttpUrl(authorizationRecord.getHttpUrl());
             MessagerDTO messagerDTO = new MessagerDTO();
-            messagerDTO.setFromUser("gengluy@163.com");
+            messagerDTO.setFromUser(Constants.EMAIL_SENDER);
             messagerDTO.setToUser(authorizationRecord.getStrangerEmail());
             mailService.sendMessageMail(emailMessage, question.getQuestionSummary(), "message.ftl",messagerDTO);
             SendRecord sendRecord = new SendRecord();
             sendRecord.questionCode(question.getQuestionCode()).questionId(question.getId())
                 .authorizationRecordId(authorizationRecord.getId()).status(Constants.QUESTION_SENT)
-                .senderEmail("gengluy@163.com").strangerName(authorizationRecord.getStrangerName()).strangerEmail(authorizationRecord.getStrangerEmail());
+                .senderEmail(Constants.EMAIL_SENDER).strangerName(authorizationRecord.getStrangerName()).strangerEmail(authorizationRecord.getStrangerEmail());
             sendRecords.add(sendRecord);
         }
         sendRecordRepository.save(sendRecords);
@@ -226,13 +226,13 @@ public class SendRecordServiceImpl implements SendRecordService {
         emailMessage.setQuestionSummary(question.getQuestionSummary());
         emailMessage.setHttpUrl(authorizationRecord.getHttpUrl());
         MessagerDTO messagerDTO = new MessagerDTO();
-        messagerDTO.setFromUser("gengluy@163.com");
+        messagerDTO.setFromUser(Constants.EMAIL_SENDER);
         messagerDTO.setToUser(authorizationRecord.getStrangerEmail());
         mailService.sendMessageMail(emailMessage, question.getQuestionSummary(), "message.ftl",messagerDTO);
         SendRecord sendRecordNew = new SendRecord();
         sendRecordNew.questionCode(question.getQuestionCode()).questionId(question.getId())
             .authorizationRecordId(authorizationRecord.getId()).status(Constants.QUESTION_SENT)
-            .senderEmail("gengluy@163.com").strangerName(authorizationRecord.getStrangerName()).strangerEmail(authorizationRecord.getStrangerEmail());
+            .senderEmail(Constants.EMAIL_SENDER).strangerName(authorizationRecord.getStrangerName()).strangerEmail(authorizationRecord.getStrangerEmail());
         sendRecordRepository.save(sendRecordNew);
         SendRecordDTO sendRecordDTO = sendRecordMapper.sendRecordToSendRecordDTO(sendRecordNew);
         sendRecordDTO.setExpirationTime(authorizationRecord.getExpirationTime());

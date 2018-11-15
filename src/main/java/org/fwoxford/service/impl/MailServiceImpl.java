@@ -21,6 +21,7 @@ import javax.mail.internet.MimeMessage;
 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -51,7 +52,13 @@ public class MailServiceImpl implements MailService {
         MimeMessageHelper helper = null;
         try {
             helper = new MimeMessageHelper(mimeMessage, true);
-            helper.setFrom(messagerDTO.getFromUser());
+            String nick="";
+            try {
+                nick=javax.mail.internet.MimeUtility.encodeText("样本库信息管理系统");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            helper.setFrom(new InternetAddress(nick+" <"+messagerDTO.getFromUser()+">"));
             helper.setTo(InternetAddress.parse(messagerDTO.getToUser()));//发送给谁
             if (StringUtils.isEmpty(title)) {
                 title = "问题样本确认";

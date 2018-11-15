@@ -55,7 +55,7 @@ public class ScheduleTaskMessage implements Job {
         }
         EmailMessage emailMessage = new EmailMessage();
         MessagerDTO messagerDTO = new MessagerDTO();
-        messagerDTO.setFromUser("gengluy@163.com");
+        messagerDTO.setFromUser(Constants.EMAIL_SENDER);
         messagerDTO.setToUser(authorizationRecord.getStrangerEmail());
         emailMessage.setAuthorizationCode(authorizationRecord.getAuthorizationCode());
         emailMessage.setStrangerName(authorizationRecord.getStrangerName());
