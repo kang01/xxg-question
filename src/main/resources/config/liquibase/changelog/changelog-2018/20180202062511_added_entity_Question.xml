@@ -101,4 +101,20 @@
     <changeSet id="20181112094511-2" author="jhipster">
         <modifyDataType tableName="question" columnName="question_description" newDataType="nvarchar(2000)"></modifyDataType>
     </changeSet>
+    <changeSet id="20181115234911-1" author="jhipster">
+        <addColumn tableName="question">
+            <column afterColumn="question_summary" name="question_description_bak" remarks="问题详情" type="clob"></column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20181115234911-2" author="jhipster">
+        <sql>
+            update question set question_description_bak = question_description
+        </sql>
+    </changeSet>
+    <changeSet id="20181115234911-3" author="jhipster">
+        <dropColumn tableName="question" columnName="question_description"></dropColumn>
+    </changeSet>
+    <changeSet id="20181115234911-4" author="jhipster">
+        <renameColumn tableName="question" oldColumnName="question_description_bak" newColumnName="question_description"></renameColumn>
+    </changeSet>
 </databaseChangeLog>

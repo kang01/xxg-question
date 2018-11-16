@@ -1,5 +1,6 @@
 package org.fwoxford.service.dto;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ public class QuestionDTO implements Serializable {
     @Size(max = 255)
     private String questionSummary;
 
-    @Size(max = 2048)
+    @Lob
     private String questionDescription;
 
     @Size(max = 255)

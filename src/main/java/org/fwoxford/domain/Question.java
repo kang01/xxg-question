@@ -56,8 +56,8 @@ public class Question extends AbstractAuditingEntity implements Serializable {
     @Column(name = "question_summary", length = 255)
     private String questionSummary;
 
-    @Size(max = 1024)
-    @Column(name = "question_description", length = 1024)
+    @Lob
+    @Column(name = "question_description")
     private String questionDescription;
 
     @Size(max = 255)
