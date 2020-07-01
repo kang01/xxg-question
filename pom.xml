@@ -149,7 +149,7 @@
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>2.2.3</version>
+            <version>2.3.2</version>
         </dependency>
 
         <!--  引入外部导入jar  公共的实体对象 以及 mapper -->
